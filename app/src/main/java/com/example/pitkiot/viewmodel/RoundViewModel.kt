@@ -1,15 +1,13 @@
-package com.example.myapplication.viewmodel
+package com.example.pitkiot.viewmodel
 
 import android.os.CountDownTimer
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.data.PitkiotRepository
-import com.example.myapplication.data.RoundModel
+import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.RoundModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RoundViewModel(
     private val pitkiotRepository: PitkiotRepository

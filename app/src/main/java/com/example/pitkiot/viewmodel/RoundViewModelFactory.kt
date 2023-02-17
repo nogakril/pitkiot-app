@@ -1,8 +1,8 @@
-package com.example.myapplication.viewmodel
+package com.example.pitkiot.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.data.PitkiotRepository
+import com.example.pitkiot.data.PitkiotRepository
 
 class RoundViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.pitkiot.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.myapplication.R
-import com.example.myapplication.viewmodel.JoinGameViewModel
+import com.example.pitkiot.R
+import com.example.pitkiot.viewmodel.JoinGameViewModel
 
 class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
     private lateinit var viewModel: JoinGameViewModel

@@ -1,4 +1,4 @@
-package com.example.myapplication.viewmodel
+package com.example.pitkiot.viewmodel
 
 import androidx.lifecycle.ViewModel
 

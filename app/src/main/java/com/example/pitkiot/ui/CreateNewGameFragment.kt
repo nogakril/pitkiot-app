@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.pitkiot.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.R
-import com.example.myapplication.viewmodel.CreateNewGameViewModel
+import com.example.pitkiot.R
+import com.example.pitkiot.viewmodel.CreateNewGameViewModel
 
 class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
 

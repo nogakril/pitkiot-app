@@ -1,12 +1,12 @@
-package com.example.myapplication.ui
+package com.example.pitkiot.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.R
-import com.example.myapplication.viewmodel.StartMenuViewModel
+import com.example.pitkiot.R
+import com.example.pitkiot.viewmodel.StartMenuViewModel
 
 class StartMenuFragment : Fragment(R.layout.fragment_start_menu) {
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.pitkiot.ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -9,10 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import com.example.myapplication.R
-import com.example.myapplication.utils.OnSwipeTouchListener
-import com.example.myapplication.viewmodel.RoundViewModel
-import com.example.myapplication.viewmodel.RoundViewModelFactory
+import com.example.pitkiot.R
+import com.example.pitkiot.utils.OnSwipeTouchListener
+import com.example.pitkiot.viewmodel.RoundViewModel
+import com.example.pitkiot.viewmodel.RoundViewModelFactory
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 

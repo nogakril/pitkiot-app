@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.pitkiot.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.R
-import com.example.myapplication.viewmodel.AdminWaitingRoomViewModel
+import com.example.pitkiot.R
+import com.example.pitkiot.viewmodel.AdminWaitingRoomViewModel
 
 const val GAME_PIN = "HJK3" // obviously should not be here, get from view model
 const val PLAYERS = "Noga \n Omri \n Other"

@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/startMenuFragment"
-            android:name="com.example.myapplication.ui.StartMenuFragment"
+            android:name="com.example.pitkiot.ui.StartMenuFragment"
             android:label="fragment_start_menu"
             tools:layout="@layout/fragment_start_menu" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
             android:id="@+id/createNewGameFragment"
-            android:name="com.example.myapplication.ui.CreateNewGameFragment"
+            android:name="com.example.pitkiot.ui.CreateNewGameFragment"
             android:label="fragment_create_new_game"
             tools:layout="@layout/fragment_create_new_game" >
         <action
@@ -28,12 +28,12 @@
     </fragment>
     <fragment
             android:id="@+id/joinGameFragment"
-            android:name="com.example.myapplication.ui.JoinGameFragment"
+            android:name="com.example.pitkiot.ui.JoinGameFragment"
             android:label="fragment_join_game"
             tools:layout="@layout/fragment_join_game" />
     <fragment
             android:id="@+id/adminWaitingRoomFragment"
-            android:name="com.example.myapplication.ui.AdminWaitingRoomFragment"
+            android:name="com.example.pitkiot.ui.AdminWaitingRoomFragment"
             android:label="fragment_admin_waiting_room"
             tools:layout="@layout/fragment_admin_waiting_room" >
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
             android:id="@+id/roundFragment"
-            android:name="com.example.myapplication.ui.RoundFragment"
+            android:name="com.example.pitkiot.ui.RoundFragment"
             android:label="fragment_round"
             tools:layout="@layout/fragment_round" />
 </navigation>

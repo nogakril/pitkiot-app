@@ -1,4 +1,4 @@
-package com.example.myapplication.data
+package com.example.pitkiot.data
 
 // TODO configurable properties
 const val SKIPS = 2
