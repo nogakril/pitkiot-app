@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/startMenuFragment">
+
+    <fragment
+            android:id="@+id/startMenuFragment"
+            android:name="com.example.myapplication.ui.StartMenuFragment"
+            android:label="fragment_start_menu"
+            tools:layout="@layout/fragment_start_menu" >
+        <action
+                android:id="@+id/action_startMenuFragment_to_createNewGameFragment"
+                app:destination="@id/createNewGameFragment" />
+        <action
+                android:id="@+id/action_startMenuFragment_to_joinGameFragment"
+                app:destination="@id/joinGameFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/createNewGameFragment"
+            android:name="com.example.myapplication.ui.CreateNewGameFragment"
+            android:label="fragment_create_new_game"
+            tools:layout="@layout/fragment_create_new_game" >
+        <action
+                android:id="@+id/action_createNewGameFragment_to_adminWaitingRoomFragment"
+                app:destination="@id/adminWaitingRoomFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/joinGameFragment"
+            android:name="com.example.myapplication.ui.JoinGameFragment"
+            android:label="fragment_join_game"
+            tools:layout="@layout/fragment_join_game" />
+    <fragment
+            android:id="@+id/adminWaitingRoomFragment"
+            android:name="com.example.myapplication.ui.AdminWaitingRoomFragment"
+            android:label="fragment_admin_waiting_room"
+            tools:layout="@layout/fragment_admin_waiting_room" >
+        <action
+                android:id="@+id/action_adminWaitingRoomFragment_to_roundFragment"
+                app:destination="@id/roundFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/roundFragment"
+            android:name="com.example.myapplication.ui.RoundFragment"
+            android:label="fragment_round"
+            tools:layout="@layout/fragment_round" />
+</navigation>
