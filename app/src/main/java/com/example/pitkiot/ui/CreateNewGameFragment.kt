@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.viewmodel.GameViewModel
 import com.example.pitkiot.viewmodel.GameViewModelFactory
 
@@ -20,7 +21,7 @@ class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, GameViewModelFactory()).get()
+        viewModel = ViewModelProvider(this, GameViewModelFactory(::PitkiotRepository)).get()
         adminNameText = view.findViewById<EditText>(R.id.admin_nickname_edit_text)
         view.findViewById<Button>(R.id.register_admin_btn).setOnClickListener(::handleRegisterAdmin)
     }

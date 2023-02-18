@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pitkiot.data.GameModel
-import com.example.pitkiot.data.GameStatus
+import com.example.pitkiot.data.models.GameModel
+import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.PitkiotRepository
-import com.example.pitkiot.data.RoundModel
+import com.example.pitkiot.data.models.RoundModel
 import kotlinx.coroutines.launch
 
 const val ADD_WORDS_TIME: Long = 120000

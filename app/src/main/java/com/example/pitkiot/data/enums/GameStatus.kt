@@ -1,4 +1,4 @@
-package com.example.pitkiot.data
+package com.example.pitkiot.data.enums
 
 enum class GameStatus {
     GAME_CREATION,

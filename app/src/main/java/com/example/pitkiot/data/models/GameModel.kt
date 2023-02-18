@@ -1,4 +1,6 @@
-package com.example.pitkiot.data
+package com.example.pitkiot.data.models
+
+import com.example.pitkiot.data.enums.GameStatus
 
 const val ADD_WORDS_TIME: Long = 120000
 

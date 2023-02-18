@@ -9,7 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
-import com.example.pitkiot.data.GameStatus
+import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.viewmodel.GameViewModel
 import com.example.pitkiot.viewmodel.GameViewModelFactory
 
@@ -21,7 +22,7 @@ class AdminWaitingRoomFragment : Fragment(R.layout.fragment_admin_waiting_room) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, GameViewModelFactory()).get()
+        viewModel = ViewModelProvider(this, GameViewModelFactory(::PitkiotRepository)).get()
         val gamePinText = view.findViewById<TextView>(R.id.game_pin_title)
         val playersText = view.findViewById<TextView>(R.id.players_list)
         view.findViewById<Button>(R.id.start_game_btn).setOnClickListener(::startAddingPitkiotHandler)

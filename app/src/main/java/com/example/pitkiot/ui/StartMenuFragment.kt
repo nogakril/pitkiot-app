@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.viewmodel.GameViewModel
 import com.example.pitkiot.viewmodel.GameViewModelFactory
 
@@ -17,7 +18,7 @@ class StartMenuFragment : Fragment(R.layout.fragment_start_menu) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, GameViewModelFactory()).get()
+        viewModel = ViewModelProvider(this, GameViewModelFactory(::PitkiotRepository)).get()
         view.findViewById<Button>(R.id.create_new_game_btn)?.setOnClickListener(::navigateToCreateNewGame)
         view.findViewById<Button>(R.id.join_game_btn)?.setOnClickListener(::navigateToJoinGame)
     }
