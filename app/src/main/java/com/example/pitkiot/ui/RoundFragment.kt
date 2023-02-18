@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.pitkiot.R
 import com.example.pitkiot.utils.OnSwipeTouchListener
-import com.example.pitkiot.viewmodel.RoundViewModel
-import com.example.pitkiot.viewmodel.RoundViewModelFactory
+import com.example.pitkiot.viewmodel.GameViewModel
+import com.example.pitkiot.viewmodel.GameViewModelFactory
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 
@@ -21,36 +21,43 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     private lateinit var swipeView: View
     private lateinit var scoreText: TextView
     private lateinit var skipsText: TextView
-    private lateinit var viewModel: RoundViewModel
+    private lateinit var viewModel: GameViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, RoundViewModelFactory()).get()
+        viewModel = ViewModelProvider(this, GameViewModelFactory()).get()
         countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
         swipeView = view.findViewById(R.id.swipe_view)
         scoreText = view.findViewById(R.id.score_text)
         skipsText = view.findViewById(R.id.skips_text)
 
-        viewModel.roundStatsLiveData.observe(viewLifecycleOwner) {
+        viewModel.roundInfoLiveData.observe(viewLifecycleOwner) {
             scoreText.text = getString(R.string.score_placeholder, it.score)
             skipsText.text = getString(R.string.skips_placeholder, it.skipsLeft)
             wordTextView.text = it.curWord
-            countdownText.text = it.countDown.toString()
+            countdownText.text = it.timeLeftToRound.toString()
         }
 
         swipeView.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                viewModel.onCorrectGuess()
-                colorScreenAfterSwipe(R.color.red)
+                handleSwipe(ContextCompat.getColor(view.context, R.color.green)) {
+                    viewModel.onCorrectGuess()
+                }
             }
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                viewModel.onSkipAttempt()
-                colorScreenAfterSwipe(R.color.green)
+                handleSwipe(ContextCompat.getColor(view.context, R.color.red)) {
+                    viewModel.onSkipAttempt()
+                }
             }
         })
+    }
+
+    private fun handleSwipe(color: Int, action: () -> Unit) {
+        action.invoke()
+        colorScreenAfterSwipe(color)
     }
 
     private fun colorScreenAfterSwipe(color: Int) {

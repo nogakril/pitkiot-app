@@ -15,7 +15,13 @@
     <string name="players_list">This should probably \n be a recyclerView</string>
     <string name="game_pin_title">Game PIN: %s</string>
     <string name="word_placeholder">word</string>
-    <string name="countdown_placeholder">time</string>
+    <string name="countdown_placeholder">%d:%d</string>
     <string name="score_placeholder">Score: %d</string>
     <string name="skips_placeholder">Skips Left: %d</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="waiting_for_players_title">Waiting for players</string>
+    <string name="add_words_title">Add words to game</string>
+    <string name="add_words_hint">new pitkit</string>
+    <string name="add_words_btn">+</string>
 </resources>
