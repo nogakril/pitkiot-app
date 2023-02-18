@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.pitkiot.data.PitkiotRepository
 
 class GameViewModelFactory : ViewModelProvider.Factory {
-    private val gameViewModel = GameViewModel(PitkiotRepository())
+    private var gameViewModel = GameViewModel(PitkiotRepository())
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
 import com.example.pitkiot.utils.OnSwipeTouchListener
 import com.example.pitkiot.viewmodel.GameViewModel
@@ -33,6 +34,9 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         skipsText = view.findViewById(R.id.skips_text)
 
         viewModel.roundInfoLiveData.observe(viewLifecycleOwner) {
+            if (it.timeLeftToRound == 0L) {
+                navigateToGameLobby(view)
+            }
             scoreText.text = getString(R.string.score_placeholder, it.score)
             skipsText.text = getString(R.string.skips_placeholder, it.skipsLeft)
             wordTextView.text = it.curWord
@@ -53,6 +57,8 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                 }
             }
         })
+
+        viewModel.startNewRound()
     }
 
     private fun handleSwipe(color: Int, action: () -> Unit) {
@@ -69,6 +75,11 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                     R.color.white
                 )
             )
-        }, 1000)
+        }, 500)
+    }
+
+    private fun navigateToGameLobby(view: View?) {
+        val action = RoundFragmentDirections.actionRoundFragmentToGameLobbyFragment2()
+        findNavController().navigate(action)
     }
 }

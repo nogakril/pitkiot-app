@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
+import com.example.pitkiot.data.GameStatus
 import com.example.pitkiot.viewmodel.GameViewModel
 import com.example.pitkiot.viewmodel.GameViewModelFactory
 
@@ -23,13 +24,13 @@ class AdminWaitingRoomFragment : Fragment(R.layout.fragment_admin_waiting_room) 
         viewModel = ViewModelProvider(this, GameViewModelFactory()).get()
         val gamePinText = view.findViewById<TextView>(R.id.game_pin_title)
         val playersText = view.findViewById<TextView>(R.id.players_list)
-        view.findViewById<Button>(R.id.start_game_btn).setOnClickListener(::startGameHandler)
+        view.findViewById<Button>(R.id.start_game_btn).setOnClickListener(::startAddingPitkiotHandler)
         gamePinText.text = getString(R.string.game_pin_title, GAME_PIN)
         playersText.text = PLAYERS
     }
 
-    private fun startGameHandler(view: View?) {
-        viewModel.startGame()
+    private fun startAddingPitkiotHandler(view: View?) {
+        viewModel.setGameStatus(GameStatus.PITKIOT_CREATION)
         navigateToGame(view)
     }
     private fun navigateToGame(view: View?) {
