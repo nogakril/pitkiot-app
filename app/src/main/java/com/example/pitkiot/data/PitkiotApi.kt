@@ -1,7 +1,9 @@
 package com.example.pitkiot.data
 
-// ktlint-disable no-wildcard-imports
+/* ktlint-disable */
 import com.example.pitkiot.data.models.*
+import retrofit2.http.*
+/* ktlint-enable */
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -9,7 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.*
 
 interface PitkiotApi {
 

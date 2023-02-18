@@ -44,6 +44,3 @@ data class WordsGetterResponse(
     @Json(name = "words")
     val words: List<String>
 )
-
-
-

@@ -1,8 +1,8 @@
 package com.example.pitkiot.data
 
+/* ktlint-disable */
 import com.example.pitkiot.data.models.*
-
-// ktlint-disable no-wildcard-imports
+/* ktlint-enable */
 
 class PitkiotRepository(
     private val pitkiotApi: PitkiotApi
@@ -13,9 +13,9 @@ class PitkiotRepository(
         return words.random()
     }
 
-    suspend fun createGame(url: String, nickName: String): Result<GameCreationResponse> {
+    suspend fun createGame(nickName: String): Result<GameCreationResponse> {
         val body = GameCreationJson(nickName)
-        val response = pitkiotApi.createGame(url, body)
+        val response = pitkiotApi.createGame(body = body)
         return when {
             response.isSuccessful && response.body() != null -> {
                 val createGameResponse = response.body()!!
@@ -29,9 +29,9 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun joinGame(url: String, gameId: String, nickName: String): Result<TeamGetterResponse> {
+    suspend fun joinGame(gameId: String, nickName: String): Result<TeamGetterResponse> {
         val body = TeamGetterJson(nickName)
-        val response = pitkiotApi.joinGame(url, gameId, body)
+        val response = pitkiotApi.joinGame(gameId = gameId, body = body)
         return when {
             response.isSuccessful && response.body() != null -> {
                 val joinGameResponse = response.body()!!
@@ -45,8 +45,8 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun getPlayers(url: String, gameId: String, nickName: String): Result<PlayersGetterResponse> {
-        val response = pitkiotApi.getPlayers(url, gameId)
+    suspend fun getPlayers(gameId: String, nickName: String): Result<PlayersGetterResponse> {
+        val response = pitkiotApi.getPlayers(gameId = gameId)
         return when {
             response.isSuccessful && response.body() != null -> {
                 val getPlayersResponse = response.body()!!
@@ -86,4 +86,3 @@ class PitkiotRepository(
 
     class GameError(error: String) : Exception(error)
 }
-

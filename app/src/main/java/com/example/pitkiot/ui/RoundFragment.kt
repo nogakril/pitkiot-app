@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.utils.OnSwipeTouchListener
-import com.example.pitkiot.viewmodel.GameViewModel
-import com.example.pitkiot.viewmodel.GameViewModelFactory
+import com.example.pitkiot.viewmodel.RoundViewModel
+import com.example.pitkiot.viewmodel.RoundViewModelFactory
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 
@@ -23,11 +23,11 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     private lateinit var swipeView: View
     private lateinit var scoreText: TextView
     private lateinit var skipsText: TextView
-    private lateinit var viewModel: GameViewModel
+    private lateinit var viewModel: RoundViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, GameViewModelFactory(::PitkiotRepository)).get()
+        viewModel = ViewModelProvider(this, RoundViewModelFactory(::PitkiotRepository)).get()
         countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
         swipeView = view.findViewById(R.id.swipe_view)

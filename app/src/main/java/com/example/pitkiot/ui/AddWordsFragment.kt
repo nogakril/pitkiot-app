@@ -1,10 +1,10 @@
 package com.example.pitkiot.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
@@ -13,7 +13,6 @@ import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.viewmodel.GameViewModel
 import com.example.pitkiot.viewmodel.GameViewModelFactory
-
 
 class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
     private lateinit var viewModel: GameViewModel
