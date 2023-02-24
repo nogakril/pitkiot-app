@@ -14,7 +14,7 @@ import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus
-import com.example.pitkiot.data.enums.Role
+import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.utils.showError
 /* ktlint-disable */
 import com.example.pitkiot.viewmodel.*
@@ -25,13 +25,13 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: WaitingRoomFragmentArgs by navArgs()
-        val viewModel = AdminWaitingRoomViewModel(PitkiotRepository(PitkiotApi.instance), args.gamePin)
+        val viewModel = WaitingRoomViewModel(PitkiotRepository(PitkiotApi.instance), args.gamePin)
         val gamePinText = view.findViewById<TextView>(R.id.game_pin_title)
         val startGameBtn = view.findViewById<Button>(R.id.start_creating_pitkiot_btn)
         val playersListRecyclerView: RecyclerView = view.findViewById(R.id.players_list_recycler_view)
         val playersListViewAdapter = PlayersListViewAdapter(emptyList())
 
-        if (args.userRole == Role.ADMIN) {
+        if (args.userRole == ADMIN) {
             gamePinText.visibility = VISIBLE
             startGameBtn.visibility = VISIBLE
         }
@@ -44,7 +44,7 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
         viewModel.getPlayers()
 
         startGameBtn.setOnClickListener {
-            viewModel.setGameStatus(GameStatus.PITKIOT_CREATION)
+            viewModel.setGameStatus(GameStatus.ADDING_WORDS)
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
@@ -52,7 +52,7 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
             if (uiState.players.isNotEmpty()) { // Not sure about that
                 playersListViewAdapter.updatePlayersList(uiState.players)
             }
-            if (uiState.gameStatus == GameStatus.PITKIOT_CREATION) {
+            if (uiState.gameStatus == GameStatus.ADDING_WORDS) {
                 val action = WaitingRoomFragmentDirections.actionAdminWaitingRoomFragmentToAddWordsFragment(args.gamePin, args.userRole)
                 findNavController().navigate(action)
             }

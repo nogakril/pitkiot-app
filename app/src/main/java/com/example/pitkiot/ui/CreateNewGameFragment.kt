@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
-import com.example.pitkiot.data.enums.Role
+import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.utils.showError
 import com.example.pitkiot.viewmodel.CreateNewGameViewModel
 
@@ -31,7 +31,7 @@ class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
                 viewModel.resetError()
             }
             uiState.gamePin?.let {
-                val action = CreateNewGameFragmentDirections.actionCreateNewGameFragmentToAdminWaitingRoomFragment(it, Role.ADMIN)
+                val action = CreateNewGameFragmentDirections.actionCreateNewGameFragmentToAdminWaitingRoomFragment(it, ADMIN)
                 findNavController().navigate(action)
             }
         }

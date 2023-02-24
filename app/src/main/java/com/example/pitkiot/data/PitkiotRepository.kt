@@ -2,7 +2,6 @@ package com.example.pitkiot.data
 
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.enums.Team
-
 /* ktlint-disable */
 import com.example.pitkiot.data.models.*
 /* ktlint-enable */
@@ -39,12 +38,12 @@ class PitkiotRepository(
     }
 
     suspend fun getStatus(gameId: String): Result<StatusGetterResponse> {
-        val mockResponse = StatusGetterResponse(status = GameStatus.PITKIOT_CREATION)
+        val mockResponse = StatusGetterResponse(status = GameStatus.ADDING_PLAYERS)
         return Result.success(mockResponse)
     }
 
     suspend fun setStatus(gameId: String): Result<Unit> {
-        val mockResponse = StatusGetterResponse(status = GameStatus.GAME_CREATION)
+        val mockResponse = StatusGetterResponse(status = GameStatus.ADDING_PLAYERS)
         return Result.success(Unit)
     }
 

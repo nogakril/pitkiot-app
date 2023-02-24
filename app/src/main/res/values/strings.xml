@@ -16,8 +16,7 @@
     <string name="game_pin_title">Game PIN: %s</string>
     <string name="word_placeholder">word</string>
     <string name="countdown_placeholder">%d:%d</string>
-    <string name="score_placeholder">Score: %d</string>
-    <string name="skips_placeholder">Skips Left: %d</string>
+    <string name="score_and_skips_placeholder">Score: %d\nSkips Left: %d</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="waiting_for_players_title">Waiting for players</string>
     <string name="add_words_title">Add words to game</string>
@@ -26,4 +25,11 @@
     <string name="start_round_title">Ready to play?</string>
     <string name="start_round_btn">start</string>
     <string name="who_plays_text">It\'s Noga\'s turn to play</string>
+    <string name="next_team_and_player_placeholder">%s from team %s you are next!</string>
+    <string name="game_summary_title">And the results...</string>
+    <string name="winner_loser_text">Team %s won! \n%s team\'s score: %d\n%s team\'s score: %d</string>
+    <string name="another_game_btn">Play Again</string>
+    <string name="back_to_menu_btn">Back to Menu</string>
+    <string name="in_game_title">The Game is On!</string>
+    <string name="score_summary_text">%s team\'s score: %d\n%s team\'s score: %d</string>
 </resources>

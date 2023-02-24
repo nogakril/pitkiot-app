@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.View.GONE
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.enums.Team.TEAM_A
+import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.utils.OnSwipeTouchListener
 import com.example.pitkiot.viewmodel.RoundViewModel
 
@@ -23,8 +26,9 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     lateinit var countdownText: TextView
     lateinit var wordTextView: TextView
     lateinit var startRoundTitle: TextView
-    lateinit var scoreText: TextView
-    lateinit var skipsText: TextView
+    lateinit var scoreAndSkipsText: TextView
+    lateinit var scoreSummaryText: TextView
+    lateinit var nextTeamAndPlayerText: TextView
     lateinit var start_round_btn: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,8 +39,9 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         wordTextView = view.findViewById(R.id.word_text_view)
         startRoundTitle = view.findViewById(R.id.start_round_title)
         swipeView = view.findViewById(R.id.swipe_view)
-        scoreText = view.findViewById(R.id.score_text)
-        skipsText = view.findViewById(R.id.skips_text)
+        scoreAndSkipsText = view.findViewById(R.id.score_and_skips_text)
+        nextTeamAndPlayerText = view.findViewById(R.id.next_team_and_player_text)
+        scoreSummaryText = view.findViewById(R.id.score_summary_text)
         start_round_btn = view.findViewById(R.id.start_round_btn)
 
         start_round_btn.setOnClickListener {
@@ -45,13 +50,19 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) {
+            scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, it.score, it.skipsLeft)
+            wordTextView.text = it.curWord
+            countdownText.text = it.timeLeftToRound.toString()
+            nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, it.curPlayer, it.curTeam.customName)
+            scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, it.teamAScore, TEAM_B.customName, it.teamBScore)
             if (it.timeLeftToRound == 0L) {
                 setRoundUiComponentsVisibility(roundStart = false)
             }
-            scoreText.text = getString(R.string.score_placeholder, it.score)
-            skipsText.text = getString(R.string.skips_placeholder, it.skipsLeft)
-            wordTextView.text = it.curWord
-            countdownText.text = it.timeLeftToRound.toString()
+            if (it.gameEnded) {
+                val winner = viewModel.onGameEndedReturnWinner()
+                val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(it.teamAScore, it.teamBScore, winner, args.gamePin)
+                findNavController().navigate(action)
+            }
         }
 
         swipeView.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
@@ -88,11 +99,16 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     }
 
     private fun setRoundUiComponentsVisibility(roundStart: Boolean) {
-        countdownText.visibility = if (roundStart) VISIBLE else GONE
-        scoreText.visibility = if (roundStart) VISIBLE else GONE
-        skipsText.visibility = if (roundStart) VISIBLE else GONE
-        wordTextView.visibility = if (roundStart) VISIBLE else GONE
-        startRoundTitle.visibility = if (roundStart) GONE else VISIBLE
-        start_round_btn.visibility = if (roundStart) GONE else VISIBLE
+        // Round
+        countdownText.visibility = if (roundStart) VISIBLE else INVISIBLE
+        swipeView.visibility = if (roundStart) VISIBLE else INVISIBLE
+        scoreAndSkipsText.visibility = if (roundStart) VISIBLE else INVISIBLE
+        wordTextView.visibility = if (roundStart) VISIBLE else INVISIBLE
+
+        // Ready to play?
+        nextTeamAndPlayerText.visibility = if (roundStart) INVISIBLE else VISIBLE
+        startRoundTitle.visibility = if (roundStart) INVISIBLE else VISIBLE
+        start_round_btn.visibility = if (roundStart) INVISIBLE else VISIBLE
+        scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
     }
 }

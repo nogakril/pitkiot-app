@@ -59,6 +59,9 @@
         <argument
                 android:name="gamePin"
                 app:argType="string" />
+        <action
+                android:id="@+id/action_roundFragment_to_gameSummaryFragment"
+                app:destination="@id/gameSummaryFragment" />
     </fragment>
     <fragment
             android:id="@+id/addWordsFragment"
@@ -86,5 +89,28 @@
                 android:name="gamePin"
                 app:argType="string" />
 
+    </fragment>
+    <fragment
+            android:id="@+id/gameSummaryFragment"
+            android:name="com.example.pitkiot.ui.GameSummaryFragment"
+            android:label="fragment_game_summary"
+            tools:layout="@layout/fragment_game_summary" >
+        <action
+                android:id="@+id/action_gameSummaryFragment_to_roundFragment"
+                app:destination="@id/roundFragment" />
+        <action
+                android:id="@+id/action_gameSummaryFragment_to_startMenuFragment"
+                app:destination="@id/startMenuFragment" />
+        <argument
+                android:name="teamAScore"
+                app:argType="integer" />
+        <argument
+                android:name="teamBScore"
+                app:argType="integer" />
+        <argument android:name="winner"
+                app:argType="com.example.pitkiot.data.enums.Team"/>
+        <argument
+                android:name="gamePin"
+                app:argType="string" />
     </fragment>
 </navigation>

@@ -12,7 +12,7 @@ import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus
-import com.example.pitkiot.data.enums.Role
+import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.utils.showError
 import com.example.pitkiot.viewmodel.AddWordsViewModel
 
@@ -26,7 +26,7 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         val addWordBtn = view.findViewById<Button>(R.id.add_words_btn)
         val startGameBtn = view.findViewById<Button>(R.id.start_creating_pitkiot_btn)
 
-        if (args.userRole == Role.ADMIN) {
+        if (args.userRole == ADMIN) {
             startGameBtn.visibility = VISIBLE
         }
 
@@ -36,13 +36,13 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         }
 
         startGameBtn.setOnClickListener {
-            viewModel.setGameStatus(GameStatus.GAME)
+            viewModel.setGameStatus(GameStatus.IN_GAME)
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             uiState.errorMessage?.let { showError(requireContext(), it) }
-            if (uiState.gameStatus == GameStatus.GAME) {
-                if (args.userRole == Role.ADMIN) {
+            if (uiState.gameStatus == GameStatus.IN_GAME) {
+                if (args.userRole == ADMIN) {
                     val action = AddWordsFragmentDirections.actionAddWordsFragmentToRoundFragment(args.gamePin)
                     findNavController().navigate(action)
                 } else {

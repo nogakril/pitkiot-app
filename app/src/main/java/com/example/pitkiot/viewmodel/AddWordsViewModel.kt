@@ -6,13 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.models.AddWordsUiState
 import kotlinx.coroutines.launch
-
-data class AddWordsUiState(
-    val gamePin: String? = null,
-    val gameStatus: GameStatus = GameStatus.PITKIOT_CREATION,
-    val errorMessage: String? = null
-)
 
 class AddWordsViewModel(
     private val pitkiotRepository: PitkiotRepository,

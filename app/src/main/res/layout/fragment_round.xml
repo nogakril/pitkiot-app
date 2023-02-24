@@ -2,19 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.RoundFragment">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.RoundFragment">
 
     <View
             android:id="@+id/swipe_view"
             android:layout_width="327dp"
             android:layout_height="214dp"
-            android:layout_marginBottom="60dp"
             android:background="@android:color/white"
-            app:layout_constraintBottom_toTopOf="@+id/skips_text"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
     <Button
             android:id="@+id/start_round_btn"
@@ -22,12 +25,12 @@
             android:layout_height="wrap_content"
             android:text="@string/start_round_btn"
             android:textAppearance="@style/PitkiotButton"
-            app:layout_constraintBottom_toTopOf="@+id/word_text_view"
+            app:layout_constraintBottom_toTopOf="@+id/next_team_and_player_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/countdown_text"
-            app:layout_constraintVertical_bias="0.353" />
+            app:layout_constraintVertical_bias="0.872" />
 
     <TextView
             android:id="@+id/word_text_view"
@@ -35,13 +38,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/word_placeholder"
-            android:visibility="gone"
-
             android:textAppearance="@style/PitkiotSubtitle"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/swipe_view"
             app:layout_constraintEnd_toEndOf="@+id/swipe_view"
             app:layout_constraintStart_toStartOf="@+id/swipe_view"
             app:layout_constraintTop_toTopOf="@+id/swipe_view" />
+
+
     <TextView
             android:id="@+id/start_round_title"
             android:layout_width="wrap_content"
@@ -52,49 +56,61 @@
             android:textAppearance="@style/PitkiotTitle"
             app:layout_constraintBottom_toTopOf="@+id/swipe_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.081" />
-
+            app:layout_constraintVertical_bias="0.035" />
 
     <TextView
             android:id="@+id/countdown_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
             android:text="@string/countdown_placeholder"
             android:textAlignment="center"
-            android:visibility="gone"
             android:textAppearance="@style/PitkiotSubtitle"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/swipe_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.096" />
+            app:layout_constraintVertical_bias="0.782" />
 
     <TextView
-            android:id="@+id/score_text"
+            android:id="@+id/score_and_skips_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="108dp"
-            android:text="@string/score_placeholder"
-            android:visibility="gone"
+            android:layout_marginBottom="48dp"
+            android:text="@string/score_and_skips_placeholder"
             android:textAppearance="@style/PitkiotPlainText"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+            android:id="@+id/next_team_and_player_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
+            android:text="@string/next_team_and_player_placeholder"
+            android:textAppearance="@style/PitkiotSmallPlainText"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/score_and_skips_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-            android:id="@+id/skips_text"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
-            android:text="@string/skips_placeholder"
+            android:id="@+id/score_summary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score_summary_text"
             android:textAppearance="@style/PitkiotPlainText"
-            app:layout_constraintBottom_toTopOf="@+id/score_text"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/start_round_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_round_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

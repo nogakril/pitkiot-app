@@ -5,12 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.models.CreateNewGameUiState
 import kotlinx.coroutines.launch
-
-data class CreateNewGameUiState(
-    val gamePin: String? = null,
-    val errorMessage: String? = null
-)
 
 class CreateNewGameViewModel(
     private val pitkiotRepository: PitkiotRepository
