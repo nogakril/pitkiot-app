@@ -1,54 +1,51 @@
 package com.example.pitkiot.data
 
-import com.example.pitkiot.data.enums.GameStatus
-import com.example.pitkiot.data.enums.Team
 /* ktlint-disable */
-import com.example.pitkiot.data.models.*
 /* ktlint-enable */
 
 class PitkiotRepository(
     private val pitkiotApi: PitkiotApi
 ) {
 
-    // Mock functions for testing
-    suspend fun createGame(nickName: String): Result<GameCreationResponse> {
-        val mockResponse = GameCreationResponse(gameId = "e4dkd83mf7h")
-        return Result.success(mockResponse)
-    }
-
-    suspend fun joinGame(gameId: String, nickName: String): Result<PlayerAdderResponse> {
-        val mockResponse = PlayerAdderResponse(team = Team.TEAM_A)
-        return Result.success(mockResponse)
-    }
-
-    suspend fun getPlayers(gameId: String): Result<PlayersGetterResponse> {
-        val players = listOf("Noga", "Omri", "John", "Mike")
-        val mockResponse = PlayersGetterResponse(players = players)
-        return Result.success(mockResponse)
-    }
-
-    suspend fun addWord(gameId: String, word: String): Result<Unit> {
-        return Result.success(Unit)
-    }
-
-    suspend fun getWords(gameId: String): Result<WordsGetterResponse> {
-        val words = listOf("apple", "banana", "cherry", "date", "elderberry", "fig", "grape")
-        val mockResponse = WordsGetterResponse(words = words)
-        return Result.success(mockResponse)
-    }
-
-    suspend fun getStatus(gameId: String): Result<StatusGetterResponse> {
-        val mockResponse = StatusGetterResponse(status = GameStatus.ADDING_PLAYERS)
-        return Result.success(mockResponse)
-    }
-
-    suspend fun setStatus(gameId: String): Result<Unit> {
-        val mockResponse = StatusGetterResponse(status = GameStatus.ADDING_PLAYERS)
-        return Result.success(Unit)
-    }
+//    // Mock functions for testing
+//    suspend fun createGame(nickName: String): Result<GameCreationResponse> {
+//        val mockResponse = GameCreationResponse(gameId = "e4dkd83mf7h")
+//        return Result.success(mockResponse)
+//    }
+//
+//    suspend fun joinGame(gameId: String, nickName: String): Result<PlayerAdderResponse> {
+//        val mockResponse = PlayerAdderResponse(team = Team.TEAM_A)
+//        return Result.success(mockResponse)
+//    }
+//
+//    suspend fun getPlayers(gameId: String): Result<PlayersGetterResponse> {
+//        val players = listOf("Noga", "Omri", "John", "Mike")
+//        val mockResponse = PlayersGetterResponse(players = players)
+//        return Result.success(mockResponse)
+//    }
+//
+//    suspend fun addWord(gameId: String, word: String): Result<Unit> {
+//        return Result.success(Unit)
+//    }
+//
+//    suspend fun getWords(gameId: String): Result<WordsGetterResponse> {
+//        val words = listOf("apple", "banana", "cherry", "date", "elderberry", "fig", "grape")
+//        val mockResponse = WordsGetterResponse(words = words)
+//        return Result.success(mockResponse)
+//    }
+//
+//    suspend fun getStatus(gameId: String): Result<StatusGetterResponse> {
+//        val mockResponse = StatusGetterResponse(status = GameStatus.ADDING_PLAYERS)
+//        return Result.success(mockResponse)
+//    }
+//
+//    suspend fun setStatus(gameId: String): Result<Unit> {
+//        val mockResponse = StatusGetterResponse(status = GameStatus.ADDING_PLAYERS)
+//        return Result.success(Unit)
+//    }
 
     // Real functions, use when backend ready
-    suspend fun _createGame(nickName: String): Result<GameCreationResponse> {
+    suspend fun createGame(nickName: String): Result<GameCreationResponse> {
         val body = GameCreationJson(nickName)
         val response = pitkiotApi.createGame(body = body)
         return when {
@@ -64,7 +61,7 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun _joinGame(gameId: String, nickName: String): Result<PlayerAdderResponse> {
+    suspend fun joinGame(gameId: String, nickName: String): Result<PlayerAdderResponse> {
         val body = PlayerAdderJson(nickName)
         val response = pitkiotApi.joinGame(gameId = gameId, body = body)
         return when {
@@ -80,7 +77,7 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun _getPlayers(gameId: String): Result<PlayersGetterResponse> {
+    suspend fun getPlayers(gameId: String): Result<PlayersGetterResponse> {
         val response = pitkiotApi.getPlayers(gameId = gameId)
         return when {
             response.isSuccessful && response.body() != null -> {
@@ -95,7 +92,7 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun _addWord(url: String, gameId: String, word: String): Result<Unit> {
+    suspend fun addWord(url: String, gameId: String, word: String): Result<Unit> {
         val body = WordAdderJson(word)
         val response = pitkiotApi.addWord(url, gameId, body)
         return when {
@@ -104,7 +101,7 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun _getWords(url: String, gameId: String): Result<WordsGetterResponse> {
+    suspend fun getWords(url: String, gameId: String): Result<WordsGetterResponse> {
         val response = pitkiotApi.getWords(url, gameId)
         return when {
             response.isSuccessful && response.body() != null -> {
@@ -118,6 +115,6 @@ class PitkiotRepository(
             else -> Result.failure(GameError("Error: Could not add get the words of game $gameId"))
         }
     }
-
-    class GameError(error: String) : Exception(error)
 }
+
+class GameError(error: String) : Exception(error)

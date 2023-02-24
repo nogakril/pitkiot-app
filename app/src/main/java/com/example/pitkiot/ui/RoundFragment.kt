@@ -12,35 +12,47 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
-import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.utils.OnSwipeTouchListener
 import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 import com.example.pitkiot.viewmodel.RoundViewModel
+import com.example.pitkiot.viewmodel.factory.RoundViewModelFactory
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 
-    lateinit var viewModel: RoundViewModel
-    lateinit var swipeView: View
-    lateinit var countdownText: TextView
-    lateinit var wordTextView: TextView
-    lateinit var startRoundTitle: TextView
-    lateinit var scoreAndSkipsText: TextView
-    lateinit var scoreSummaryText: TextView
-    lateinit var nextTeamAndPlayerText: TextView
-    lateinit var start_round_btn: Button
+    private val args: RoundFragmentArgs by navArgs()
+    private lateinit var viewModel: RoundViewModel
+    private lateinit var swipeView: View
+    private lateinit var countdownText: TextView
+    private lateinit var wordTextView: TextView
+    private lateinit var startRoundTitle: TextView
+    private lateinit var scoreAndSkipsText: TextView
+    private lateinit var scoreSummaryText: TextView
+    private lateinit var nextTeamAndPlayerText: TextView
+    private lateinit var startRoundBtn: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(
+            /* owner = */ this,
+            /* factory = */ RoundViewModelFactory(
+                pitkiotRepositoryFactory = ::PitkiotRepository,
+                gamePinFactory = { args.gamePin },
+            )
+        ).get()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args: RoundFragmentArgs by navArgs()
-        viewModel = RoundViewModel(args.gamePin, PitkiotRepository(PitkiotApi.instance))
         countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
         startRoundTitle = view.findViewById(R.id.start_round_title)
@@ -48,11 +60,11 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         scoreAndSkipsText = view.findViewById(R.id.score_and_skips_text)
         nextTeamAndPlayerText = view.findViewById(R.id.next_team_and_player_text)
         scoreSummaryText = view.findViewById(R.id.score_summary_text)
-        start_round_btn = view.findViewById(R.id.start_round_btn)
+        startRoundBtn = view.findViewById(R.id.start_round_btn)
 
         showTeamsDivisionDialog()
 
-        start_round_btn.setOnClickListener {
+        startRoundBtn.setOnClickListener {
             viewModel.startNewRound()
             setRoundUiComponentsVisibility(roundStart = true)
         }
@@ -116,7 +128,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         // Ready to play?
         nextTeamAndPlayerText.visibility = if (roundStart) INVISIBLE else VISIBLE
         startRoundTitle.visibility = if (roundStart) INVISIBLE else VISIBLE
-        start_round_btn.visibility = if (roundStart) INVISIBLE else VISIBLE
+        startRoundBtn.visibility = if (roundStart) INVISIBLE else VISIBLE
         scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
     }
 

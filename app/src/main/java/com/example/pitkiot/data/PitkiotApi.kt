@@ -16,50 +16,55 @@ interface PitkiotApi {
 
     @POST("/")
     suspend fun createGame(
-        @Url url: String = URL,
         @Body body: GameCreationJson
     ): Response<GameCreationResponse>
 
     @PUT("/players")
     suspend fun joinGame(
-        @Url url: String = URL,
+        @Url url: String = BASE_PLAYER_ADDER_URL,
         @Query("gameId") gameId: String,
         @Body body: PlayerAdderJson
     ): Response<PlayerAdderResponse>
 
     @GET("/players")
     suspend fun getPlayers(
-        @Url url: String = URL,
+        @Url url: String = BASE_PLAYERS_GETTER_URL,
         @Query("gameId") gameId: String
     ): Response<PlayersGetterResponse>
 
     @PUT("/words")
     suspend fun addWord(
-        @Url url: String = URL,
+        @Url url: String = BASE_WORD_ADDER_URL,
         @Query("gameId") gameId: String,
         @Body body: WordAdderJson
     ): Response<Unit>
 
     @PUT("/words")
     suspend fun getWords(
-        @Url url: String = URL,
+        @Url url: String = BASE_WORDS_GETTER_URL,
         @Query("gameId") gameId: String
     ): Response<WordsGetterResponse>
 
     @GET("/status")
     suspend fun getStatus(
-        @Url url: String = URL,
+        @Url url: String = BASE_STATUS_GETTER_URL,
         @Query("gameId") gameId: String
     ): Response<StatusGetterResponse>
 
     @PUT("/status")
     suspend fun setStatus(
-        @Url url: String = URL,
+        @Url url: String = BASE_STATUS_SETTER_URL,
         @Query("gameId") gameId: String,
     ): Response<Unit>
 
     companion object {
-        private const val URL = "https://hvvevwwvae52ztpmfb4ftfjg3u0tqlxa.lambda-url.us-west-2.on.aws/"
+        private const val BASE_GAME_CREATOR_URL = "https://2fd7cttxuprcyyav2ybdhzk4hi0ywbtr.lambda-url.us-west-2.on.aws/"
+        private const val BASE_PLAYER_ADDER_URL = "https://sjaxvgnhxa5vmiiew7cnr5anmi0aftdh.lambda-url.us-west-2.on.aws/"
+        private const val BASE_STATUS_SETTER_URL = "https://ebs2llc3ixerfgkboyd6gfmxsa0qxwom.lambda-url.us-west-2.on.aws/"
+        private const val BASE_STATUS_GETTER_URL = "https://q4i3ok63vpncmuvgd3xmaw4of40ijbds.lambda-url.us-west-2.on.aws/"
+        private const val BASE_PLAYERS_GETTER_URL = "https://y2ptad7vg7pl2raly7ebo7asti0hjojt.lambda-url.us-west-2.on.aws/"
+        private const val BASE_WORD_ADDER_URL = "https://o2e6gr76txdn4f5w3dtodgvmb40ckyqb.lambda-url.us-west-2.on.aws/"
+        private const val BASE_WORDS_GETTER_URL = "https://bn7hrwlgyyveylitohyguntmnu0rcfya.lambda-url.us-west-2.on.aws/"
 
         val instance: PitkiotApi by lazy {
             val retrofit: Retrofit = createRetrofit()
@@ -82,7 +87,7 @@ interface PitkiotApi {
             // Build Retrofit
             return Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .baseUrl(URL)
+                .baseUrl(BASE_GAME_CREATOR_URL)
                 .client(httpClient)
                 .build()
         }

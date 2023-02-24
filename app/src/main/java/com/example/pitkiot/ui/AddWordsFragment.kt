@@ -6,22 +6,36 @@ import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pitkiot.R
-import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.utils.showError
 import com.example.pitkiot.viewmodel.AddWordsViewModel
+import com.example.pitkiot.viewmodel.factory.AddWordsViewModelFactory
 
 class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
 
+    private val args: AddWordsFragmentArgs by navArgs()
+    private lateinit var viewModel: AddWordsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(
+            /* owner = */ this,
+            /* factory = */ AddWordsViewModelFactory(
+                pitkiotRepositoryFactory = ::PitkiotRepository,
+                gamePinFactory = { args.gamePin }
+            )
+        ).get()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args: AddWordsFragmentArgs by navArgs()
-        val viewModel = AddWordsViewModel(PitkiotRepository(PitkiotApi.instance), args.gamePin)
         val addWordText = view.findViewById<EditText>(R.id.add_word_edit_text)
         val addWordBtn = view.findViewById<Button>(R.id.add_words_btn)
         val startGameBtn = view.findViewById<Button>(R.id.start_creating_pitkiot_btn)
