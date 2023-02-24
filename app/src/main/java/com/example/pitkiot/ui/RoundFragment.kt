@@ -4,39 +4,49 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.pitkiot.R
+import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.utils.OnSwipeTouchListener
 import com.example.pitkiot.viewmodel.RoundViewModel
-import com.example.pitkiot.viewmodel.RoundViewModelFactory
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 
-    private lateinit var countdownText: TextView
-    private lateinit var wordTextView: TextView
-    private lateinit var swipeView: View
-    private lateinit var scoreText: TextView
-    private lateinit var skipsText: TextView
-    private lateinit var viewModel: RoundViewModel
+    lateinit var swipeView: View
+    lateinit var countdownText: TextView
+    lateinit var wordTextView: TextView
+    lateinit var startRoundTitle: TextView
+    lateinit var scoreText: TextView
+    lateinit var skipsText: TextView
+    lateinit var start_round_btn: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, RoundViewModelFactory(::PitkiotRepository)).get()
+        val args: RoundFragmentArgs by navArgs()
+        val viewModel = RoundViewModel(args.gamePin, PitkiotRepository(PitkiotApi.instance))
         countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
+        startRoundTitle = view.findViewById(R.id.start_round_title)
         swipeView = view.findViewById(R.id.swipe_view)
         scoreText = view.findViewById(R.id.score_text)
         skipsText = view.findViewById(R.id.skips_text)
+        start_round_btn = view.findViewById(R.id.start_round_btn)
 
-        viewModel.roundInfoLiveData.observe(viewLifecycleOwner) {
+        start_round_btn.setOnClickListener {
+            viewModel.startNewRound()
+            setRoundUiComponentsVisibility(roundStart = true)
+        }
+
+        viewModel.uiState.observe(viewLifecycleOwner) {
             if (it.timeLeftToRound == 0L) {
-                navigateToGameLobby(view)
+                setRoundUiComponentsVisibility(roundStart = false)
             }
             scoreText.text = getString(R.string.score_placeholder, it.score)
             skipsText.text = getString(R.string.skips_placeholder, it.skipsLeft)
@@ -58,8 +68,6 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                 }
             }
         })
-
-        viewModel.startNewRound()
     }
 
     private fun handleSwipe(color: Int, action: () -> Unit) {
@@ -79,8 +87,12 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         }, 500)
     }
 
-    private fun navigateToGameLobby(view: View?) {
-        val action = RoundFragmentDirections.actionRoundFragmentToGameLobbyFragment2()
-        findNavController().navigate(action)
+    private fun setRoundUiComponentsVisibility(roundStart: Boolean) {
+        countdownText.visibility = if (roundStart) VISIBLE else GONE
+        scoreText.visibility = if (roundStart) VISIBLE else GONE
+        skipsText.visibility = if (roundStart) VISIBLE else GONE
+        wordTextView.visibility = if (roundStart) VISIBLE else GONE
+        startRoundTitle.visibility = if (roundStart) GONE else VISIBLE
+        start_round_btn.visibility = if (roundStart) GONE else VISIBLE
     }
 }

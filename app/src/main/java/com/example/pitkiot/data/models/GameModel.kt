@@ -3,6 +3,7 @@ package com.example.pitkiot.data.models
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.enums.Role
 import com.example.pitkiot.data.enums.Team
+import com.example.pitkiot.viewmodel.ROUND_TIME
 
 const val ADD_WORDS_TIME: Long = 120000
 

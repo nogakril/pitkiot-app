@@ -1,5 +1,7 @@
 package com.example.pitkiot.data.models
 
+import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.enums.Team
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -24,7 +26,7 @@ data class TeamGetterJson(
 @JsonClass(generateAdapter = true)
 data class TeamGetterResponse(
     @Json(name = "team")
-    val team: String
+    val team: Team?
 )
 
 @JsonClass(generateAdapter = true)
@@ -43,4 +45,10 @@ data class WordAdderJson(
 data class WordsGetterResponse(
     @Json(name = "words")
     val words: List<String>
+)
+
+@JsonClass(generateAdapter = true)
+data class StatusGetterResponse(
+    @Json(name = "status")
+    val status: GameStatus
 )

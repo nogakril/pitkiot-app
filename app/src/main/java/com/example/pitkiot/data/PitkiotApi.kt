@@ -46,6 +46,18 @@ interface PitkiotApi {
         @Query("gameId") gameId: String
     ): Response<WordsGetterResponse>
 
+    @GET("/status")
+    suspend fun getStatus(
+        @Url url: String = URL,
+        @Query("gameId") gameId: String
+    ): Response<StatusGetterResponse>
+
+    @PUT("/status")
+    suspend fun setStatus(
+        @Url url: String = URL,
+        @Query("gameId") gameId: String,
+    ): Response<Unit>
+
     companion object {
         private const val URL = "https://hvvevwwvae52ztpmfb4ftfjg3u0tqlxa.lambda-url.us-west-2.on.aws/"
 

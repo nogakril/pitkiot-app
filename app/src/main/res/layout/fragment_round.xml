@@ -16,18 +16,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+            android:id="@+id/start_round_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_round_btn"
+            android:textAppearance="@style/PitkiotButton"
+            app:layout_constraintBottom_toTopOf="@+id/word_text_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countdown_text"
+            app:layout_constraintVertical_bias="0.353" />
+
     <TextView
             android:id="@+id/word_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/word_placeholder"
-            android:textSize="40sp"
+            android:visibility="gone"
+
             android:textAppearance="@style/PitkiotSubtitle"
             app:layout_constraintBottom_toBottomOf="@+id/swipe_view"
             app:layout_constraintEnd_toEndOf="@+id/swipe_view"
             app:layout_constraintStart_toStartOf="@+id/swipe_view"
             app:layout_constraintTop_toTopOf="@+id/swipe_view" />
+    <TextView
+            android:id="@+id/start_round_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:text="@string/start_round_title"
+            android:textAlignment="center"
+            android:textAppearance="@style/PitkiotTitle"
+            app:layout_constraintBottom_toTopOf="@+id/swipe_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.081" />
+
 
     <TextView
             android:id="@+id/countdown_text"
@@ -36,14 +65,13 @@
             android:layout_marginTop="72dp"
             android:text="@string/countdown_placeholder"
             android:textAlignment="center"
-            android:textSize="40sp"
-            android:textAppearance="@style/PitkiotTitle"
+            android:visibility="gone"
+            android:textAppearance="@style/PitkiotSubtitle"
             app:layout_constraintBottom_toTopOf="@+id/swipe_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.096" />
 
     <TextView
             android:id="@+id/score_text"
@@ -51,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="108dp"
             android:text="@string/score_placeholder"
+            android:visibility="gone"
             android:textAppearance="@style/PitkiotPlainText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +90,7 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginBottom="32dp"
+            android:visibility="gone"
             android:text="@string/skips_placeholder"
             android:textAppearance="@style/PitkiotPlainText"
             app:layout_constraintBottom_toTopOf="@+id/score_text"

@@ -5,37 +5,35 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
+import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
-import com.example.pitkiot.viewmodel.GameViewModel
-import com.example.pitkiot.viewmodel.GameViewModelFactory
+import com.example.pitkiot.data.enums.Role
+import com.example.pitkiot.utils.showError
+import com.example.pitkiot.viewmodel.CreateNewGameViewModel
 
 class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
 
-    private lateinit var viewModel: GameViewModel
-    private lateinit var adminNameText: EditText
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, GameViewModelFactory(::PitkiotRepository)).get()
-        adminNameText = view.findViewById<EditText>(R.id.admin_nickname_edit_text)
-        view.findViewById<Button>(R.id.register_admin_btn).setOnClickListener(::handleRegisterAdmin)
-    }
+        val viewModel = CreateNewGameViewModel(PitkiotRepository(PitkiotApi.instance))
+        val adminNameText = view.findViewById<EditText>(R.id.admin_nickname_edit_text)
+        val registerAdminBtn = view.findViewById<Button>(R.id.register_admin_btn)
 
-    private fun handleRegisterAdmin(view: View?) {
-        viewModel.createGame(adminNameText.text.toString())
-        navigateToAdminWaitingRoom(view)
-    }
+        registerAdminBtn.setOnClickListener {
+            viewModel.createGame(adminNameText.text.toString())
+        }
 
-    private fun validateNickName() {
-        TODO() // Make sure: name valid (not to long, no curses? maybe there a funny API for that), unique name in game, else show error
-    }
-
-    private fun navigateToAdminWaitingRoom(view: View?) {
-        val action = CreateNewGameFragmentDirections.actionCreateNewGameFragmentToAdminWaitingRoomFragment()
-        findNavController().navigate(action)
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+            uiState.errorMessage?.let {
+                showError(requireContext(), it)
+                viewModel.resetError()
+            }
+            uiState.gamePin?.let {
+                val action = CreateNewGameFragmentDirections.actionCreateNewGameFragmentToAdminWaitingRoomFragment(it, Role.ADMIN)
+                findNavController().navigate(action)
+            }
+        }
     }
 }

@@ -4,56 +4,59 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.AddWordsFragment">
+        tools:context=".ui.WaitingRoomFragment">
 
     <TextView
-            android:id="@+id/add_words_title"
+            android:id="@+id/admin_waiting_room_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_words_title"
-            android:textAppearance="@style/PitkiotTitle"
+            android:text="@string/admin_waiting_room_title"
+            android:textAppearance="@style/PitkiotSubtitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.196" />
+
+
+    <TextView
+            android:id="@+id/game_pin_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_pin_title"
+            android:visibility="gone"
+            android:textAppearance="@style/PitkiotSubtitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.257" />
+            app:layout_constraintVertical_bias="0.298" />
 
-    <EditText
-            android:id="@+id/add_word_edit_text"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/players_list_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="@string/add_words_hint"
-            app:layout_constraintBottom_toTopOf="@+id/add_words_btn"
+            android:layout_height="0dp"
+            android:padding="30dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/start_creating_pitkiot_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_words_title"
-            app:layout_constraintVertical_bias="0.603" />
-
-    <Button
-            android:id="@+id/add_words_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="132dp"
-            android:text="@string/add_words_btn"
-            android:textAppearance="@style/PitkiotButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_word_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/game_pin_title"
+            app:spanCount="2" />
 
     <Button
             android:id="@+id/start_creating_pitkiot_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="72dp"
             android:text="@string/start_creating_pitkiot_btn"
             android:visibility="gone"
             android:textAppearance="@style/PitkiotButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_words_btn" />
+            app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,19 +11,18 @@
     <string name="register_admin_btn">Create new game</string>
     <string name="admin_waiting_room_title">Wait for players to join</string>
     <string name="game_pi_title">Game PIN: %s</string>
-    <string name="start_game_btn">Start Game</string>
+    <string name="start_creating_pitkiot_btn">Start Game</string>
     <string name="players_list">This should probably \n be a recyclerView</string>
     <string name="game_pin_title">Game PIN: %s</string>
     <string name="word_placeholder">word</string>
     <string name="countdown_placeholder">%d:%d</string>
     <string name="score_placeholder">Score: %d</string>
     <string name="skips_placeholder">Skips Left: %d</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="waiting_for_players_title">Waiting for players</string>
     <string name="add_words_title">Add words to game</string>
     <string name="add_words_hint">new pitkit</string>
-    <string name="add_words_btn">+</string>
+    <string name="add_words_btn">Add This Pitkit</string>
     <string name="start_round_title">Ready to play?</string>
     <string name="start_round_btn">start</string>
     <string name="who_plays_text">It\'s Noga\'s turn to play</string>

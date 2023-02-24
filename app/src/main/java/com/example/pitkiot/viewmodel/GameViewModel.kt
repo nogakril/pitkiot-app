@@ -35,6 +35,7 @@ class GameViewModel(
             _gameInfoLiveData.postValue(GameModel(null))
         }
     }
+    
     fun createGame(nickname: String) {
         viewModelScope.launch {
             pitkiotRepository.createGame(nickname).onSuccess { result ->
