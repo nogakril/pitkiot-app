@@ -16,8 +16,8 @@ class PitkiotRepository(
         return Result.success(mockResponse)
     }
 
-    suspend fun joinGame(gameId: String, nickName: String): Result<TeamGetterResponse> {
-        val mockResponse = TeamGetterResponse(team = Team.TEAM_A)
+    suspend fun joinGame(gameId: String, nickName: String): Result<PlayerAdderResponse> {
+        val mockResponse = PlayerAdderResponse(team = Team.TEAM_A)
         return Result.success(mockResponse)
     }
 
@@ -64,14 +64,14 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun _joinGame(gameId: String, nickName: String): Result<TeamGetterResponse> {
-        val body = TeamGetterJson(nickName)
+    suspend fun _joinGame(gameId: String, nickName: String): Result<PlayerAdderResponse> {
+        val body = PlayerAdderJson(nickName)
         val response = pitkiotApi.joinGame(gameId = gameId, body = body)
         return when {
             response.isSuccessful && response.body() != null -> {
                 val joinGameResponse = response.body()!!
                 Result.success(
-                    TeamGetterResponse(
+                    PlayerAdderResponse(
                         team = joinGameResponse.team
                     )
                 )

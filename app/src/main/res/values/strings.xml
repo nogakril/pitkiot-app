@@ -32,4 +32,7 @@
     <string name="back_to_menu_btn">Back to Menu</string>
     <string name="in_game_title">The Game is On!</string>
     <string name="score_summary_text">%s team\'s score: %d\n%s team\'s score: %d</string>
+    <string name="teams_display">And the teams are...</string>
+    <string name="team_a">Team A</string>
+    <string name="team_b">Team B</string>
 </resources>

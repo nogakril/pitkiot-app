@@ -1,27 +1,33 @@
 package com.example.pitkiot.ui
 
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.utils.OnSwipeTouchListener
+import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 import com.example.pitkiot.viewmodel.RoundViewModel
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 
+    lateinit var viewModel: RoundViewModel
     lateinit var swipeView: View
     lateinit var countdownText: TextView
     lateinit var wordTextView: TextView
@@ -34,7 +40,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: RoundFragmentArgs by navArgs()
-        val viewModel = RoundViewModel(args.gamePin, PitkiotRepository(PitkiotApi.instance))
+        viewModel = RoundViewModel(args.gamePin, PitkiotRepository(PitkiotApi.instance))
         countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
         startRoundTitle = view.findViewById(R.id.start_round_title)
@@ -43,6 +49,8 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         nextTeamAndPlayerText = view.findViewById(R.id.next_team_and_player_text)
         scoreSummaryText = view.findViewById(R.id.score_summary_text)
         start_round_btn = view.findViewById(R.id.start_round_btn)
+
+        showTeamsDivisionDialog()
 
         start_round_btn.setOnClickListener {
             viewModel.startNewRound()
@@ -110,5 +118,29 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         startRoundTitle.visibility = if (roundStart) INVISIBLE else VISIBLE
         start_round_btn.visibility = if (roundStart) INVISIBLE else VISIBLE
         scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
+    }
+
+    private fun showTeamsDivisionDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.teams_dialog_layout)
+
+        val playersTeamAListRecyclerView: RecyclerView = dialog.findViewById(R.id.team_a_players_view)
+        val playersTeamAListViewAdapter = PlayersListViewAdapter(viewModel.getPlayersByTeam(TEAM_A))
+        playersTeamAListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        playersTeamAListRecyclerView.adapter = playersTeamAListViewAdapter
+
+        val playersTeamBListRecyclerView: RecyclerView = dialog.findViewById(R.id.team_b_players_view)
+        val playersTeamBListViewAdapter = PlayersListViewAdapter(viewModel.getPlayersByTeam(TEAM_B))
+        playersTeamBListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        playersTeamBListRecyclerView.adapter = playersTeamBListViewAdapter
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window?.attributes)
+        lp.width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        lp.height = (resources.displayMetrics.heightPixels * 0.8).toInt()
+
+        dialog.window?.setLayout(lp.width, lp.height)
+
+        dialog.show()
     }
 }

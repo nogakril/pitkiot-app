@@ -90,6 +90,10 @@ class RoundViewModel(
         }
     }
 
+    fun getPlayersByTeam(team: Team): List<String> {
+        return teamInfo[team]!!.teamPlayers
+    }
+
     private fun resetSkippedWords() {
         usedWords.removeAll(skippedWords)
         skippedWords = mutableSetOf()

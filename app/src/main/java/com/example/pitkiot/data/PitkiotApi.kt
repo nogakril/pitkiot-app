@@ -24,8 +24,8 @@ interface PitkiotApi {
     suspend fun joinGame(
         @Url url: String = URL,
         @Query("gameId") gameId: String,
-        @Body body: TeamGetterJson
-    ): Response<TeamGetterResponse>
+        @Body body: PlayerAdderJson
+    ): Response<PlayerAdderResponse>
 
     @GET("/players")
     suspend fun getPlayers(

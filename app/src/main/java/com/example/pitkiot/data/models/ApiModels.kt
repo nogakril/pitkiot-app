@@ -18,13 +18,13 @@ data class GameCreationResponse(
 )
 
 @JsonClass(generateAdapter = true)
-data class TeamGetterJson(
+data class PlayerAdderJson(
     @Json(name = "nickName")
     val nickName: String
 )
 
 @JsonClass(generateAdapter = true)
-data class TeamGetterResponse(
+data class PlayerAdderResponse(
     @Json(name = "team")
     val team: Team?
 )
