@@ -13,7 +13,7 @@ data class GameCreationJson(
 
 @JsonClass(generateAdapter = true)
 data class GameCreationResponse(
-    @Json(name = "gameId")
+    @Json(name = "game_id")
     val gameId: String
 )
 
@@ -51,4 +51,10 @@ data class WordsGetterResponse(
 data class StatusGetterResponse(
     @Json(name = "status")
     val status: GameStatus
+)
+
+@JsonClass(generateAdapter = true)
+data class StatusSetterJson(
+    @Json(name = "status")
+    val word: GameStatus
 )

@@ -46,7 +46,7 @@ class WaitingRoomViewModel(
 
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch {
-            pitkiotRepository.setStatus(gamePin).onSuccess {
+            pitkiotRepository.setStatus(gamePin, status).onSuccess {
                 _uiState.let {
                     it.postValue(it.value!!.copy(gameStatus = status))
                 }

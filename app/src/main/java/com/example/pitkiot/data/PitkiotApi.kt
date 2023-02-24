@@ -19,42 +19,43 @@ interface PitkiotApi {
         @Body body: GameCreationJson
     ): Response<GameCreationResponse>
 
-    @PUT("/players")
+    @PUT(BASE_PLAYER_ADDER_URL)
     suspend fun joinGame(
-        @Url url: String = BASE_PLAYER_ADDER_URL,
-        @Query("gameId") gameId: String,
+//        @Url url: String = BASE_PLAYER_ADDER_URL,
+        @Query("game_id") gameId: String,
         @Body body: PlayerAdderJson
     ): Response<PlayerAdderResponse>
 
-    @GET("/players")
+    @GET(BASE_PLAYERS_GETTER_URL)
     suspend fun getPlayers(
-        @Url url: String = BASE_PLAYERS_GETTER_URL,
-        @Query("gameId") gameId: String
+//        @Url url: String = BASE_PLAYERS_GETTER_URL,
+        @Query("game_id") gameId: String
     ): Response<PlayersGetterResponse>
 
-    @PUT("/words")
+    @PUT(BASE_WORD_ADDER_URL)
     suspend fun addWord(
-        @Url url: String = BASE_WORD_ADDER_URL,
-        @Query("gameId") gameId: String,
+//        @Url url: String = BASE_WORD_ADDER_URL,
+        @Query("game_id") gameId: String,
         @Body body: WordAdderJson
     ): Response<Unit>
 
-    @PUT("/words")
+    @PUT(BASE_WORDS_GETTER_URL)
     suspend fun getWords(
-        @Url url: String = BASE_WORDS_GETTER_URL,
-        @Query("gameId") gameId: String
+//        @Url url: String = BASE_WORDS_GETTER_URL,
+        @Query("game_id") gameId: String
     ): Response<WordsGetterResponse>
 
-    @GET("/status")
+    @GET(BASE_STATUS_GETTER_URL)
     suspend fun getStatus(
-        @Url url: String = BASE_STATUS_GETTER_URL,
-        @Query("gameId") gameId: String
+//        @Url url: String = BASE_STATUS_GETTER_URL,
+        @Query("game_id") gameId: String
     ): Response<StatusGetterResponse>
 
-    @PUT("/status")
+    @PUT(BASE_STATUS_SETTER_URL)
     suspend fun setStatus(
-        @Url url: String = BASE_STATUS_SETTER_URL,
-        @Query("gameId") gameId: String,
+//        @Url url: String = BASE_STATUS_SETTER_URL,
+        @Query("game_id") gameId: String,
+        @Body body: StatusSetterJson
     ): Response<Unit>
 
     companion object {

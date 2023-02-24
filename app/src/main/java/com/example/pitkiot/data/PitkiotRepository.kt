@@ -1,6 +1,8 @@
 package com.example.pitkiot.data
 
 /* ktlint-disable */
+import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.models.*
 /* ktlint-enable */
 
 class PitkiotRepository(
@@ -47,7 +49,7 @@ class PitkiotRepository(
     // Real functions, use when backend ready
     suspend fun createGame(nickName: String): Result<GameCreationResponse> {
         val body = GameCreationJson(nickName)
-        val response = pitkiotApi.createGame(body = body)
+        val response = pitkiotApi.createGame(body)
         return when {
             response.isSuccessful && response.body() != null -> {
                 val createGameResponse = response.body()!!
@@ -92,17 +94,17 @@ class PitkiotRepository(
         }
     }
 
-    suspend fun addWord(url: String, gameId: String, word: String): Result<Unit> {
+    suspend fun addWord(gameId: String, word: String): Result<Unit> {
         val body = WordAdderJson(word)
-        val response = pitkiotApi.addWord(url, gameId, body)
+        val response = pitkiotApi.addWord(gameId = gameId, body = body)
         return when {
             response.isSuccessful -> Result.success(Unit)
             else -> Result.failure(GameError("Error: Could not add the word $word to game $gameId"))
         }
     }
 
-    suspend fun getWords(url: String, gameId: String): Result<WordsGetterResponse> {
-        val response = pitkiotApi.getWords(url, gameId)
+    suspend fun getWords(gameId: String): Result<WordsGetterResponse> {
+        val response = pitkiotApi.getWords(gameId = gameId)
         return when {
             response.isSuccessful && response.body() != null -> {
                 val wordsGetterResponse = response.body()!!
@@ -113,6 +115,30 @@ class PitkiotRepository(
                 )
             }
             else -> Result.failure(GameError("Error: Could not add get the words of game $gameId"))
+        }
+    }
+
+    suspend fun getStatus(gameId: String): Result<StatusGetterResponse> {
+        val response = pitkiotApi.getStatus(gameId = gameId)
+        return when {
+            response.isSuccessful && response.body() != null -> {
+                val statusGetterResponse = response.body()!!
+                Result.success(
+                    StatusGetterResponse(
+                        status = statusGetterResponse.status
+                    )
+                )
+            }
+            else -> Result.failure(GameError("Error: Could not add get the words of game $gameId"))
+        }
+    }
+
+    suspend fun setStatus(gameId: String, status: GameStatus): Result<Unit> {
+        val body = StatusSetterJson(status)
+        val response = pitkiotApi.setStatus(gameId = gameId, body = body)
+        return when {
+            response.isSuccessful -> Result.success(Unit)
+            else -> Result.failure(GameError("Error: Could not set the status of game $gameId to $status"))
         }
     }
 }
