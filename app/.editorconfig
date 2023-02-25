@@ -16,12 +16,9 @@ ij_smart_tabs = false
 ij_visual_guides = none
 ij_wrap_on_typing = false
 
-[*kt]
-ktlint_no-wildcard-imports=disabled
 
 [{*.kt,*.kts}]
 ij_kotlin_align_in_columns_case_branch = false
-disabled_rules = ktlint_no-wildcard-imports
 ij_kotlin_align_multiline_binary_operation = false
 ij_kotlin_align_multiline_extends_list = false
 ij_kotlin_align_multiline_method_parentheses = false

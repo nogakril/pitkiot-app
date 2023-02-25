@@ -17,11 +17,9 @@ import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus.ADDING_WORDS
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
-/* ktlint-disable */
-import com.example.pitkiot.viewmodel.*
+import com.example.pitkiot.viewmodel.PlayersListViewAdapter
+import com.example.pitkiot.viewmodel.WaitingRoomViewModel
 import com.example.pitkiot.viewmodel.factory.WaitingRoomViewModelFactory
-
-/* ktlint-enable */
 
 class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
 
@@ -34,7 +32,7 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
             /* owner = */ this,
             /* factory = */ WaitingRoomViewModelFactory(
                 pitkiotRepositoryFactory = ::PitkiotRepository,
-                gamePinFactory = { args.gamePin },
+                gamePinFactory = { args.gamePin }
             )
         ).get()
     }

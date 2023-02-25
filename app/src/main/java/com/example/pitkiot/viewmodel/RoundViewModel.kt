@@ -1,5 +1,8 @@
 package com.example.pitkiot.viewmodel
 
+/* ktlint-disable */
+import kotlinx.coroutines.*
+/* ktlint-enable */
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,19 +10,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.Team
-/* ktlint-disable */
-import com.example.pitkiot.data.enums.Team.*
+import com.example.pitkiot.data.enums.Team.TEAM_A
+import com.example.pitkiot.data.enums.Team.TEAM_B
+import com.example.pitkiot.data.enums.Team.NONE
 import com.example.pitkiot.data.models.RoundUiState
 import com.example.pitkiot.data.models.TeamState
-import kotlinx.coroutines.*
-/* ktlint-enable */
 
 const val SKIPS = 2
 const val ROUND_TIME: Long = 10000 // milisecs
 
 class RoundViewModel(
     private val gamePin: String,
-    private val pitkiotRepository: PitkiotRepository,
+    private val pitkiotRepository: PitkiotRepository
 ) : ViewModel() {
 
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main

@@ -41,7 +41,7 @@ class AddWordsViewModel(
         viewModelScope.launch {
             pitkiotRepository.setStatus(gamePin, status).onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error setting game $gamePin status to $status"))
-                }
+            }
         }
     }
 
@@ -57,7 +57,7 @@ class AddWordsViewModel(
     suspend fun getGameStatus() {
         pitkiotRepository.getStatus(gamePin).onSuccess { result ->
             _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
-            }
+        }
             .onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting game status of game $gamePin"))
             }

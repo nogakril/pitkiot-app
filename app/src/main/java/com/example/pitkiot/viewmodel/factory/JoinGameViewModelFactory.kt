@@ -7,7 +7,7 @@ import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.viewmodel.JoinGameViewModel
 
 class JoinGameViewModelFactory(
-    private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepository,
+    private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepository
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

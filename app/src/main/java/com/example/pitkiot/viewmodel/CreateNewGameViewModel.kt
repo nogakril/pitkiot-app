@@ -31,9 +31,9 @@ class CreateNewGameViewModel(
             pitkiotRepository.createGame(adminName).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gamePin = generateGamePin(result.gameId)))
             }
-            .onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error creating a new game"))
-            }
+                .onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error creating a new game"))
+                }
         }
     }
 }

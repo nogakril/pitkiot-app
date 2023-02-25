@@ -47,7 +47,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
             /* owner = */ this,
             /* factory = */ RoundViewModelFactory(
                 pitkiotRepositoryFactory = ::PitkiotRepository,
-                gamePinFactory = { args.gamePin },
+                gamePinFactory = { args.gamePin }
             )
         ).get()
     }

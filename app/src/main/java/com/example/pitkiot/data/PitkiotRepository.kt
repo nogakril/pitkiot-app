@@ -1,9 +1,9 @@
 package com.example.pitkiot.data
 
 /* ktlint-disable */
-import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.*
 /* ktlint-enable */
+import com.example.pitkiot.data.enums.GameStatus
 
 class PitkiotRepository(private val pitkiotApi: PitkiotApi) {
     suspend fun createGame(nickName: String): Result<GameCreationResponse> {

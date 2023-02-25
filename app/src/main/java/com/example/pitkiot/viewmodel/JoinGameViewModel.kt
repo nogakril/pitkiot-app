@@ -29,8 +29,8 @@ class JoinGameViewModel(
             pitkiotRepository.addPlayer(gamePin, adminName).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
             }
-            .onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error joining game $gamePin"))
+                .onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error joining game $gamePin"))
                 }
         }
     }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pitkiot</string>
     <string name="start_menu_title">Pitkiot Game</string>
-    <string name="create_new_game_btn">Create New Game</string>
+    <string name="create_new_game_btn">New Game</string>
     <string name="join_game_btn">Join Game</string>
     <string name="create_new_game_title">Create New Game</string>
     <string name="join_game_title">Join Game</string>
@@ -35,4 +35,6 @@
     <string name="teams_display">And the teams are...</string>
     <string name="team_a">Team A</string>
     <string name="team_b">Team B</string>
+    <string name="setting">Settings</string>
+    <string name="instructions">Instructions</string>
 </resources>
