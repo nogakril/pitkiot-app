@@ -71,7 +71,15 @@ class WaitingRoomViewModel(
     suspend fun getGameStatus() {
         pitkiotRepository.getStatus(gamePin).onSuccess { result ->
             _uiState.let {
-                it.postValue(it.value!!.copy(gameStatus = result.status))
+                it.postValue(
+                    it.value!!.copy(
+                        gameStatus = when (result.status) {
+                            "adding_players" -> GameStatus.ADDING_PLAYERS
+                            "adding_words" -> GameStatus.ADDING_WORDS
+                            else -> { GameStatus.IN_GAME }
+                        }
+                    )
+                )
             }
         }
             .onFailure {

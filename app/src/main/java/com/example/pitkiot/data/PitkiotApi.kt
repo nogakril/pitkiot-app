@@ -22,39 +22,39 @@ interface PitkiotApi {
     @PUT(BASE_PLAYER_ADDER_URL)
     suspend fun joinGame(
 //        @Url url: String = BASE_PLAYER_ADDER_URL,
-        @Query("game_id") gameId: String,
+        @Query("gameId") gameId: String,
         @Body body: PlayerAdderJson
     ): Response<PlayerAdderResponse>
 
     @GET(BASE_PLAYERS_GETTER_URL)
     suspend fun getPlayers(
 //        @Url url: String = BASE_PLAYERS_GETTER_URL,
-        @Query("game_id") gameId: String
+        @Query("gameId") gameId: String
     ): Response<PlayersGetterResponse>
 
     @PUT(BASE_WORD_ADDER_URL)
     suspend fun addWord(
 //        @Url url: String = BASE_WORD_ADDER_URL,
-        @Query("game_id") gameId: String,
+        @Query("gameId") gameId: String,
         @Body body: WordAdderJson
     ): Response<Unit>
 
     @PUT(BASE_WORDS_GETTER_URL)
     suspend fun getWords(
 //        @Url url: String = BASE_WORDS_GETTER_URL,
-        @Query("game_id") gameId: String
+        @Query("gameId") gameId: String
     ): Response<WordsGetterResponse>
 
     @GET(BASE_STATUS_GETTER_URL)
     suspend fun getStatus(
 //        @Url url: String = BASE_STATUS_GETTER_URL,
-        @Query("game_id") gameId: String
+        @Query("gameId") gameId: String
     ): Response<StatusGetterResponse>
 
     @PUT(BASE_STATUS_SETTER_URL)
     suspend fun setStatus(
 //        @Url url: String = BASE_STATUS_SETTER_URL,
-        @Query("game_id") gameId: String,
+        @Query("gameId") gameId: String,
         @Body body: StatusSetterJson
     ): Response<Unit>
 

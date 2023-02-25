@@ -134,7 +134,13 @@ class PitkiotRepository(
     }
 
     suspend fun setStatus(gameId: String, status: GameStatus): Result<Unit> {
-        val body = StatusSetterJson(status)
+        val body = StatusSetterJson(
+            when (status) {
+                GameStatus.ADDING_PLAYERS -> "adding_players"
+                GameStatus.ADDING_WORDS -> "adding_words"
+                else -> { "in_game" }
+            }
+        )
         val response = pitkiotApi.setStatus(gameId = gameId, body = body)
         return when {
             response.isSuccessful -> Result.success(Unit)

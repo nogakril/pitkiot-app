@@ -14,5 +14,6 @@ data class RoundUiState(
     var gameEnded: Boolean = false,
     var teamAScore: Int = 0,
     var teamBScore: Int = 0,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val showTeamsDivisionDialog: Boolean = false
 )

@@ -23,6 +23,7 @@ import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.utils.OnSwipeTouchListener
+import com.example.pitkiot.utils.showError
 import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 import com.example.pitkiot.viewmodel.RoundViewModel
 import com.example.pitkiot.viewmodel.factory.RoundViewModelFactory
@@ -62,8 +63,6 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         scoreSummaryText = view.findViewById(R.id.score_summary_text)
         startRoundBtn = view.findViewById(R.id.start_round_btn)
 
-        showTeamsDivisionDialog()
-
         startRoundBtn.setOnClickListener {
             viewModel.startNewRound()
             setRoundUiComponentsVisibility(roundStart = true)
@@ -83,6 +82,10 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                 val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(it.teamAScore, it.teamBScore, winner, args.gamePin)
                 findNavController().navigate(action)
             }
+            if (it.showTeamsDivisionDialog) {
+                showTeamsDivisionDialog()
+            }
+            it.errorMessage?.let { showError(requireContext(), it) }
         }
 
         swipeView.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
