@@ -21,10 +21,6 @@ class CreateNewGameViewModel(
 
     private fun generateGamePin(gameId: String) = gameId.takeLast(4)
 
-    fun resetError() {
-        _uiState.postValue(_uiState.value!!.copy(errorMessage = null))
-    }
-
     fun createGame(nickname: String) {
         val adminName = nickname.trimStart()
         if (adminName == "") {
@@ -33,15 +29,11 @@ class CreateNewGameViewModel(
         }
         viewModelScope.launch {
             pitkiotRepository.createGame(adminName).onSuccess { result ->
-                _uiState.let {
-                    it.postValue(it.value!!.copy(gamePin = generateGamePin(result.gameId)))
-                }
+                _uiState.postValue(_uiState.value!!.copy(gamePin = generateGamePin(result.gameId)))
             }
-                .onFailure {
-                    _uiState.let {
-                        it.postValue(it.value!!.copy(errorMessage = "Error creating a new game"))
-                    }
-                }
+            .onFailure {
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error creating a new game"))
+            }
         }
     }
 }

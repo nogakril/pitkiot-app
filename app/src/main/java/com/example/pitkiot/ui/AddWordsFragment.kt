@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepository
-import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.enums.GameStatus.IN_GAME
 import com.example.pitkiot.data.enums.Role.ADMIN
-import com.example.pitkiot.utils.showError
+import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.viewmodel.AddWordsViewModel
 import com.example.pitkiot.viewmodel.factory.AddWordsViewModelFactory
 
@@ -50,12 +50,14 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         }
 
         startGameBtn.setOnClickListener {
-            viewModel.setGameStatus(GameStatus.IN_GAME)
+            viewModel.setGameStatus(IN_GAME)
         }
 
+        viewModel.checkGameStatus()
+
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            uiState.errorMessage?.let { showError(requireContext(), it) }
-            if (uiState.gameStatus == GameStatus.IN_GAME) {
+            uiState.errorMessage?.let { uiState.showError(requireContext()) }
+            if (uiState.gameStatus == IN_GAME) {
                 if (args.userRole == ADMIN) {
                     val action = AddWordsFragmentDirections.actionAddWordsFragmentToRoundFragment(args.gamePin)
                     findNavController().navigate(action)

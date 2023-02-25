@@ -1,10 +1,11 @@
 package com.example.pitkiot.data.models
 
 import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.enums.GameStatus.ADDING_PLAYERS
 
 data class WaitingRoomUiState(
-    val gamePin: String? = null,
-    val players: List<String> = emptyList(),
-    val gameStatus: GameStatus = GameStatus.ADDING_PLAYERS,
-    val errorMessage: String? = null
-)
+    var gamePin: String? = null,
+    var players: List<String> = emptyList(),
+    var gameStatus: GameStatus = ADDING_PLAYERS,
+    override var errorMessage: String? = null
+) : UiState

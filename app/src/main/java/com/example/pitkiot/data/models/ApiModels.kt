@@ -1,6 +1,5 @@
 package com.example.pitkiot.data.models
 
-import com.example.pitkiot.data.enums.Team
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -20,12 +19,6 @@ data class GameCreationResponse(
 data class PlayerAdderJson(
     @Json(name = "nickName")
     val nickName: String
-)
-
-@JsonClass(generateAdapter = true)
-data class PlayerAdderResponse(
-    @Json(name = "team")
-    val team: Team?
 )
 
 @JsonClass(generateAdapter = true)

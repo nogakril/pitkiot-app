@@ -26,15 +26,11 @@ class JoinGameViewModel(
             return
         }
         viewModelScope.launch {
-            pitkiotRepository.joinGame(gamePin, adminName).onSuccess { result ->
-                _uiState.let {
-                    it.postValue(it.value!!.copy(gamePin = gamePin))
-                }
+            pitkiotRepository.addPlayer(gamePin, adminName).onSuccess { result ->
+                _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
             }
-                .onFailure {
-                    _uiState.let {
-                        it.postValue(it.value!!.copy(errorMessage = "Error joining game $gamePin"))
-                    }
+            .onFailure {
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error joining game $gamePin"))
                 }
         }
     }

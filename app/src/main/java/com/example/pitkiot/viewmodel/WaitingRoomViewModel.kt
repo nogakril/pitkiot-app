@@ -31,15 +31,11 @@ class WaitingRoomViewModel(
             while (true) {
                 delay(500)
                 pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
-                    _uiState.let {
-                        it.postValue(it.value!!.copy(players = result.players))
-                    }
+                    _uiState.postValue(_uiState.value!!.copy(players = result.players))
                 }
-                    .onFailure {
-                        _uiState.let {
-                            it.postValue(it.value!!.copy(errorMessage = "Error fetching players of game $gamePin"))
-                        }
-                    }
+                .onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error fetching players of game $gamePin"))
+                }
             }
         }
     }
@@ -47,14 +43,10 @@ class WaitingRoomViewModel(
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch {
             pitkiotRepository.setStatus(gamePin, status).onSuccess {
-                _uiState.let {
-                    it.postValue(it.value!!.copy(gameStatus = status))
+                _uiState.postValue(_uiState.value!!.copy(gameStatus = status))
                 }
-            }
                 .onFailure {
-                    _uiState.let {
-                        it.postValue(it.value!!.copy(errorMessage = "Error setting game $gamePin status to $status"))
-                    }
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error setting game $gamePin status to $status"))
                 }
         }
     }
@@ -70,23 +62,11 @@ class WaitingRoomViewModel(
 
     suspend fun getGameStatus() {
         pitkiotRepository.getStatus(gamePin).onSuccess { result ->
-            _uiState.let {
-                it.postValue(
-                    it.value!!.copy(
-                        gameStatus = when (result.status) {
-                            "adding_players" -> GameStatus.ADDING_PLAYERS
-                            "adding_words" -> GameStatus.ADDING_WORDS
-                            else -> { GameStatus.IN_GAME }
-                        }
-                    )
-                )
-            }
+            _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
         }
-            .onFailure {
-                _uiState.let {
-                    it.postValue(it.value!!.copy(errorMessage = "Error getting game status of game $gamePin"))
-                }
-            }
+        .onFailure {
+            _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting game status of game $gamePin"))
+        }
     }
 
     override fun onCleared() {

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.Role.PLAYER
-import com.example.pitkiot.utils.showError
+import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.viewmodel.JoinGameViewModel
 import com.example.pitkiot.viewmodel.factory.JoinGameViewModelFactory
 
@@ -40,7 +40,7 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            uiState.errorMessage?.let { showError(requireContext(), it) }
+            uiState.errorMessage?.let { uiState.showError(requireContext()) }
             uiState.gamePin?.let {
                 val action = JoinGameFragmentDirections.actionJoinGameFragmentToAdminWaitingRoomFragment2(it, PLAYER)
                 findNavController().navigate(action)

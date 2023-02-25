@@ -22,8 +22,8 @@ import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
+import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.utils.OnSwipeTouchListener
-import com.example.pitkiot.utils.showError
 import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 import com.example.pitkiot.viewmodel.RoundViewModel
 import com.example.pitkiot.viewmodel.factory.RoundViewModelFactory
@@ -68,24 +68,25 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
             setRoundUiComponentsVisibility(roundStart = true)
         }
 
-        viewModel.uiState.observe(viewLifecycleOwner) {
-            scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, it.score, it.skipsLeft)
-            wordTextView.text = it.curWord
-            countdownText.text = it.timeLeftToRound.toString()
-            nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, it.curPlayer, it.curTeam.customName)
-            scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, it.teamAScore, TEAM_B.customName, it.teamBScore)
-            if (it.timeLeftToRound == 0L) {
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+            uiState.errorMessage?.let { uiState.showError(requireContext()) }
+            scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, uiState.score, uiState.skipsLeft)
+            wordTextView.text = uiState.curWord
+            countdownText.text = uiState.timeLeftToRound.toString()
+            nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, uiState.curPlayer, uiState.curTeam.customName)
+            scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, uiState.teamAScore, TEAM_B.customName, uiState.teamBScore)
+            if (uiState.timeLeftToRound == 0L) {
                 setRoundUiComponentsVisibility(roundStart = false)
             }
-            if (it.gameEnded) {
+            if (uiState.gameEnded) {
                 val winner = viewModel.onGameEndedReturnWinner()
-                val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(it.teamAScore, it.teamBScore, winner, args.gamePin)
+                val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(uiState.teamAScore, uiState.teamBScore, winner, args.gamePin)
                 findNavController().navigate(action)
             }
-            if (it.showTeamsDivisionDialog) {
+            if (uiState.showTeamsDivisionDialog) {
                 showTeamsDivisionDialog()
+                uiState.showTeamsDivisionDialog = false
             }
-            it.errorMessage?.let { showError(requireContext(), it) }
         }
 
         swipeView.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {

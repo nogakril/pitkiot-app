@@ -60,12 +60,6 @@ class RoundViewModel(
         }
     }
 
-//    init {
-//        val setPlayers = getAndSetPlayers()
-//        setPlayers.join()
-//        initGame()
-//    }
-
     private fun initGame(): Job {
         return viewModelScope.launch {
             _uiState.postValue(RoundUiState(curTeam = TEAM_A, curPlayer = teamInfo[TEAM_A]!!.getNextPlayer()))
@@ -76,17 +70,6 @@ class RoundViewModel(
             }
         }
     }
-
-//    private fun initGame() {
-//        viewModelScope.launch {
-//            _uiState.postValue(RoundUiState(curTeam = TEAM_A, curPlayer = teamInfo[TEAM_A]!!.getNextPlayer()))
-//            pitkiotRepository.getWords(gamePin).onSuccess { result ->
-//                allPitkiot = result.words.toSet()
-//            }.onFailure {
-//                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting all pitkiot of game $gamePin"))
-//            }
-//        }
-//    }
 
     private fun setTeamScore(team: Team, score: Int) {
         if (team == TEAM_A) _uiState.value!!.teamAScore += score else _uiState.value!!.teamBScore += score
@@ -166,19 +149,6 @@ class RoundViewModel(
             }
         }
     }
-
-//    private fun getAndSetPlayers() {
-//        viewModelScope.launch {
-//            withContext(defaultDispatcher) {
-//                pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
-//                    allPlayers = result.players
-//                    setTeamInfoMap(allPlayers)
-//                }.onFailure {
-//                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting all players of game $gamePin"))
-//                }
-//            }
-//        }
-//    }
 
     private fun splitPlayersIntoTeams(players: List<String>): Pair<List<String>, List<String>> {
         val shuffledPlayers = players.shuffled()

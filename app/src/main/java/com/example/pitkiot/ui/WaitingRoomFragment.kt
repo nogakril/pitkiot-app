@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepository
-import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.enums.GameStatus.ADDING_WORDS
 import com.example.pitkiot.data.enums.Role.ADMIN
-import com.example.pitkiot.utils.showError
+import com.example.pitkiot.data.models.UiState.Companion.showError
 /* ktlint-disable */
 import com.example.pitkiot.viewmodel.*
 import com.example.pitkiot.viewmodel.factory.WaitingRoomViewModelFactory
@@ -59,15 +59,15 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
         viewModel.getPlayers()
 
         startGameBtn.setOnClickListener {
-            viewModel.setGameStatus(GameStatus.ADDING_WORDS)
+            viewModel.setGameStatus(ADDING_WORDS)
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            uiState.errorMessage?.let { showError(requireContext(), it) }
+            uiState.errorMessage?.let { uiState.showError(requireContext()) }
             if (uiState.players.isNotEmpty()) { // Not sure about that
                 playersListViewAdapter.updatePlayersList(uiState.players)
             }
-            if (uiState.gameStatus == GameStatus.ADDING_WORDS) {
+            if (uiState.gameStatus == ADDING_WORDS) {
                 val action = WaitingRoomFragmentDirections.actionAdminWaitingRoomFragmentToAddWordsFragment(args.gamePin, args.userRole)
                 findNavController().navigate(action)
             }
