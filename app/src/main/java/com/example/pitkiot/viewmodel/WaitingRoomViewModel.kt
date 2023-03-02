@@ -1,10 +1,11 @@
 package com.example.pitkiot.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+/* ktlint-disable */
+import androidx.lifecycle.*
 import com.example.pitkiot.data.PitkiotRepository
+/* ktlint-enable */
+import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.WaitingRoomUiState
 import kotlinx.coroutines.Job
@@ -73,5 +74,19 @@ class WaitingRoomViewModel(
         super.onCleared()
         checkGameStatusJob?.cancel()
         getPlayersJob?.cancel()
+    }
+
+    class Factory(
+        private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepositoryImpl,
+        private val gamePinFactory: () -> String
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val pitkiotApi = PitkiotApi.instance
+            return WaitingRoomViewModel(
+                pitkiotRepository = pitkiotRepositoryFactory.invoke(pitkiotApi),
+                gamePin = gamePinFactory.invoke()
+            ) as T
+        }
     }
 }

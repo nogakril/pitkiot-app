@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/light_blue</item>
+        <item name="android:navigationBarColor">@color/light_blue</item>
 <!--        <item name="stylePrimaryButton">@style/GameButton</item>-->
 
 

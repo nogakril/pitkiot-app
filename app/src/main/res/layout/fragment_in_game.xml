@@ -4,19 +4,29 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="ui.InGameFragment">
+        tools:context="ui.InGameFragment"
+        android:background="@color/light_blue">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/GameSmallWindowStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
     <TextView
             android:id="@+id/in_game_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/in_game_title"
-            android:textAppearance="@style/PitkiotTitle"
+            style="@style/GameLargeTitleStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

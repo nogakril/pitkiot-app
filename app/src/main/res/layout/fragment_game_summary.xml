@@ -4,55 +4,61 @@
         xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.GameSummaryFragment">
+    tools:context=".ui.GameSummaryFragment"
+    android:background="@color/light_blue">
 
-    <TextView
-            android:id="@+id/game_summary_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/game_summary_title"
-            android:textAppearance="@style/PitkiotTitle"
-            app:layout_constraintBottom_toTopOf="@+id/winner_loser_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/GameMainWindowStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-            android:id="@+id/winner_loser_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="240dp"
-            android:text="@string/winner_loser_text"
-            android:textAppearance="@style/PitkiotSubtitle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.475"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+        <TextView
+                android:id="@+id/game_summary_title"
+                style="@style/GameLargeTitleStyle"
+                android:text="@string/game_summary_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-            android:id="@+id/play_again_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="124dp"
-            android:text="@string/another_game_btn"
-            android:textAppearance="@style/PitkiotButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.312"
-            app:layout_constraintStart_toEndOf="@+id/back_to_menu_btn"
-            app:layout_constraintTop_toBottomOf="@+id/winner_loser_text" />
+        <TextView
+                android:id="@+id/winner_loser_text"
+                style="@style/GameMediumTitleStyle"
+                android:layout_marginBottom="404dp"
+                android:text="@string/winner_loser_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/game_summary_title"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="MissingConstraints" />
 
-    <Button
-            android:id="@+id/back_to_menu_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="124dp"
-            android:text="@string/back_to_menu_btn"
-            android:textAppearance="@style/PitkiotButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/winner_loser_text" />
+        <Button
+                android:id="@+id/play_again_btn"
+                style="@style/GameButtonStyle"
+                android:text="@string/another_game_btn"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/back_to_menu_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/winner_loser_text"
+                app:layout_constraintVertical_bias="0.573" />
+
+        <Button
+                android:id="@+id/back_to_menu_btn"
+                style="@style/GameButtonStyle"
+                android:text="@string/back_to_menu_btn"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toTopOf="@+id/play_again_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/winner_loser_text"
+                app:layout_constraintVertical_bias="0.802" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

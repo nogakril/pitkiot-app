@@ -1,6 +1,6 @@
 package com.example.pitkiot.data.enums
 
-enum class GameStatus(status: String) {
+enum class GameStatus(val statusName: String) {
     ADDING_PLAYERS("adding_players"),
     ADDING_WORDS("adding_words"),
     IN_GAME("in_game");

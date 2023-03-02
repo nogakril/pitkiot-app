@@ -19,5 +19,9 @@ class StartMenuFragment : Fragment(R.layout.fragment_start_menu) {
             val action = StartMenuFragmentDirections.actionStartMenuFragmentToJoinGameFragment()
             findNavController().navigate(action)
         }
+        view.findViewById<Button>(R.id.instructions_button)?.setOnClickListener {
+            val action = StartMenuFragmentDirections.actionStartMenuFragmentToInstructionsFragment()
+            findNavController().navigate(action)
+        }
     }
 }

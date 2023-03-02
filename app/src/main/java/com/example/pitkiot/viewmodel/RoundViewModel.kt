@@ -4,11 +4,10 @@ package com.example.pitkiot.viewmodel
 import kotlinx.coroutines.*
 /* ktlint-enable */
 import android.os.CountDownTimer
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Team
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
@@ -24,13 +23,11 @@ class RoundViewModel(
     private val pitkiotRepository: PitkiotRepository
 ) : ViewModel() {
 
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
     private lateinit var allPitkiot: Set<String>
     private lateinit var allPlayers: List<String>
     private var usedWords: MutableSet<String> = mutableSetOf()
     private var skippedWords: MutableSet<String> = mutableSetOf()
     private lateinit var teamInfo: Map<Team, TeamState>
-//    private var teamInfo: Map<Team, TeamState> = mutableMapOf()
 
     private val _uiState = MutableLiveData<RoundUiState>()
     val uiState: LiveData<RoundUiState> = _uiState
@@ -45,7 +42,13 @@ class RoundViewModel(
                 usedWords.remove(_uiState.value!!.curWord)
                 setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score)
                 val nextTeam = getNextTeam()
-                _uiState.postValue(_uiState.value!!.copy(curTeam = nextTeam, curPlayer = teamInfo[nextTeam]!!.getNextPlayer()))
+                _uiState.postValue(
+                    _uiState.value!!.copy(
+                        curTeam = nextTeam,
+                        curPlayer = teamInfo[nextTeam]!!.getNextPlayer(),
+                        inRound = false
+                    )
+                )
             } else {
                 endGame()
             }
@@ -128,17 +131,16 @@ class RoundViewModel(
 
     fun startNewRound() {
         val nextWord = getNextWord()
-        viewModelScope.launch {
-            _uiState.postValue(
-                _uiState.value!!.copy(
-                    score = 0,
-                    skipsLeft = SKIPS,
-                    curWord = nextWord,
-                    timeLeftToRound = ROUND_TIME
-                )
+        _uiState.postValue(
+            _uiState.value!!.copy(
+                score = 0,
+                skipsLeft = SKIPS,
+                curWord = nextWord,
+                timeLeftToRound = ROUND_TIME,
+                inRound = true
             )
-            roundTimer.start()
-        }
+        )
+        roundTimer.start()
     }
 
     private fun getAndSetPlayers(): Job {
@@ -173,4 +175,18 @@ class RoundViewModel(
     }
 
     private fun getNextTeam(): Team = if (_uiState.value!!.curTeam == TEAM_B) TEAM_A else TEAM_B
+
+    class Factory(
+        private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepositoryImpl,
+        private val gamePinFactory: () -> String
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val pitkiotApi = PitkiotApi.instance
+            return RoundViewModel(
+                gamePin = gamePinFactory.invoke(),
+                pitkiotRepository = pitkiotRepositoryFactory.invoke(pitkiotApi)
+            ) as T
+        }
+    }
 }

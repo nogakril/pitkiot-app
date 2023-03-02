@@ -4,28 +4,30 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.JoinGameFragment">
+        tools:context=".ui.JoinGameFragment"
+        android:background="@color/light_blue">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/GameMediumWindowStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
     <TextView
             android:id="@+id/join_game_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/join_game_title"
-            android:textAppearance="@style/PitkiotTitle"
-            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/GameLargeTitleStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.235" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
             android:id="@+id/player_nickname_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="176dp"
             android:hint="@string/nickname_hint"
+            style="@style/GameEditTextStyle"
             app:layout_constraintBottom_toTopOf="@+id/register_player_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -34,11 +36,8 @@
 
     <EditText
             android:id="@+id/game_pin_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginTop="72dp"
             android:hint="@string/game_pin_hint"
+            style="@style/GameEditTextStyle"
             app:layout_constraintBottom_toTopOf="@+id/player_nickname_edit_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -47,15 +46,18 @@
 
     <Button
             android:id="@+id/register_player_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="72dp"
             android:text="@string/register_player_btn"
-            android:textAppearance="@style/PitkiotButton"
+            style="@style/GameButtonStyle"
+            android:layout_marginBottom="15dp"
+            app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/player_nickname_edit_text" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

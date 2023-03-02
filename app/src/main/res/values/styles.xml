@@ -1,55 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="PitkiotTitle">
-        <item name="android:fontFamily">@font/titan_one_regular</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">30sp</item>
-        <item name="android:textColor">@color/teal_200</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="PitkiotSubtitle">
-        <item name="android:fontFamily">"sans-serif-black"</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">25sp</item>
-        <item name="android:textColor">@color/teal_700</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="PitkiotPlainText">
-        <item name="android:fontFamily">"sans-serif-black"</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">25sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="PitkiotSmallPlainText">
-        <item name="android:fontFamily">"sans-serif-black"</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="PitkiotButton">
-        <item name="android:fontFamily">"sans-serif-black"</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">20sp</item>
-        <!-- Add other text attributes as needed -->
-    </style>
-
-
-    //new design
-    <style name="GameTitle">
+    // Text
+    <style name="GameTitleStyle">
         <item name="android:fontFamily">@font/titan_one_regular</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">25sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">6</item>
@@ -57,6 +14,7 @@
         <item name="android:shadowColor">@color/grey</item>
     </style>
 
+    // Buttons
     <style name="GameButtonTextStyle">
         <item name="android:fontFamily">@font/titan_one_regular</item>
         <item name="android:gravity">center</item>
@@ -69,16 +27,93 @@
         <item name="android:shadowDy">6</item>
         <item name="android:shadowRadius">4</item>
         <item name="android:shadowColor">@color/grey</item>
-
     </style>
 
     <style name="GameButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">70dp</item>
-        <item name="android:background">@drawable/buttom_animation</item>
+        <item name="android:background">@drawable/button_animation</item>
         <item name="android:backgroundTint">@null</item>
         <item name="android:textAppearance">@style/GameButtonTextStyle</item>
         <item name="android:paddingBottom">15dp</item>
-
     </style>
+
+    // Windows
+
+    <style name="GameMainWindowStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:layout_marginRight">40dp</item>
+        <item name="android:layout_marginTop">60dp</item>
+        <item name="android:layout_marginBottom">100dp</item>
+        <item name="android:background">@drawable/main_window</item>
+    </style>
+
+    <style name="GameMediumWindowStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:layout_marginRight">40dp</item>
+        <item name="android:layout_marginTop">60dp</item>
+        <item name="android:layout_marginBottom">300dp</item>
+        <item name="android:background">@drawable/level_complete_window</item>
+    </style>
+
+    <style name="GameSmallWindowStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">350dp</item>
+        <item name="android:layout_marginRight">40dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:layout_marginTop">60dp</item>
+        <item name="android:background">@drawable/small_window</item>
+    </style>
+
+    // Titles
+
+    <style name="GameLargeTitleStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAppearance">@style/GameTitleStyle</item>
+    </style>
+
+    <style name="GameMediumTitleStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAppearance">@style/GameTitleStyle</item>
+    </style>
+
+    // Other
+
+    <style name="GameEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/styled_box</item>
+        <item name="android:fontFamily">@font/titan_one_regular</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:maxLength">30</item>
+        <item name="android:digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</item>
+    </style>
+
+    <style name="PlayersListRecyclerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+    <style name="TeamListRecyclerViewStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+
 </resources>

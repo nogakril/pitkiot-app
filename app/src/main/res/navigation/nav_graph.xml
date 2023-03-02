@@ -16,6 +16,9 @@
         <action
                 android:id="@+id/action_startMenuFragment_to_joinGameFragment"
                 app:destination="@id/joinGameFragment" />
+        <action
+                android:id="@+id/action_startMenuFragment_to_instructionsFragment"
+                app:destination="@id/instructionsFragment" />
     </fragment>
     <fragment
             android:id="@+id/createNewGameFragment"
@@ -113,4 +116,9 @@
                 android:name="gamePin"
                 app:argType="string" />
     </fragment>
+    <fragment
+            android:id="@+id/instructionsFragment"
+            android:name="com.example.pitkiot.ui.InstructionsFragment"
+            android:label="fragment_instructions"
+            tools:layout="@layout/fragment_instructions" />
 </navigation>

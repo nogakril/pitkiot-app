@@ -1,15 +1,15 @@
 package com.example.pitkiot.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.pitkiot.data.PitkiotRepository
+/* ktlint-disable */
+import androidx.lifecycle.*
+/* ktlint-enable */
+import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.models.JoinGameUiState
 import kotlinx.coroutines.launch
 
 class JoinGameViewModel(
-    private val pitkiotRepository: PitkiotRepository
+    private val pitkiotRepositoryImpl: PitkiotRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<JoinGameUiState>()
@@ -26,12 +26,24 @@ class JoinGameViewModel(
             return
         }
         viewModelScope.launch {
-            pitkiotRepository.addPlayer(gamePin, adminName).onSuccess { result ->
+            pitkiotRepositoryImpl.addPlayer(gamePin, adminName).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
             }
                 .onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error joining game $gamePin"))
                 }
+        }
+    }
+
+    class Factory(
+        private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepositoryImpl
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val pitkiotApi = PitkiotApi.instance
+            return JoinGameViewModel(
+                pitkiotRepositoryImpl = pitkiotRepositoryFactory.invoke(pitkiotApi)
+            ) as T
         }
     }
 }

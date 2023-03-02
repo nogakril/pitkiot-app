@@ -1,10 +1,11 @@
 package com.example.pitkiot.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+/* ktlint-disable */
+import androidx.lifecycle.*
 import com.example.pitkiot.data.PitkiotRepository
+/* ktlint-enable */
+import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.models.CreateNewGameUiState
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,7 @@ class CreateNewGameViewModel(
     fun createGame(nickname: String) {
         val adminName = nickname.trimStart()
         if (adminName == "") {
-            _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose nickname to create the game"))
+            _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose a nickname to create a game"))
             return
         }
         viewModelScope.launch {
@@ -34,6 +35,18 @@ class CreateNewGameViewModel(
                 .onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error creating a new game"))
                 }
+        }
+    }
+
+    class Factory(
+        private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepositoryImpl
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val pitkiotApi = PitkiotApi.instance
+            return CreateNewGameViewModel(
+                pitkiotRepository = pitkiotRepositoryFactory.invoke(pitkiotApi)
+            ) as T
         }
     }
 }

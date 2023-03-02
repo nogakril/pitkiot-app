@@ -9,11 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
-import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Role.PLAYER
 import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.viewmodel.JoinGameViewModel
-import com.example.pitkiot.viewmodel.factory.JoinGameViewModelFactory
 
 class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
 
@@ -23,8 +22,8 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(
             /* owner = */ this,
-            /* factory = */ JoinGameViewModelFactory(
-                pitkiotRepositoryFactory = ::PitkiotRepository
+            /* factory = */ JoinGameViewModel.Factory(
+                pitkiotRepositoryFactory = ::PitkiotRepositoryImpl
             )
         ).get()
     }

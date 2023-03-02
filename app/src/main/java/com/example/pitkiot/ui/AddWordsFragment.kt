@@ -11,12 +11,11 @@ import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pitkiot.R
-import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus.IN_GAME
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.viewmodel.AddWordsViewModel
-import com.example.pitkiot.viewmodel.factory.AddWordsViewModelFactory
 
 class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
 
@@ -27,8 +26,8 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(
             /* owner = */ this,
-            /* factory = */ AddWordsViewModelFactory(
-                pitkiotRepositoryFactory = ::PitkiotRepository,
+            /* factory = */ AddWordsViewModel.Factory(
+                pitkiotRepositoryFactory = ::PitkiotRepositoryImpl,
                 gamePinFactory = { args.gamePin }
             )
         ).get()
@@ -38,7 +37,7 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         super.onViewCreated(view, savedInstanceState)
         val addWordText = view.findViewById<EditText>(R.id.add_word_edit_text)
         val addWordBtn = view.findViewById<Button>(R.id.add_words_btn)
-        val startGameBtn = view.findViewById<Button>(R.id.start_creating_pitkiot_btn)
+        val startGameBtn = view.findViewById<Button>(R.id.start_game_btn)
 
         if (args.userRole == ADMIN) {
             startGameBtn.visibility = VISIBLE

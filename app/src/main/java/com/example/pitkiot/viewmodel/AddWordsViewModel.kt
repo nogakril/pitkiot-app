@@ -1,10 +1,10 @@
 package com.example.pitkiot.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.pitkiot.data.PitkiotRepository
+/* ktlint-disable */
+import androidx.lifecycle.*
+/* ktlint-enable */
+import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.AddWordsUiState
 import kotlinx.coroutines.Job
@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AddWordsViewModel(
-    private val pitkiotRepository: PitkiotRepository,
+    private val pitkiotRepositoryImpl: PitkiotRepositoryImpl,
     private val gamePin: String
 ) : ViewModel() {
 
@@ -31,7 +31,7 @@ class AddWordsViewModel(
             return
         }
         viewModelScope.launch {
-            pitkiotRepository.addWord(gamePin, word).onFailure {
+            pitkiotRepositoryImpl.addWord(gamePin, word).onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error adding the word $word to game $gamePin"))
             }
         }
@@ -39,7 +39,7 @@ class AddWordsViewModel(
 
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch {
-            pitkiotRepository.setStatus(gamePin, status).onFailure {
+            pitkiotRepositoryImpl.setStatus(gamePin, status).onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error setting game $gamePin status to $status"))
             }
         }
@@ -55,7 +55,7 @@ class AddWordsViewModel(
     }
 
     suspend fun getGameStatus() {
-        pitkiotRepository.getStatus(gamePin).onSuccess { result ->
+        pitkiotRepositoryImpl.getStatus(gamePin).onSuccess { result ->
             _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
         }
             .onFailure {
@@ -66,5 +66,19 @@ class AddWordsViewModel(
     override fun onCleared() {
         super.onCleared()
         checkGameStatusJob?.cancel()
+    }
+
+    class Factory(
+        private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepositoryImpl,
+        private val gamePinFactory: () -> String
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val pitkiotApi = PitkiotApi.instance
+            return AddWordsViewModel(
+                pitkiotRepositoryImpl = pitkiotRepositoryFactory.invoke(pitkiotApi),
+                gamePin = gamePinFactory.invoke()
+            ) as T
+        }
     }
 }

@@ -1,40 +1,63 @@
 <resources>
-    <string name="app_name">Pitkiot</string>
-    <string name="start_menu_title">Pitkiot Game</string>
-    <string name="create_new_game_btn">New Game</string>
-    <string name="join_game_btn">Join Game</string>
-    <string name="create_new_game_title">Create New Game</string>
-    <string name="join_game_title">Join Game</string>
-    <string name="nickname_hint">Choose nickname</string>
+    // Menu
+    <string name="start_menu_title">MAIN MENU</string>
+    <string name="setting">SETTINGS</string>
+    <string name="instructions_button">HOW TO PLAY</string>
+    <string name="join_game_btn">JOIN</string>
+    <string name="create_new_game_btn">CREATE</string>
+
+    // Create Game
+    <string name="create_new_game_title">NEW GAME</string>
+    <string name="register_admin_btn">PLAY</string>
+    <string name="choose_nickname_subtitle">NICKNAME</string>
+    <string name="nickname_hint">Nickname</string>
+
+    // Join Game
+    <string name="join_game_title">JOIN GAME</string>
+    <string name="register_player_btn">PLAY</string>
     <string name="game_pin_hint">Game PIN</string>
-    <string name="register_player_btn">Join game</string>
-    <string name="register_admin_btn">Create new game</string>
-    <string name="admin_waiting_room_title">Wait for players to join</string>
+
+    // Waiting Room
+    <string name="admin_waiting_room_title">WAITING ROOM</string>
+    <string name="start_creating_pitkiot_btn">ADD WORDS</string>
+
+    // Add words
+    <string name="add_words_title">ADD WORDS</string>
+    <string name="add_words_btn">ADD</string>
+    <string name="start_game_btn">START</string>
+
+    // Teams dialog
+    <string name="teams_display">TEAMS</string>
+    <string name="team_a">Team A</string>
+    <string name="team_b">Team B</string>
+
+    // Round
+    <string name="next_team_and_player_placeholder">%s from team %s\nyou are next!</string>
+    <string name="score_summary_text">%s        %d\n\n%s        %d</string>
+    <string name="score_and_skips_placeholder">Score:    %d\n\nSkips Left:       %d</string>
+
+    // Summary
+    <string name="game_summary_title">RESULTS</string>
+
+
+    <string name="app_name">Pitkiot</string>
     <string name="game_pi_title">Game PIN: %s</string>
-    <string name="start_creating_pitkiot_btn">Start Game</string>
     <string name="players_list">This should probably \n be a recyclerView</string>
     <string name="game_pin_title">Game PIN: %s</string>
     <string name="word_placeholder">word</string>
     <string name="countdown_placeholder">%d:%d</string>
-    <string name="score_and_skips_placeholder">Score: %d\nSkips Left: %d</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="waiting_for_players_title">Waiting for players</string>
-    <string name="add_words_title">Add words to game</string>
     <string name="add_words_hint">new pitkit</string>
-    <string name="add_words_btn">Add This Pitkit</string>
     <string name="start_round_title">Ready to play?</string>
     <string name="start_round_btn">start</string>
     <string name="who_plays_text">It\'s Noga\'s turn to play</string>
-    <string name="next_team_and_player_placeholder">%s from team %s you are next!</string>
-    <string name="game_summary_title">And the results...</string>
     <string name="winner_loser_text">Team %s won! \n%s team\'s score: %d\n%s team\'s score: %d</string>
     <string name="another_game_btn">Play Again</string>
     <string name="back_to_menu_btn">Back to Menu</string>
     <string name="in_game_title">The Game is On!</string>
-    <string name="score_summary_text">%s team\'s score: %d\n%s team\'s score: %d</string>
-    <string name="teams_display">And the teams are...</string>
-    <string name="team_a">Team A</string>
-    <string name="team_b">Team B</string>
-    <string name="setting">Settings</string>
-    <string name="instructions">Instructions</string>
+    <string name="dialog_close_btn">LETS GO</string>
+    <string name="instructions_title">INSTRUCTIONS</string>
+
+
 </resources>

@@ -7,26 +7,21 @@ import android.os.Looper
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
-import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.utils.OnSwipeTouchListener
-import com.example.pitkiot.viewmodel.PlayersListViewAdapter
+import com.example.pitkiot.utils.TeamsDialog
 import com.example.pitkiot.viewmodel.RoundViewModel
-import com.example.pitkiot.viewmodel.factory.RoundViewModelFactory
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
 
@@ -40,13 +35,14 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     private lateinit var scoreSummaryText: TextView
     private lateinit var nextTeamAndPlayerText: TextView
     private lateinit var startRoundBtn: Button
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(
             /* owner = */ this,
-            /* factory = */ RoundViewModelFactory(
-                pitkiotRepositoryFactory = ::PitkiotRepository,
+            /* factory = */ RoundViewModel.Factory(
+                pitkiotRepositoryFactory = ::PitkiotRepositoryImpl,
                 gamePinFactory = { args.gamePin }
             )
         ).get()
@@ -54,7 +50,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        countdownText = view.findViewById(R.id.countdown_text)
+//        countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
         startRoundTitle = view.findViewById(R.id.start_round_title)
         swipeView = view.findViewById(R.id.swipe_view)
@@ -70,21 +66,26 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             uiState.errorMessage?.let { uiState.showError(requireContext()) }
-            scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, uiState.score, uiState.skipsLeft)
-            wordTextView.text = uiState.curWord
-            countdownText.text = uiState.timeLeftToRound.toString()
-            nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, uiState.curPlayer, uiState.curTeam.customName)
-            scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, uiState.teamAScore, TEAM_B.customName, uiState.teamBScore)
-            if (uiState.timeLeftToRound == 0L) {
+            if (uiState.inRound) {
+                scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, uiState.score, uiState.skipsLeft)
+                wordTextView.text = uiState.curWord
+                startRoundTitle.text = uiState.timeLeftToRound.toString()
+            } else {
+                nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, uiState.curPlayer, uiState.curTeam.customName)
+                scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, uiState.teamAScore, TEAM_B.customName, uiState.teamBScore)
+                startRoundTitle.text = getString(R.string.start_round_title)
                 setRoundUiComponentsVisibility(roundStart = false)
             }
+
             if (uiState.gameEnded) {
                 val winner = viewModel.onGameEndedReturnWinner()
                 val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(uiState.teamAScore, uiState.teamBScore, winner, args.gamePin)
                 findNavController().navigate(action)
             }
+
             if (uiState.showTeamsDivisionDialog) {
-                showTeamsDivisionDialog()
+                dialog = TeamsDialog(requireContext(), viewModel.getPlayersByTeam(TEAM_A), viewModel.getPlayersByTeam(TEAM_B))
+                dialog.show()
                 uiState.showTeamsDivisionDialog = false
             }
         }
@@ -92,71 +93,40 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         swipeView.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                handleSwipe(ContextCompat.getColor(view.context, R.color.green)) {
+                handleSwipe(R.drawable.styled_box_green) {
                     viewModel.onCorrectGuess()
                 }
             }
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                handleSwipe(ContextCompat.getColor(view.context, R.color.red)) {
+                handleSwipe(R.drawable.styled_box_red) {
                     viewModel.onSkipAttempt()
                 }
             }
         })
     }
 
-    private fun handleSwipe(color: Int, action: () -> Unit) {
+    private fun handleSwipe(resource: Int, action: () -> Unit) {
         action.invoke()
-        colorScreenAfterSwipe(color)
+        colorScreenAfterSwipe(resource)
     }
 
-    private fun colorScreenAfterSwipe(color: Int) {
-        swipeView.setBackgroundColor(color)
+    private fun colorScreenAfterSwipe(resource: Int) {
+        swipeView.setBackgroundResource(resource)
         Handler(Looper.getMainLooper()).postDelayed({
-            swipeView.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
+            swipeView.setBackgroundResource(R.drawable.styled_box)
         }, 500)
     }
 
     private fun setRoundUiComponentsVisibility(roundStart: Boolean) {
         // Round
-        countdownText.visibility = if (roundStart) VISIBLE else INVISIBLE
         swipeView.visibility = if (roundStart) VISIBLE else INVISIBLE
         scoreAndSkipsText.visibility = if (roundStart) VISIBLE else INVISIBLE
         wordTextView.visibility = if (roundStart) VISIBLE else INVISIBLE
 
         // Ready to play?
         nextTeamAndPlayerText.visibility = if (roundStart) INVISIBLE else VISIBLE
-        startRoundTitle.visibility = if (roundStart) INVISIBLE else VISIBLE
         startRoundBtn.visibility = if (roundStart) INVISIBLE else VISIBLE
         scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
-    }
-
-    private fun showTeamsDivisionDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.teams_dialog_layout)
-
-        val playersTeamAListRecyclerView: RecyclerView = dialog.findViewById(R.id.team_a_players_view)
-        val playersTeamAListViewAdapter = PlayersListViewAdapter(viewModel.getPlayersByTeam(TEAM_A))
-        playersTeamAListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
-        playersTeamAListRecyclerView.adapter = playersTeamAListViewAdapter
-
-        val playersTeamBListRecyclerView: RecyclerView = dialog.findViewById(R.id.team_b_players_view)
-        val playersTeamBListViewAdapter = PlayersListViewAdapter(viewModel.getPlayersByTeam(TEAM_B))
-        playersTeamBListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
-        playersTeamBListRecyclerView.adapter = playersTeamBListViewAdapter
-
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window?.attributes)
-        lp.width = (resources.displayMetrics.widthPixels * 0.9).toInt()
-        lp.height = (resources.displayMetrics.heightPixels * 0.8).toInt()
-
-        dialog.window?.setLayout(lp.width, lp.height)
-
-        dialog.show()
     }
 }

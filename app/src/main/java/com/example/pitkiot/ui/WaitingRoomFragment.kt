@@ -13,13 +13,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
-import com.example.pitkiot.data.PitkiotRepository
+import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus.ADDING_WORDS
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 import com.example.pitkiot.viewmodel.WaitingRoomViewModel
-import com.example.pitkiot.viewmodel.factory.WaitingRoomViewModelFactory
 
 class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
 
@@ -30,8 +29,8 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(
             /* owner = */ this,
-            /* factory = */ WaitingRoomViewModelFactory(
-                pitkiotRepositoryFactory = ::PitkiotRepository,
+            /* factory = */ WaitingRoomViewModel.Factory(
+                pitkiotRepositoryFactory = ::PitkiotRepositoryImpl,
                 gamePinFactory = { args.gamePin }
             )
         ).get()
@@ -45,7 +44,6 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
         val playersListViewAdapter = PlayersListViewAdapter(emptyList())
 
         if (args.userRole == ADMIN) {
-            gamePinText.visibility = VISIBLE
             startGameBtn.visibility = VISIBLE
         }
 
