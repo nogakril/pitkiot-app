@@ -13,7 +13,7 @@ import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Role.PLAYER
 import com.example.pitkiot.data.models.UiState.Companion.showError
-import com.example.pitkiot.utils.buildExitDialog
+import com.example.pitkiot.ui.dialog.buildExitDialog
 import com.example.pitkiot.viewmodel.JoinGameViewModel
 
 class JoinGameFragment : Fragment(R.layout.fragment_join_game) {

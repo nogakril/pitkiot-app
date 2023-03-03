@@ -20,9 +20,9 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.data.models.UiState.Companion.showError
-import com.example.pitkiot.utils.OnSwipeTouchListener
-import com.example.pitkiot.utils.TeamsDialog
-import com.example.pitkiot.utils.buildExitDialog
+import com.example.pitkiot.ui.swipe.OnSwipeTouchListener
+import com.example.pitkiot.ui.dialog.TeamsDialog
+import com.example.pitkiot.ui.dialog.buildExitDialog
 import com.example.pitkiot.viewmodel.RoundViewModel
 
 class RoundFragment : Fragment(R.layout.fragment_round) {

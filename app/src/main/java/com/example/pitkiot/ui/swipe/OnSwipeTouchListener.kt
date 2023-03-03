@@ -1,4 +1,4 @@
-package com.example.pitkiot.utils
+package com.example.pitkiot.ui.swipe
 
 import android.content.Context
 import android.view.GestureDetector

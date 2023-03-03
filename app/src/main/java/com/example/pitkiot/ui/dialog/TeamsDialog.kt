@@ -1,4 +1,4 @@
-package com.example.pitkiot.utils
+package com.example.pitkiot.ui.dialog
 
 import android.app.Dialog
 import android.content.Context

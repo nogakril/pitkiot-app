@@ -17,7 +17,7 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus.IN_GAME
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
-import com.example.pitkiot.utils.buildExitDialog
+import com.example.pitkiot.ui.dialog.buildExitDialog
 import com.example.pitkiot.viewmodel.AddWordsViewModel
 
 class AddWordsFragment : Fragment(R.layout.fragment_add_words) {

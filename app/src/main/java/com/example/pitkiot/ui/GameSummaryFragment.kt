@@ -15,7 +15,7 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus.GAME_ENDED
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
-import com.example.pitkiot.utils.buildExitDialog
+import com.example.pitkiot.ui.dialog.buildExitDialog
 import com.example.pitkiot.viewmodel.GameSummaryViewModel
 
 class GameSummaryFragment : Fragment(R.layout.fragment_game_summary) {

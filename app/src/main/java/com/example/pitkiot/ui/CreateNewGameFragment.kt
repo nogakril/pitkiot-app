@@ -1,6 +1,5 @@
 package com.example.pitkiot.ui
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -14,7 +13,7 @@ import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
-import com.example.pitkiot.utils.buildExitDialog
+import com.example.pitkiot.ui.dialog.buildExitDialog
 import com.example.pitkiot.viewmodel.CreateNewGameViewModel
 
 class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
