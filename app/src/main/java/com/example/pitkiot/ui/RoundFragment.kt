@@ -111,9 +111,10 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         })
     }
 
-    private fun handleSwipe(resource: Int, action: () -> Unit) {
-        action.invoke()
-        colorScreenAfterSwipe(resource)
+    private fun handleSwipe(resource: Int, action: () -> Boolean) {
+        if (action.invoke()) {
+            colorScreenAfterSwipe(resource)
+        }
     }
 
     private fun colorScreenAfterSwipe(resource: Int) {

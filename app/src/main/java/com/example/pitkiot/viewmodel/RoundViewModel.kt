@@ -40,7 +40,7 @@ class RoundViewModel(
         }
         override fun onFinish() {
             resetSkippedWords()
-            if (usedWords.size != allPitkiot.size) {
+            if (usedWords.size < allPitkiot.size) {
                 usedWords.remove(_uiState.value!!.curWord)
                 setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score)
                 val nextTeam = getNextTeam()
@@ -95,13 +95,14 @@ class RoundViewModel(
         return (allPitkiot - usedWords).random().also { usedWords.add(it) }
     }
 
-    fun onCorrectGuess() {
-        if (usedWords.size != allPitkiot.size) {
+    fun onCorrectGuess(): Boolean {
+        if (usedWords.size < allPitkiot.size) {
             val nextWord = getNextWord()
             _uiState.postValue(_uiState.value!!.copy(score = _uiState.value!!.score + 1, curWord = nextWord))
         } else {
             endGame()
         }
+        return true
     }
 
     fun getPlayersByTeam(team: Team): List<String> {
@@ -113,26 +114,25 @@ class RoundViewModel(
         skippedWords = mutableSetOf()
     }
 
-    fun onSkipAttempt() {
+    fun onSkipAttempt(): Boolean {
         if (_uiState.value!!.skipsLeft > 0) {
             usedWords.add(_uiState.value!!.curWord)
             skippedWords.add(_uiState.value!!.curWord)
-            if (usedWords.size != allPitkiot.size) {
+            if (usedWords.size < allPitkiot.size) {
                 val nextWord = getNextWord()
                 _uiState.postValue(_uiState.value!!.copy(skipsLeft = _uiState.value!!.skipsLeft - 1, curWord = nextWord))
             } else {
                 endGame()
             }
+            return true
         }
+        return false
     }
 
     private fun endGame() {
-        setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score)
+        setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score + 1)
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepository.setStatus(gamePin, GAME_ENDED).onSuccess {
-                _uiState.postValue(_uiState.value!!.copy(gameStatus = GAME_ENDED))
-            }
-                .onFailure {
+            pitkiotRepository.setStatus(gamePin, GAME_ENDED).onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
         }
