@@ -5,6 +5,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -13,10 +14,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus.ADDING_WORDS
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
+import com.example.pitkiot.utils.buildExitDialog
 import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 import com.example.pitkiot.viewmodel.WaitingRoomViewModel
 
@@ -34,6 +37,11 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
                 gamePinFactory = { args.gamePin }
             )
         ).get()
+
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            buildExitDialog(requireContext(), requireActivity())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +55,7 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
             startGameBtn.visibility = VISIBLE
         }
 
-        playersListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        playersListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         playersListRecyclerView.adapter = playersListViewAdapter
         gamePinText.text = getString(R.string.game_pin_title, args.gamePin)
 

@@ -9,6 +9,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -21,6 +22,7 @@ import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.utils.OnSwipeTouchListener
 import com.example.pitkiot.utils.TeamsDialog
+import com.example.pitkiot.utils.buildExitDialog
 import com.example.pitkiot.viewmodel.RoundViewModel
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
@@ -46,11 +48,14 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                 gamePinFactory = { args.gamePin }
             )
         ).get()
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            buildExitDialog(requireContext(), requireActivity())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        countdownText = view.findViewById(R.id.countdown_text)
         wordTextView = view.findViewById(R.id.word_text_view)
         startRoundTitle = view.findViewById(R.id.start_round_title)
         swipeView = view.findViewById(R.id.swipe_view)

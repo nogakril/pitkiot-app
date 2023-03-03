@@ -58,6 +58,7 @@
     <string name="in_game_title">The Game is On!</string>
     <string name="dialog_close_btn">LETS GO</string>
     <string name="instructions_title">INSTRUCTIONS</string>
+    <string name="game_title">PITKIOT</string>
 
 
 </resources>

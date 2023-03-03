@@ -8,13 +8,12 @@ import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.WaitingRoomUiState
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class WaitingRoomViewModel(
     private val pitkiotRepository: PitkiotRepository,
-    private val gamePin: String
+    private val gamePin: String,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private var checkGameStatusJob: Job? = null
@@ -28,11 +27,15 @@ class WaitingRoomViewModel(
     }
 
     fun getPlayers() {
-        getPlayersJob = viewModelScope.launch {
+        getPlayersJob = viewModelScope.launch(defaultDispatcher) {
+            val currentPlayers = mutableListOf<String>()
             while (true) {
                 delay(500)
                 pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
-                    _uiState.postValue(_uiState.value!!.copy(players = result.players))
+                    val newPlayers = result.players.filter { !currentPlayers.contains(it) }
+                    val updatedPlayers = currentPlayers.plus(newPlayers)
+                    _uiState.postValue(_uiState.value!!.copy(players = updatedPlayers))
+                    currentPlayers.addAll(newPlayers)
                 }
                     .onFailure {
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
@@ -42,7 +45,7 @@ class WaitingRoomViewModel(
     }
 
     fun setGameStatus(status: GameStatus) {
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             pitkiotRepository.setStatus(gamePin, status).onSuccess {
                 _uiState.postValue(_uiState.value!!.copy(gameStatus = status))
             }
@@ -53,7 +56,7 @@ class WaitingRoomViewModel(
     }
 
     fun checkGameStatus() {
-        checkGameStatusJob = viewModelScope.launch {
+        checkGameStatusJob = viewModelScope.launch(defaultDispatcher) {
             while (true) {
                 delay(1000)
                 getGameStatus()

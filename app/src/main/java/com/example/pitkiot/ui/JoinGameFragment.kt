@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -12,6 +13,7 @@ import com.example.pitkiot.R
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Role.PLAYER
 import com.example.pitkiot.data.models.UiState.Companion.showError
+import com.example.pitkiot.utils.buildExitDialog
 import com.example.pitkiot.viewmodel.JoinGameViewModel
 
 class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
@@ -26,6 +28,10 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
                 pitkiotRepositoryFactory = ::PitkiotRepositoryImpl
             )
         ).get()
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            buildExitDialog(requireContext(), requireActivity())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

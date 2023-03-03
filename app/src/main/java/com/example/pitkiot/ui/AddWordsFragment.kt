@@ -6,6 +6,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -16,6 +17,7 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus.IN_GAME
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
+import com.example.pitkiot.utils.buildExitDialog
 import com.example.pitkiot.viewmodel.AddWordsViewModel
 
 class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
@@ -32,6 +34,10 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
                 gamePinFactory = { args.gamePin }
             )
         ).get()
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            buildExitDialog(requireContext(), requireActivity())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

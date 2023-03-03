@@ -7,10 +7,13 @@ import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.models.CreateNewGameUiState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateNewGameViewModel(
-    private val pitkiotRepository: PitkiotRepository
+    private val pitkiotRepository: PitkiotRepository,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<CreateNewGameUiState>()
@@ -28,7 +31,7 @@ class CreateNewGameViewModel(
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose a nickname to create a game"))
             return
         }
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             pitkiotRepository.createGame(adminName).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gamePin = generateGamePin(result.gameId)))
             }

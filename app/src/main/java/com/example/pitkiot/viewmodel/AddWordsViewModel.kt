@@ -4,16 +4,16 @@ package com.example.pitkiot.viewmodel
 import androidx.lifecycle.*
 /* ktlint-enable */
 import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.AddWordsUiState
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class AddWordsViewModel(
-    private val pitkiotRepositoryImpl: PitkiotRepositoryImpl,
-    private val gamePin: String
+    private val pitkiotRepository: PitkiotRepository,
+    private val gamePin: String,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private var checkGameStatusJob: Job? = null
@@ -30,23 +30,23 @@ class AddWordsViewModel(
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "Game's Pitkit cannot be empty"))
             return
         }
-        viewModelScope.launch {
-            pitkiotRepositoryImpl.addWord(gamePin, word).onFailure {
+        viewModelScope.launch(defaultDispatcher) {
+            pitkiotRepository.addWord(gamePin, word).onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
     }
 
     fun setGameStatus(status: GameStatus) {
-        viewModelScope.launch {
-            pitkiotRepositoryImpl.setStatus(gamePin, status).onFailure {
+        viewModelScope.launch(defaultDispatcher) {
+            pitkiotRepository.setStatus(gamePin, status).onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
     }
 
     fun checkGameStatus() {
-        checkGameStatusJob = viewModelScope.launch {
+        checkGameStatusJob = viewModelScope.launch(defaultDispatcher) {
             while (true) {
                 delay(1000)
                 getGameStatus()
@@ -55,7 +55,7 @@ class AddWordsViewModel(
     }
 
     suspend fun getGameStatus() {
-        pitkiotRepositoryImpl.getStatus(gamePin).onSuccess { result ->
+        pitkiotRepository.getStatus(gamePin).onSuccess { result ->
             _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
         }
             .onFailure {
@@ -76,7 +76,7 @@ class AddWordsViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val pitkiotApi = PitkiotApi.instance
             return AddWordsViewModel(
-                pitkiotRepositoryImpl = pitkiotRepositoryFactory.invoke(pitkiotApi),
+                pitkiotRepository = pitkiotRepositoryFactory.invoke(pitkiotApi),
                 gamePin = gamePinFactory.invoke()
             ) as T
         }

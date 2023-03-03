@@ -8,7 +8,6 @@ import androidx.lifecycle.*
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepositoryImpl
-import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.enums.GameStatus.GAME_ENDED
 import com.example.pitkiot.data.enums.Team
 import com.example.pitkiot.data.enums.Team.TEAM_A
@@ -22,7 +21,8 @@ const val ROUND_TIME: Long = 10000 // milisecs
 
 class RoundViewModel(
     private val gamePin: String,
-    private val pitkiotRepository: PitkiotRepository
+    private val pitkiotRepository: PitkiotRepository,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private lateinit var allPitkiot: Set<String>
@@ -58,7 +58,7 @@ class RoundViewModel(
     }
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             val getAndSetPlayersJob = getAndSetPlayers()
             getAndSetPlayersJob.join()
             val initGameJob = initGame()
@@ -68,7 +68,7 @@ class RoundViewModel(
     }
 
     private fun initGame(): Job {
-        return viewModelScope.launch {
+        return viewModelScope.launch(defaultDispatcher) {
             _uiState.postValue(RoundUiState(curTeam = TEAM_A, curPlayer = teamInfo[TEAM_A]!!.getNextPlayer()))
             pitkiotRepository.getWords(gamePin).onSuccess { result ->
                 allPitkiot = result.words.toSet()
@@ -128,7 +128,7 @@ class RoundViewModel(
 
     private fun endGame() {
         setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score)
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             pitkiotRepository.setStatus(gamePin, GAME_ENDED).onSuccess {
                 _uiState.postValue(_uiState.value!!.copy(gameStatus = GAME_ENDED))
             }
@@ -154,7 +154,7 @@ class RoundViewModel(
     }
 
     private fun getAndSetPlayers(): Job {
-        return viewModelScope.launch {
+        return viewModelScope.launch(defaultDispatcher) {
             pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
                 allPlayers = result.players
                 setTeamInfoMap(allPlayers)

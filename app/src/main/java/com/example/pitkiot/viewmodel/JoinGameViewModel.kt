@@ -4,12 +4,16 @@ package com.example.pitkiot.viewmodel
 import androidx.lifecycle.*
 /* ktlint-enable */
 import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.models.JoinGameUiState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class JoinGameViewModel(
-    private val pitkiotRepositoryImpl: PitkiotRepositoryImpl
+    private val pitkiotRepositoryImpl: PitkiotRepository,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<JoinGameUiState>()
@@ -25,7 +29,7 @@ class JoinGameViewModel(
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose nickname to create the game"))
             return
         }
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             pitkiotRepositoryImpl.addPlayer(gamePin, adminName).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
             }
