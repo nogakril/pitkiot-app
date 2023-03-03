@@ -8,6 +8,8 @@ import androidx.lifecycle.*
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepositoryImpl
+import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.enums.GameStatus.GAME_ENDED
 import com.example.pitkiot.data.enums.Team
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
@@ -71,7 +73,7 @@ class RoundViewModel(
             pitkiotRepository.getWords(gamePin).onSuccess { result ->
                 allPitkiot = result.words.toSet()
             }.onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting all pitkiot of game $gamePin"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
     }
@@ -126,6 +128,14 @@ class RoundViewModel(
 
     private fun endGame() {
         setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score)
+        viewModelScope.launch {
+            pitkiotRepository.setStatus(gamePin, GAME_ENDED).onSuccess {
+                _uiState.postValue(_uiState.value!!.copy(gameStatus = GAME_ENDED))
+            }
+                .onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                }
+        }
         _uiState.postValue(_uiState.value!!.copy(gameEnded = true))
     }
 
@@ -149,7 +159,7 @@ class RoundViewModel(
                 allPlayers = result.players
                 setTeamInfoMap(allPlayers)
             }.onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting all players of game $gamePin"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
     }

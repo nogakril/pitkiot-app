@@ -35,7 +35,7 @@ class WaitingRoomViewModel(
                     _uiState.postValue(_uiState.value!!.copy(players = result.players))
                 }
                     .onFailure {
-                        _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error fetching players of game $gamePin"))
+                        _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
             }
         }
@@ -47,7 +47,7 @@ class WaitingRoomViewModel(
                 _uiState.postValue(_uiState.value!!.copy(gameStatus = status))
             }
                 .onFailure {
-                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error setting game $gamePin status to $status"))
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
         }
     }
@@ -66,7 +66,7 @@ class WaitingRoomViewModel(
             _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
         }
             .onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting game status of game $gamePin"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
     }
 

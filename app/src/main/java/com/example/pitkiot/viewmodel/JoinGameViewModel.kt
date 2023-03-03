@@ -30,7 +30,7 @@ class JoinGameViewModel(
                 _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
             }
                 .onFailure {
-                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error joining game $gamePin"))
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
         }
     }

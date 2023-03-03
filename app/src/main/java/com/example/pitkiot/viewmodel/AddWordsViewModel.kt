@@ -32,7 +32,7 @@ class AddWordsViewModel(
         }
         viewModelScope.launch {
             pitkiotRepositoryImpl.addWord(gamePin, word).onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error adding the word $word to game $gamePin"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
     }
@@ -40,7 +40,7 @@ class AddWordsViewModel(
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch {
             pitkiotRepositoryImpl.setStatus(gamePin, status).onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error setting game $gamePin status to $status"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
     }
@@ -59,7 +59,7 @@ class AddWordsViewModel(
             _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
         }
             .onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error getting game status of game $gamePin"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
     }
 

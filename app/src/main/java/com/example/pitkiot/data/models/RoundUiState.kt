@@ -1,5 +1,7 @@
 package com.example.pitkiot.data.models
 
+import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.enums.GameStatus.IN_GAME
 import com.example.pitkiot.data.enums.Team
 import com.example.pitkiot.viewmodel.ROUND_TIME
 import com.example.pitkiot.viewmodel.SKIPS
@@ -16,5 +18,6 @@ data class RoundUiState(
     var teamBScore: Int = 0,
     var showTeamsDivisionDialog: Boolean = false,
     var inRound: Boolean = false,
+    var gameStatus: GameStatus = IN_GAME,
     override var errorMessage: String? = null
 ) : UiState

@@ -33,7 +33,7 @@ class CreateNewGameViewModel(
                 _uiState.postValue(_uiState.value!!.copy(gamePin = generateGamePin(result.gameId)))
             }
                 .onFailure {
-                    _uiState.postValue(_uiState.value!!.copy(errorMessage = "Error creating a new game"))
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
         }
     }

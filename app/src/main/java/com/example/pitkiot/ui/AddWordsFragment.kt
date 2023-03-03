@@ -2,6 +2,7 @@ package com.example.pitkiot.ui
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
@@ -39,8 +40,12 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         val addWordBtn = view.findViewById<Button>(R.id.add_words_btn)
         val startGameBtn = view.findViewById<Button>(R.id.start_game_btn)
 
-        if (args.userRole == ADMIN) {
-            startGameBtn.visibility = VISIBLE
+        startGameBtn.visibility = when (args.userRole) {
+            ADMIN ->
+                VISIBLE
+            else -> {
+                INVISIBLE
+            }
         }
 
         addWordBtn.setOnClickListener {
