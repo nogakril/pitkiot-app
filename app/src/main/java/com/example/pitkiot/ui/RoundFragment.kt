@@ -93,6 +93,11 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                 dialog.show()
                 uiState.showTeamsDivisionDialog = false
             }
+
+            if(uiState.showStartBtn){
+                startRoundBtn.visibility = VISIBLE
+                uiState.showStartBtn = false
+            }
         }
 
         swipeView.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
@@ -132,7 +137,10 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
 
         // Ready to play?
         nextTeamAndPlayerText.visibility = if (roundStart) INVISIBLE else VISIBLE
-        startRoundBtn.visibility = if (roundStart) INVISIBLE else VISIBLE
+//        startRoundBtn.visibility = if (roundStart) INVISIBLE else VISIBLE
+        if (roundStart) {
+            startRoundBtn.visibility =  INVISIBLE
+        }
         scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
     }
 }

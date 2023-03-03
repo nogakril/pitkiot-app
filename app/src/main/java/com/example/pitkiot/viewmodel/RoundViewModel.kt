@@ -59,24 +59,27 @@ class RoundViewModel(
 
     init {
         viewModelScope.launch(defaultDispatcher) {
-            val getAndSetPlayersJob = getAndSetPlayers()
-            getAndSetPlayersJob.join()
-            val initGameJob = initGame()
-            initGameJob.join()
+//            val getAndSetPlayersJob = getAndSetPlayers()
+//            getAndSetPlayersJob.join()
+            getAndSetPlayers()
+            initGame()
+//            val initGameJob = initGame()
+//            initGameJob.join()
             _uiState.postValue(_uiState.value!!.copy(showTeamsDivisionDialog = true))
         }
     }
 
-    private fun initGame(): Job {
-        return viewModelScope.launch(defaultDispatcher) {
+    private suspend fun initGame() =
+         withContext(Dispatchers.IO) {
             _uiState.postValue(RoundUiState(curTeam = TEAM_A, curPlayer = teamInfo[TEAM_A]!!.getNextPlayer()))
             pitkiotRepository.getWords(gamePin).onSuccess { result ->
                 allPitkiot = result.words.toSet()
+                _uiState.postValue(_uiState.value!!.copy(showStartBtn = true))
             }.onFailure {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
-    }
+
 
     private fun setTeamScore(team: Team, score: Int) {
         if (team == TEAM_A) _uiState.value!!.teamAScore += score else _uiState.value!!.teamBScore += score
@@ -153,8 +156,8 @@ class RoundViewModel(
         roundTimer.start()
     }
 
-    private fun getAndSetPlayers(): Job {
-        return viewModelScope.launch(defaultDispatcher) {
+    private suspend fun getAndSetPlayers() =
+        withContext(Dispatchers.IO) {
             pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
                 allPlayers = result.players
                 setTeamInfoMap(allPlayers)
@@ -162,7 +165,7 @@ class RoundViewModel(
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
             }
         }
-    }
+
 
     private fun splitPlayersIntoTeams(players: List<String>): Pair<List<String>, List<String>> {
         val shuffledPlayers = players.shuffled()

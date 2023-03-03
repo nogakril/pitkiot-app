@@ -17,6 +17,7 @@ data class RoundUiState(
     var teamAScore: Int = 0,
     var teamBScore: Int = 0,
     var showTeamsDivisionDialog: Boolean = false,
+    var showStartBtn: Boolean = false,
     var inRound: Boolean = false,
     override var errorMessage: String? = null
 ) : UiState

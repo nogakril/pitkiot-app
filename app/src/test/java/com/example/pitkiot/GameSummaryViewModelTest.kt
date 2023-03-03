@@ -3,8 +3,6 @@ package com.example.pitkiot
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.enums.GameStatus
-import com.example.pitkiot.data.models.GameCreationResponse
-import com.example.pitkiot.viewmodel.CreateNewGameViewModel
 import com.example.pitkiot.viewmodel.GameSummaryViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +13,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.junit.MockitoRule
