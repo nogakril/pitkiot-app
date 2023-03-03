@@ -8,7 +8,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/GameMainWindowStyle"
+            style="@style/GameBigWindowStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,39 +29,39 @@
                 android:layout_marginTop="40dp"
                 android:text="@string/team_a"
                 app:layout_constraintBottom_toTopOf="@+id/team_a_players_view"
-                app:layout_constraintEnd_toStartOf="@+id/team_b_list_title"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/teams_display_title"
                 app:layout_constraintVertical_bias="0.784" />
 
-        <TextView
-                android:id="@+id/team_b_list_title"
-                style="@style/GameMediumTitleStyle"
-                android:layout_marginTop="40dp"
-                android:text="@string/team_b"
-                app:layout_constraintBottom_toTopOf="@+id/team_b_players_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/team_a_list_title"
-                app:layout_constraintTop_toBottomOf="@+id/teams_display_title"
-                app:layout_constraintVertical_bias="0.784" />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/team_a_players_view"
                 style="@style/TeamListRecyclerViewStyle"
-                app:layout_constraintBottom_toTopOf="@+id/dialog_close_btn"
-                app:layout_constraintEnd_toStartOf="@+id/team_b_players_view"
+                app:layout_constraintBottom_toTopOf="@+id/team_b_list_title"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/team_a_list_title"
                 tools:ignore="MissingConstraints" />
+
+        <TextView
+                android:id="@+id/team_b_list_title"
+                style="@style/GameMediumTitleStyle"
+                android:text="@string/team_b"
+                app:layout_constraintBottom_toTopOf="@+id/team_b_players_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toBottomOf="@+id/team_a_players_view"
+                app:layout_constraintVertical_bias="0.784" />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/team_b_players_view"
                 style="@style/TeamListRecyclerViewStyle"
                 app:layout_constraintBottom_toTopOf="@+id/dialog_close_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/team_a_players_view"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/team_b_list_title"
                 tools:ignore="MissingConstraints" />
 

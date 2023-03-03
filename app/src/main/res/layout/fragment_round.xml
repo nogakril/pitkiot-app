@@ -7,7 +7,7 @@
         android:background="@color/light_blue">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/GameMainWindowStyle"
+            style="@style/GameBigWindowStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,12 +34,11 @@
             style="@style/GameButtonStyle"
             app:backgroundTint="@null"
             android:visibility="visible"
-            android:layout_margin="20dp"
             app:layout_constraintBottom_toTopOf="@+id/next_team_and_player_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/word_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/score_summary_text"
             app:layout_constraintVertical_bias="0.872" />
 
     <TextView
@@ -75,15 +74,16 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-            android:id="@+id/next_team_and_player_text"
-            android:text="@string/next_team_and_player_placeholder"
-            style="@style/GameMediumTitleStyle"
-            android:layout_marginBottom="50dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/score_and_skips_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+                android:id="@+id/next_team_and_player_text"
+                style="@style/GameSmallTitleStyle"
+                android:layout_marginBottom="50dp"
+                android:text="@string/next_team_and_player_placeholder"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/score_and_skips_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/swipe_view" />
 
     <TextView
             android:id="@+id/score_summary_text"

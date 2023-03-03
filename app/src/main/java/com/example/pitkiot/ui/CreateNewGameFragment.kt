@@ -1,7 +1,9 @@
 package com.example.pitkiot.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.addCallback
@@ -14,6 +16,7 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Role.ADMIN
 import com.example.pitkiot.data.models.UiState.Companion.showError
 import com.example.pitkiot.ui.dialog.buildExitDialog
+import com.example.pitkiot.ui.utils.closeKeyboard
 import com.example.pitkiot.viewmodel.CreateNewGameViewModel
 
 class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
@@ -42,6 +45,7 @@ class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
         val registerAdminBtn = view.findViewById<Button>(R.id.register_admin_btn)
 
         registerAdminBtn.setOnClickListener {
+            closeKeyboard(view, requireContext())
             viewModel.createGame(adminNameText.text.toString())
         }
 

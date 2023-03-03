@@ -28,7 +28,7 @@
 
         <TextView
                 android:id="@+id/instructions_text"
-                style="@style/GameMediumTitleStyle"
+                style="@style/GameSmallTitleStyle"
                 android:text="Your long text goes here" />
 
     </ScrollView>

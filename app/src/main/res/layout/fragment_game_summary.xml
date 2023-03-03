@@ -8,11 +8,11 @@
     android:background="@color/light_blue">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/GameMainWindowStyle"
+            style="@style/GameBigWindowStyle"
+            android:layout_marginTop="60dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
         <TextView
                 android:id="@+id/game_summary_title"
@@ -25,14 +25,11 @@
         <TextView
                 android:id="@+id/winner_loser_text"
                 style="@style/GameMediumTitleStyle"
-                android:layout_marginBottom="404dp"
+                android:layout_marginTop="80dp"
                 android:text="@string/winner_loser_text"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/game_summary_title"
-                app:layout_constraintVertical_bias="1.0"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toBottomOf="@+id/game_summary_title" />
 
         <Button
                 android:id="@+id/play_again_btn"
@@ -44,8 +41,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/back_to_menu_btn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/winner_loser_text"
-                app:layout_constraintVertical_bias="0.573" />
+                app:layout_constraintTop_toBottomOf="@+id/back_to_menu_btn"
+                app:layout_constraintVertical_bias="0.5" />
 
         <Button
                 android:id="@+id/back_to_menu_btn"
@@ -54,10 +51,9 @@
                 app:backgroundTint="@null"
                 app:layout_constraintBottom_toTopOf="@+id/play_again_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/winner_loser_text"
-                app:layout_constraintVertical_bias="0.802" />
+                app:layout_constraintTop_toBottomOf="@+id/winner_loser_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

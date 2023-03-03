@@ -32,7 +32,7 @@
     <string name="team_b">Team B</string>
 
     // Round
-    <string name="next_team_and_player_placeholder">%s from team %s\nyou are next!</string>
+    <string name="next_team_and_player_placeholder">%s\n\nfrom team %s\n\nyou are next!</string>
     <string name="score_summary_text">%s        %d\n\n%s        %d</string>
     <string name="score_and_skips_placeholder">Score:    %d\n\nSkips Left:       %d</string>
 
@@ -52,7 +52,7 @@
     <string name="start_round_title">Ready to play?</string>
     <string name="start_round_btn">start</string>
     <string name="who_plays_text">It\'s Noga\'s turn to play</string>
-    <string name="winner_loser_text">Team %s won! \n%s team\'s score: %d\n%s team\'s score: %d</string>
+    <string name="winner_loser_text">Team %s won!\n\n%s team\'s score: %d\n\n%s team\'s score: %d</string>
     <string name="another_game_btn">Play Again</string>
     <string name="back_to_menu_btn">Back to Menu</string>
     <string name="in_game_title">The Game is On!</string>

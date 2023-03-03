@@ -3,9 +3,11 @@ package com.example.pitkiot.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.pitkiot.R
+import com.example.pitkiot.ui.dialog.buildExitDialog
 
 class StartMenuFragment : Fragment(R.layout.fragment_start_menu) {
 
@@ -22,6 +24,10 @@ class StartMenuFragment : Fragment(R.layout.fragment_start_menu) {
         view.findViewById<Button>(R.id.instructions_button)?.setOnClickListener {
             val action = StartMenuFragmentDirections.actionStartMenuFragmentToInstructionsFragment()
             findNavController().navigate(action)
+        }
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            buildExitDialog(requireContext(), requireActivity())
         }
     }
 }
