@@ -78,7 +78,7 @@
                 android:id="@+id/next_team_and_player_text"
                 style="@style/GameSmallTitleStyle"
                 android:layout_marginBottom="50dp"
-                android:text="@string/next_team_and_player_placeholder"
+                android:text=""
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/score_and_skips_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +87,7 @@
 
         <TextView
                 android:id="@+id/score_summary_text"
-                android:text="@string/score_summary_text"
+                android:text=""
                 style="@style/GameMediumTitleStyle"
                 android:layout_marginTop="20dp"
                 android:visibility="visible"

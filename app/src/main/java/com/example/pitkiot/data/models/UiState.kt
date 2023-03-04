@@ -2,8 +2,9 @@ package com.example.pitkiot.data.models
 
 import android.content.Context
 import android.widget.Toast
+import java.io.Serializable
 
-interface UiState {
+interface UiState: Serializable {
     var errorMessage: String?
 
     companion object {

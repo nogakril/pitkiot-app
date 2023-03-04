@@ -11,13 +11,23 @@ data class RoundUiState(
     var skipsLeft: Int = SKIPS,
     var curWord: String = "",
     var timeLeftToRound: Long = ROUND_TIME,
-    var curTeam: Team,
-    var curPlayer: String,
+    var curTeam: Team = Team.TEAM_A,
+    var curPlayer: String = "",
     var gameEnded: Boolean = false,
-    var teamAScore: Int = 0,
-    var teamBScore: Int = 0,
     var showTeamsDivisionDialog: Boolean = false,
     var showStartBtn: Boolean = false,
     var inRound: Boolean = false,
-    override var errorMessage: String? = null
+    override var errorMessage: String? = null,
+    var allPitkiot: Set<String> = emptySet(),
+    var allPlayers: List<String> = emptyList(),
+    var usedWords: MutableSet<String> = mutableSetOf(),
+    var skippedWords: MutableSet<String> = mutableSetOf(),
+
+    var teamAScore: Int = 0, // remove?
+    var playerIndexTeamA: Int = 0,
+    var playersTeamA: List<String> = emptyList(),
+
+    var teamBScore: Int = 0, //remove?
+    var playerIndexTeamB: Int = 0,
+    var playersTeamB: List<String> = emptyList()
 ) : UiState

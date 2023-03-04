@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
@@ -30,7 +32,6 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
     private val args: RoundFragmentArgs by navArgs()
     private lateinit var viewModel: RoundViewModel
     private lateinit var swipeView: View
-    private lateinit var countdownText: TextView
     private lateinit var wordTextView: TextView
     private lateinit var startRoundTitle: TextView
     private lateinit var scoreAndSkipsText: TextView
@@ -45,7 +46,8 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
             /* owner = */ this,
             /* factory = */ RoundViewModel.Factory(
                 pitkiotRepositoryFactory = ::PitkiotRepositoryImpl,
-                gamePinFactory = { args.gamePin }
+                gamePinFactory = { args.gamePin },
+                owner = this
             )
         ).get()
 
@@ -66,37 +68,30 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
 
         startRoundBtn.setOnClickListener {
             viewModel.startNewRound()
-            setRoundUiComponentsVisibility(roundStart = true)
         }
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             uiState.errorMessage?.let { uiState.showError(requireContext()) }
-            if (uiState.inRound) {
-                scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, uiState.score, uiState.skipsLeft)
-                wordTextView.text = uiState.curWord
-                startRoundTitle.text = uiState.timeLeftToRound.toString()
-            } else {
-                nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, uiState.curPlayer, uiState.curTeam.customName)
-                scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, uiState.teamAScore, TEAM_B.customName, uiState.teamBScore)
-                startRoundTitle.text = getString(R.string.start_round_title)
-                setRoundUiComponentsVisibility(roundStart = false)
-            }
-
-            if (uiState.gameEnded) {
-                val winner = viewModel.onGameEndedReturnWinner()
-                val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(uiState.teamAScore, uiState.teamBScore, winner, args.gamePin)
-                findNavController().navigate(action)
-            }
-
             if (uiState.showTeamsDivisionDialog) {
                 dialog = TeamsDialog(requireContext(), viewModel.getPlayersByTeam(TEAM_A), viewModel.getPlayersByTeam(TEAM_B))
                 dialog.show()
                 uiState.showTeamsDivisionDialog = false
             }
-
-            if(uiState.showStartBtn){
-                startRoundBtn.visibility = VISIBLE
-                uiState.showStartBtn = false
+            if (uiState.inRound) {
+                scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, uiState.score, uiState.skipsLeft)
+                wordTextView.text = uiState.curWord
+                startRoundTitle.text = uiState.timeLeftToRound.toString()
+                setRoundUiComponentsVisibility(roundStart = true, showStartBtn = false)
+            } else {
+                nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, uiState.curPlayer, uiState.curTeam.customName)
+                scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, uiState.teamAScore, TEAM_B.customName, uiState.teamBScore)
+                startRoundTitle.text = getString(R.string.start_round_title)
+                setRoundUiComponentsVisibility(roundStart = false, showStartBtn = uiState.showStartBtn)
+            }
+            if (uiState.gameEnded) {
+                val winner = viewModel.onGameEndedReturnWinner()
+                val action = RoundFragmentDirections.actionRoundFragmentToGameSummaryFragment(uiState.teamAScore, uiState.teamBScore, winner, args.gamePin)
+                findNavController().navigate(action)
             }
         }
 
@@ -129,7 +124,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         }, 500)
     }
 
-    private fun setRoundUiComponentsVisibility(roundStart: Boolean) {
+    private fun setRoundUiComponentsVisibility(roundStart: Boolean, showStartBtn: Boolean) {
         // Round
         swipeView.visibility = if (roundStart) VISIBLE else INVISIBLE
         scoreAndSkipsText.visibility = if (roundStart) VISIBLE else INVISIBLE
@@ -137,10 +132,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
 
         // Ready to play?
         nextTeamAndPlayerText.visibility = if (roundStart) INVISIBLE else VISIBLE
-//        startRoundBtn.visibility = if (roundStart) INVISIBLE else VISIBLE
-        if (roundStart) {
-            startRoundBtn.visibility =  INVISIBLE
-        }
         scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
+        startRoundBtn.visibility = if (roundStart) INVISIBLE else { if (showStartBtn) VISIBLE else INVISIBLE }
     }
 }
