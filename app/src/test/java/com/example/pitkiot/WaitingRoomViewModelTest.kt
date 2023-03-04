@@ -4,9 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.models.PlayersGetterResponse
 import com.example.pitkiot.viewmodel.WaitingRoomViewModel
-import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
@@ -19,8 +17,6 @@ import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.junit.MockitoRule
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.given
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -50,7 +46,7 @@ class WaitingRoomViewModelTest {
         val fakeResult = PlayersGetterResponse(listOf("player1", "player2"))
         whenever(mockRepository.getPlayers("1")).thenReturn(
             Result.success(fakeResult))
-        viewModel.getPlayers()
+        viewModel.checkPlayers()
 
         advanceTimeBy(1000) // wait for getPlayers to update uiState
         verify(mockRepository).getPlayers("1")

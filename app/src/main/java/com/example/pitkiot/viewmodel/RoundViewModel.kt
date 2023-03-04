@@ -15,6 +15,7 @@ import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.data.enums.Team.NONE
 import com.example.pitkiot.data.models.RoundUiState
 import com.example.pitkiot.data.models.TeamState
+import java.io.IOException
 
 const val SKIPS = 2
 const val ROUND_TIME: Long = 10000 // milisecs
@@ -72,12 +73,17 @@ class RoundViewModel(
     private suspend fun initGame() =
          withContext(Dispatchers.IO) {
             _uiState.postValue(RoundUiState(curTeam = TEAM_A, curPlayer = teamInfo[TEAM_A]!!.getNextPlayer()))
-            pitkiotRepository.getWords(gamePin).onSuccess { result ->
-                allPitkiot = result.words.toSet()
-                _uiState.postValue(_uiState.value!!.copy(showStartBtn = true))
-            }.onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
-            }
+             try {
+                 pitkiotRepository.getWords(gamePin).onSuccess { result ->
+                     allPitkiot = result.words.toSet()
+                     _uiState.postValue(_uiState.value!!.copy(showStartBtn = true))
+                 }.onFailure {
+                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                 }
+             }
+             catch (e: IOException){
+                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+             }
         }
 
 
@@ -135,9 +141,14 @@ class RoundViewModel(
     private fun endGame() {
         setTeamScore(_uiState.value!!.curTeam, _uiState.value!!.score + 1)
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepository.setStatus(gamePin, GAME_ENDED).onFailure {
+            try {
+                pitkiotRepository.setStatus(gamePin, GAME_ENDED).onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
+            }
+            catch (e: IOException){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+            }
         }
         _uiState.postValue(_uiState.value!!.copy(gameEnded = true))
     }
@@ -158,11 +169,17 @@ class RoundViewModel(
 
     private suspend fun getAndSetPlayers() =
         withContext(Dispatchers.IO) {
-            pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
-                allPlayers = result.players
-                setTeamInfoMap(allPlayers)
-            }.onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+            var isInitialized = false
+            while (!isInitialized) {
+                try {
+                    pitkiotRepository.getPlayers(gamePin).onSuccess { result ->
+                        allPlayers = result.players
+                        setTeamInfoMap(allPlayers)
+                        isInitialized = true
+                    }.onFailure {
+                        _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                    }
+                } catch (_: IOException) {}
             }
         }
 

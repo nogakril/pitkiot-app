@@ -10,6 +10,7 @@ import com.example.pitkiot.data.models.JoinGameUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class JoinGameViewModel(
     private val pitkiotRepositoryImpl: PitkiotRepository,
@@ -30,12 +31,17 @@ class JoinGameViewModel(
             return
         }
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepositoryImpl.addPlayer(gamePin, adminName).onSuccess { result ->
-                _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
-            }
-                .onFailure {
-                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+            try {
+                pitkiotRepositoryImpl.addPlayer(gamePin, adminName).onSuccess { result ->
+                    _uiState.postValue(_uiState.value!!.copy(gamePin = gamePin))
                 }
+                    .onFailure {
+                        _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                    }
+            }
+            catch (e: IOException){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import com.example.pitkiot.data.models.GameSummaryUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class GameSummaryViewModel(
     private val pitkiotRepository: PitkiotRepository,
@@ -27,8 +28,13 @@ class GameSummaryViewModel(
 
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepository.setStatus(gamePin, status).onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+            try {
+                pitkiotRepository.setStatus(gamePin, status).onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                }
+            }
+            catch (e: IOException){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }
     }

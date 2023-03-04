@@ -1,6 +1,7 @@
 package com.example.pitkiot.viewmodel
 
 /* ktlint-disable */
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.pitkiot.data.PitkiotRepository
 /* ktlint-enable */
@@ -8,8 +9,10 @@ import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.models.CreateNewGameUiState
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class CreateNewGameViewModel(
     private val pitkiotRepository: PitkiotRepository,
@@ -31,13 +34,19 @@ class CreateNewGameViewModel(
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose a nickname to create a game"))
             return
         }
+
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepository.createGame(adminName).onSuccess { result ->
-                _uiState.postValue(_uiState.value!!.copy(gamePin = generateGamePin(result.gameId)))
-            }
-                .onFailure {
-                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+            try {
+                pitkiotRepository.createGame(adminName).onSuccess { result ->
+                    _uiState.postValue(_uiState.value!!.copy(gamePin = generateGamePin(result.gameId)))
                 }
+                    .onFailure {
+                        _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                    }
+            }
+            catch (e: IOException){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+            }
         }
     }
 

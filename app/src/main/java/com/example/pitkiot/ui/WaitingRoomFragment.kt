@@ -59,7 +59,7 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
         gamePinText.text = getString(R.string.game_pin_title, args.gamePin)
 
         viewModel.checkGameStatus()
-        viewModel.getPlayers()
+        viewModel.checkPlayers()
 
         startGameBtn.setOnClickListener {
             viewModel.setGameStatus(ADDING_WORDS)

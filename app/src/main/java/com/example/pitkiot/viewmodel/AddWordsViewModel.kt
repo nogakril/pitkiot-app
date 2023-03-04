@@ -9,6 +9,7 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.AddWordsUiState
 import kotlinx.coroutines.*
+import java.io.IOException
 
 class AddWordsViewModel(
     private val pitkiotRepository: PitkiotRepository,
@@ -31,36 +32,55 @@ class AddWordsViewModel(
             return
         }
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepository.addWord(gamePin, word).onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+            try {
+                pitkiotRepository.addWord(gamePin, word).onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                }
+            }
+            catch (e: IOException){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }
     }
 
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch(defaultDispatcher) {
-            pitkiotRepository.setStatus(gamePin, status).onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+            try {
+                pitkiotRepository.setStatus(gamePin, status).onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                }
+            }
+            catch (e: IOException){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }
     }
 
     fun checkGameStatus() {
         checkGameStatusJob = viewModelScope.launch(defaultDispatcher) {
+            var firstCall = true
             while (true) {
                 delay(1000)
-                getGameStatus()
+                getGameStatus(firstCall)
+                firstCall = false
             }
         }
     }
 
-    suspend fun getGameStatus() {
-        pitkiotRepository.getStatus(gamePin).onSuccess { result ->
-            _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
-        }
-            .onFailure {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+    suspend fun getGameStatus(firstCall:Boolean) {
+        try {
+            pitkiotRepository.getStatus(gamePin).onSuccess { result ->
+                _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
             }
+                .onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                }
+        }
+        catch (e: IOException) {
+            if (firstCall){
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+            }
+        }
     }
 
     override fun onCleared() {
