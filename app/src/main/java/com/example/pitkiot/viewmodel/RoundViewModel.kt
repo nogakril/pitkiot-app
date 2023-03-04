@@ -39,7 +39,7 @@ class RoundViewModel(
             }
             override fun onFinish() {
                 resetSkippedWords()
-                if (noMoreWords()) {
+                if (wordsLeft()) {
                     val usedWords = _uiState.value!!.usedWords
                     usedWords.remove(_uiState.value!!.curWord)
                     val nextTeam = getNextTeam()
@@ -73,7 +73,7 @@ class RoundViewModel(
     }
 
 
-    fun noMoreWords() = _uiState.value!!.usedWords.size < _uiState.value!!.allPitkiot.size
+    fun wordsLeft() = _uiState.value!!.usedWords.size + 1 < _uiState.value!!.allPitkiot.size
 
     init {
         viewModelScope.launch(defaultDispatcher) {
@@ -120,20 +120,19 @@ class RoundViewModel(
     }
 
     private fun getNextWord(): String {
-        return (_uiState.value!!.allPitkiot - _uiState.value!!.usedWords).random()
+        return (_uiState.value!!.allPitkiot - _uiState.value!!.usedWords - _uiState.value!!.curWord).random()
     }
 
     fun onCorrectGuess(): Boolean {
-        if (noMoreWords()) {
+        if (wordsLeft()) {
             val nextWord = getNextWord()
             val curUsedWords = _uiState.value!!.usedWords
-            curUsedWords.add(nextWord)
+            curUsedWords.add(_uiState.value!!.curWord)
             _uiState.postValue(_uiState.value!!.copy(
                 score = _uiState.value!!.score + 1,
                 curWord = nextWord,
                 usedWords = curUsedWords
-            )
-            )
+            ))
         } else {
             endGame()
         }
@@ -174,9 +173,8 @@ class RoundViewModel(
             val usedWords = _uiState.value!!.usedWords
             skippedWords.add(_uiState.value!!.curWord)
             usedWords.add(_uiState.value!!.curWord)
-            if (noMoreWords()) {
+            if (wordsLeft()) {
                 val nextWord = getNextWord()
-                usedWords.add(nextWord)
                 _uiState.postValue(_uiState.value!!.copy(
                     skipsLeft = _uiState.value!!.skipsLeft - 1,
                     curWord = nextWord,

@@ -26,6 +26,7 @@
                 android:id="@+id/winner_loser_text"
                 style="@style/GameMediumTitleStyle"
                 android:layout_marginTop="80dp"
+                android:paddingBottom="3dp"
                 android:text="@string/winner_loser_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

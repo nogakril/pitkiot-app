@@ -27,9 +27,10 @@
             app:layout_constraintTop_toBottomOf="@+id/instructions_title">
 
         <TextView
-                android:id="@+id/instructions_text"
-                style="@style/GameSmallTitleStyle"
-                android:text="Your long text goes here" />
+            android:id="@+id/instructions_text"
+            style="@style/GameSmallTitleStyle"
+            android:text="Your long text goes here"
+            android:padding="5dp"/>
 
     </ScrollView>
 

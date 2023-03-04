@@ -19,7 +19,11 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
         val builder = StringBuilder()
         var line: String?
         while (reader.readLine().also { line = it } != null) {
-            builder.append(line)
+            if (line!!.endsWith("---")) {
+                builder.append("\n\n").append(line).append("\n\n")
+            } else {
+                builder.append(line)
+            }
         }
         reader.close()
         instructions = builder.toString()
