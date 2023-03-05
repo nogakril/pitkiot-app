@@ -10,10 +10,12 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.lang.Integer.max
 
 @RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -28,8 +30,8 @@ class RoundViewModelTest {
 
     private val state = SavedStateHandle()
 
-    @Test
-    fun onInitialization_uiStateLiveDataHasDefaultValues() = runTest {
+    @Before
+    fun setup() = runTest {
         viewModel = RoundViewModel(
             gamePin,
             FakePitkiotRepository(FakeRepositoryState.Success),
@@ -39,6 +41,10 @@ class RoundViewModelTest {
         withContext(Dispatchers.Default) {
             delay(5000)
         }
+    }
+
+    @Test
+    fun onInitialization_uiStateLiveDataHasDefaultValues() = runTest {
         assertThat(viewModel.uiState.value).isNotNull()
         assertThat(viewModel.uiState.value!!.score).isEqualTo(0)
         assertThat(viewModel.uiState.value!!.skipsLeft).isEqualTo(2)
@@ -64,48 +70,93 @@ class RoundViewModelTest {
     }
 
     @Test
-    fun onInitializationFailure_uiStateLiveDataHasDefaultValues() = runTest {
-        viewModel = RoundViewModel(
+    fun onInitializationSavedStateHandle_uiStateLiveDataHasSavedStateTimerInvoked() = runTest {
+        // set some unique RoundUiState saved upon bringing app to background
+        val savedStateHandle = SavedStateHandle(
+            mapOf("liveData" to RoundUiState(score = 3))
+        )
+
+        val viewModel = RoundViewModel(
             gamePin,
-            FakePitkiotRepository(FakeRepositoryState.Failure),
-            state,
+            FakePitkiotRepository(FakeRepositoryState.Success),
+            savedStateHandle,
             UnconfinedTestDispatcher()
         )
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
-        assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("error")
+
+        assertThat(viewModel.uiState.value!!.score).isEqualTo(3)
+        assertThat(viewModel.uiState.value!!.timeLeftToRound).isEqualTo(60000)
     }
 
     @Test
     fun onGetPlayersByTeam_uiStateLiveDataHasDefaultValues() = runTest {
-        viewModel = RoundViewModel(
-            gamePin,
-            FakePitkiotRepository(FakeRepositoryState.Success),
-            state,
-            UnconfinedTestDispatcher()
-        )
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
         assertThat(viewModel.getPlayersByTeam(Team.TEAM_A)).hasSize(2)
     }
 
     @Test
     fun onSkipAttemptSuccessful_uiStateLiveDataUpdatedCorrectly() = runTest {
-        viewModel = RoundViewModel(
-            gamePin,
-            FakePitkiotRepository(FakeRepositoryState.Success),
-            state,
-            UnconfinedTestDispatcher()
-        )
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
         viewModel.startNewRound()
         val wordBeforeSkip = viewModel.uiState.value!!.curWord
+        val skipsLeftBeforeSkip = viewModel.uiState.value!!.skipsLeft
         viewModel.onSkipAttempt()
         assertThat(wordBeforeSkip).isNotEqualTo(viewModel.uiState.value!!.curWord)
+        assertThat(viewModel.uiState.value!!.skipsLeft).isEqualTo(max(skipsLeftBeforeSkip - 1, 0))
         assertThat(viewModel.uiState.value!!.skippedWords.contains(wordBeforeSkip)).isTrue()
+    }
+
+    @Test
+    fun onCorrectGuessSuccessful_uiStateLiveDataUpdatedCorrectly() = runTest {
+        viewModel.startNewRound()
+        val wordBeforeGuess = viewModel.uiState.value!!.curWord
+        val scoreBeforeGuess = viewModel.uiState.value!!.score
+        viewModel.onCorrectGuess()
+        assertThat(wordBeforeGuess).isNotEqualTo(viewModel.uiState.value!!.curWord)
+        assertThat(viewModel.uiState.value!!.score).isEqualTo(scoreBeforeGuess + 1)
+        assertThat(viewModel.uiState.value!!.usedWords.contains(wordBeforeGuess)).isTrue()
+    }
+
+    @Test
+    fun onGameEndedReturnWinnerNoTeamWonSuccessful_CorrectWinnerReturned() = runTest {
+        viewModel.uiState.value!!.teamAScore = 4
+        viewModel.uiState.value!!.teamBScore = 4
+        assertThat(viewModel.onGameEndedReturnWinner()).isEqualTo(Team.NONE)
+    }
+
+    @Test
+    fun onGameEndedReturnWinnerSuccessful_CorrectWinnerReturned() = runTest {
+        viewModel.uiState.value!!.teamAScore = 4
+        viewModel.uiState.value!!.teamBScore = 5
+        assertThat(viewModel.onGameEndedReturnWinner()).isEqualTo(Team.TEAM_B)
+    }
+
+    @Test
+    fun onStartNewRoundSuccessful_CorrectWinnerReturned() = runTest {
+        viewModel.startNewRound()
+        assertThat(viewModel.uiState.value!!.score).isEqualTo(0)
+        assertThat(viewModel.uiState.value!!.skipsLeft).isEqualTo(2)
+        assertThat(viewModel.uiState.value!!.curWord).isNotEqualTo("")
+        assertThat(viewModel.uiState.value!!.timeLeftToRound).isEqualTo(60000)
+        assertThat(viewModel.uiState.value!!.inRound).isTrue()
+    }
+
+    @Test
+    fun onCorrectGuessNoWordsLeft_endGameUiStateLiveDataUpdated() = runTest {
+        viewModel.uiState.value!!.usedWords = viewModel.uiState.value!!.allPitkiot.toMutableSet()
+        viewModel.onCorrectGuess()
+        assertThat(viewModel.uiState.value!!.gameEnded).isTrue()
+    }
+
+    @Test
+    fun onSkipAttemptSkipsLeftNoWordsLeft_endGameAndUiStateUpdatedTrueReturned() = runTest {
+        viewModel.uiState.value!!.usedWords = viewModel.uiState.value!!.allPitkiot.toMutableSet()
+        viewModel.onSkipAttempt()
+        assertThat(viewModel.uiState.value!!.gameEnded).isTrue()
+    }
+
+    @Test
+    fun onOnSkipAttemptNoSkipsLeft_FalseReturned() = runTest {
+        viewModel.uiState.value!!.curWord = "word"
+        viewModel.uiState.value!!.skipsLeft = 0
+        viewModel.onSkipAttempt()
+        assertThat(viewModel.uiState.value!!.curWord).isEqualTo("word")
     }
 }

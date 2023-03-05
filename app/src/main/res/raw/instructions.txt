@@ -1,29 +1,29 @@
 ---Setup---
-All the participants should submit one or more “pitkit” with a name of an entity. Like in
-the party game charades, an entity could be a celebrity, a movie title, an abstract concept, or any
-other entity that the group of players will decide is legal. The goal of the setup is to create a
-unique corpus of words for a single game. There is no limit on the total number of “pitkiot” but there is a minimum
- amount of 5 pitkiot per game.
+ All the participants should submit one or more “pitkit” with a name of an entity. Like in
+ the party game charades, an entity could be a celebrity, a movie title, an abstract concept, or any
+ other entity that the group of players will decide is legal. The goal of the setup is to create a
+ unique corpus of words for a single game. There is no limit on the total number of “pitkiot” but there is a minimum
+  amount of 5 pitkiot per game.
 
 ---Teams building---
-The participants will be divided into 2 equal groups of players. This happens automatically by the game.
-The game will present the groups players lists.
+ The participants will be divided into 2 equal groups of players. This happens automatically by the game.
+ The game will present the groups players lists.
 
 ---The game---
-Every game is constructed of rounds. Before each round the game will announce the next player to be the “translator”.
-The translator has 1 minute to “translate” as many words as possible to his\her group.
+ Every game is constructed of rounds. Before each round the game will announce the next player to be the “translator”.
+ The translator has 1 minute to “translate” as many words as possible to his\her group.
 ---
 Similarly to the game “Taboo”,
-the translator should describe the word without using it or giving a too direct hint to it. For example, if the word
-is “cat”, the translator should say something like: “A pet, mammal, furry with a long tail and a mustache, tom for
-‘tom & jerry’, etc”. An illegal translation would be “an animal that rhymes with hat”.
+ the translator should describe the word without using it or giving a too direct hint to it. For example, if the word
+ is “cat”, the translator should say something like: “A pet, mammal, furry with a long tail and a mustache, tom for
+ ‘tom & jerry’, etc”. An illegal translation would be “an animal that rhymes with hat”.
 ---
-The group members need to guess to which word\entity the translator is referring. The group should keep guessing until they got it right or the time is up.
+ The group members need to guess to which word\entity the translator is referring. The group should keep guessing until they got it right or the time is up.
 ---
-Upon correct guess of the group, the translator will mark 1 point to the team by swiping right the word. The translator can
-skip a word 2 times in a turn by swiping left the screen. The “pitkiot” (the corpus of words) are not recyclable during a stage.
-The game ends when there are no more “pitkiot” left to guess.
+ Upon correct guess of the group, the translator will mark 1 point to the team by swiping right the word. The translator can
+ skip a word 2 times in a turn by swiping left the screen. The “pitkiot” (the corpus of words) are not recyclable during a stage.
+ The game ends when there are no more “pitkiot” left to guess.
 
 ---End of game---
-When the last word of the game is used the game automatically ends. The scores are summed up and a winner (or tie) is declared.
-You can play again with the same words or create a new game.
+ When the last word of the game is used the game automatically ends. The scores are summed up and a winner (or tie) is declared.
+ You can play again with the same words or create a new game.
