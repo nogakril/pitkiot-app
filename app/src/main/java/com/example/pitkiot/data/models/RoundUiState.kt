@@ -1,8 +1,8 @@
 package com.example.pitkiot.data.models
 
 import com.example.pitkiot.data.enums.Team
-import com.example.pitkiot.viewmodel.ROUND_TIME
-import com.example.pitkiot.viewmodel.SKIPS
+import com.example.pitkiot.viewmodel.RoundViewModel.Companion.ROUND_TIME
+import com.example.pitkiot.viewmodel.RoundViewModel.Companion.SKIPS
 
 data class RoundUiState(
     var score: Int = 0,

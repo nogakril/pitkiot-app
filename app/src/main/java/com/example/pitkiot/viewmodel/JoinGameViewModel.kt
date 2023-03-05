@@ -23,7 +23,7 @@ class JoinGameViewModel(
     }
 
     fun joinGame(gamePin: String, nickname: String) {
-        val adminName = nickname.trimStart()
+        val adminName = nickname.trimStart().trimEnd()
         if (adminName == "") {
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose nickname to create the game"))
             return

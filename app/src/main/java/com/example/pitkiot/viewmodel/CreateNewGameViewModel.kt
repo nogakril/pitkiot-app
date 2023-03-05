@@ -25,7 +25,7 @@ class CreateNewGameViewModel(
     private fun generateGamePin(gameId: String) = gameId.takeLast(4)
 
     fun createGame(nickname: String) {
-        val adminName = nickname.trimStart()
+        val adminName = nickname.trimStart().trimEnd()
         if (adminName == "") {
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose a nickname to create a game"))
             return

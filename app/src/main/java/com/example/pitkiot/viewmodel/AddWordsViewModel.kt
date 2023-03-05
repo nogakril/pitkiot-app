@@ -24,7 +24,8 @@ class AddWordsViewModel(
     }
 
     fun addWord(curWord: String) {
-        val word = curWord.trimStart()
+        val word = curWord.trimStart().trimEnd()
+
         if (word == "") {
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "Game's Pitkit cannot be empty"))
             return

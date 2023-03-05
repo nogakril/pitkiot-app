@@ -12,9 +12,6 @@ import com.example.pitkiot.data.models.RoundUiState
 import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import java.io.IOException
 
-const val SKIPS = 2
-const val ROUND_TIME: Long = 60000
-
 class RoundViewModel(
     private val gamePin: String,
     private val pitkiotRepository: PitkiotRepository,
@@ -262,5 +259,10 @@ class RoundViewModel(
                 state = state
             ) as T
         }
+    }
+
+    companion object {
+        const val SKIPS = 2
+        const val ROUND_TIME: Long = 60000
     }
 }

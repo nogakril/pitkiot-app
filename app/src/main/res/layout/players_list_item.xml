@@ -16,7 +16,7 @@
                 android:id="@+id/players_list_item_text"
                 style="@style/GameSmallTitleStyle"
                 android:text="Player Name"
-                android:layout_margin="15dp"
+                android:layout_margin="5dp"
                 android:layout_gravity="center"
                 android:padding="8dp" />
     </androidx.cardview.widget.CardView>
