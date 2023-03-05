@@ -1,9 +1,7 @@
 package com.example.pitkiot.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.addCallback
@@ -33,10 +31,9 @@ class CreateNewGameFragment : Fragment(R.layout.fragment_create_new_game) {
             )
         ).get()
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             buildExitDialog(requireContext(), requireActivity())
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

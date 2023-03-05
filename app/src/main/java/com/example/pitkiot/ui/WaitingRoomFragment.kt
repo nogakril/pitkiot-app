@@ -37,7 +37,6 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
             )
         ).get()
 
-
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             buildExitDialog(requireContext(), requireActivity())
         }
@@ -67,7 +66,7 @@ class WaitingRoomFragment : Fragment(R.layout.fragment_waiting_room) {
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             uiState.errorMessage?.let { uiState.showError(requireContext()) }
-            if (uiState.players.isNotEmpty()) { // Not sure about that
+            if (uiState.players.isNotEmpty()) {
                 playersListViewAdapter.updatePlayersList(uiState.players)
             }
             if (uiState.gameStatus == ADDING_WORDS) {

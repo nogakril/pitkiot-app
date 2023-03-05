@@ -15,7 +15,7 @@ The translator has 1 minute to “translate” as many words as possible to his\
 ---
 Similarly to the game “Taboo”,
 the translator should describe the word without using it or giving a too direct hint to it. For example, if the word
-is “cat”, the translator should say something like: “A pet, mammal, furry with a long tail and amustache, tom for
+is “cat”, the translator should say something like: “A pet, mammal, furry with a long tail and a mustache, tom for
 ‘tom & jerry’, etc”. An illegal translation would be “an animal that rhymes with hat”.
 ---
 The group members need to guess to which word\entity the translator is referring. The group should keep guessing until they got it right or the time is up.

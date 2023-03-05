@@ -1,10 +1,8 @@
 package com.example.pitkiot.viewmodel
 
-/* ktlint-disable */
-import androidx.lifecycle.*
-import com.example.pitkiot.data.PitkiotRepository
-/* ktlint-enable */
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.GameSummaryUiState
@@ -32,8 +30,7 @@ class GameSummaryViewModel(
                 pitkiotRepository.setStatus(gamePin, status).onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }

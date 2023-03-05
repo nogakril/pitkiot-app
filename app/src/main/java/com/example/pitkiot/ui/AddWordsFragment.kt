@@ -36,7 +36,7 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
             )
         ).get()
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             buildExitDialog(requireContext(), requireActivity())
         }
     }
@@ -47,17 +47,11 @@ class AddWordsFragment : Fragment(R.layout.fragment_add_words) {
         val addWordBtn = view.findViewById<Button>(R.id.add_words_btn)
         val startGameBtn = view.findViewById<Button>(R.id.start_game_btn)
 
-        startGameBtn.visibility = when (args.userRole) {
-            ADMIN ->
-                VISIBLE
-            else -> {
-                INVISIBLE
-            }
-        }
+        startGameBtn.visibility = if (args.userRole == ADMIN) VISIBLE else INVISIBLE
 
         addWordBtn.setOnClickListener {
             closeKeyboard(view, requireContext())
-            viewModel.addWords(addWordText.text.toString())
+            viewModel.addWord(addWordText.text.toString())
             addWordText.text.clear()
         }
 

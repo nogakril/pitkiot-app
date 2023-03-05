@@ -30,7 +30,7 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
             )
         ).get()
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             buildExitDialog(requireContext(), requireActivity())
         }
     }

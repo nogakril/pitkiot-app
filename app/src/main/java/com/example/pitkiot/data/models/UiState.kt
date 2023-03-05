@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import java.io.Serializable
 
-interface UiState: Serializable {
+interface UiState : Serializable {
     var errorMessage: String?
 
     companion object {

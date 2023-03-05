@@ -1,27 +1,25 @@
 package com.example.pitkiot.viewmodel
 
-/* ktlint-disable */
-/* ktlint-enable */
 import android.os.CountDownTimer
-import androidx.lifecycle.*
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import androidx.savedstate.SavedStateRegistryOwner
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Team
-import com.example.pitkiot.data.enums.Team.*
+import com.example.pitkiot.data.enums.Team.* // ktlint-disable no-wildcard-imports
 import com.example.pitkiot.data.models.RoundUiState
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import java.io.IOException
 
 const val SKIPS = 2
-const val ROUND_TIME: Long = 10000 // milisecs
+const val ROUND_TIME: Long = 60000
 
 class RoundViewModel(
     private val gamePin: String,
     private val pitkiotRepository: PitkiotRepository,
     private val state: SavedStateHandle,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
+    defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private lateinit var allPitkiot: Set<String>
@@ -33,47 +31,35 @@ class RoundViewModel(
     val uiState: LiveData<RoundUiState> = _uiState
 
     private fun startRoundTimer(roundTime: Long = ROUND_TIME) {
-        val roundTimer = object : CountDownTimer(roundTime, 1000) {
+        object : CountDownTimer(roundTime, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 _uiState.postValue(_uiState.value!!.copy(timeLeftToRound = millisUntilFinished / 1000))
             }
             override fun onFinish() {
-                resetSkippedWords()
                 if (wordsLeft()) {
                     val usedWords = _uiState.value!!.usedWords
                     usedWords.remove(_uiState.value!!.curWord)
+                    usedWords.removeAll(_uiState.value!!.skippedWords)
                     val nextTeam = getNextTeam()
-                    if (_uiState.value!!.curTeam == TEAM_A) {
-                        _uiState.postValue(
-                            _uiState.value!!.copy(
-                                curTeam = nextTeam,
-                                curPlayer = getNextPlayerByTeam(nextTeam),
-                                inRound = false,
-                                usedWords = usedWords,
-                                teamAScore = (_uiState.value!!.teamAScore + _uiState.value!!.score)
-                            )
+                    _uiState.postValue(
+                        _uiState.value!!.copy(
+                            curTeam = nextTeam,
+                            curPlayer = getNextPlayer(),
+                            playerIndexTeamA = getPlayerIndexTeamA(),
+                            teamAScore = getScoreTeamA(),
+                            playerIndexTeamB = getPlayerIndexTeamB(),
+                            teamBScore = getScoreTeamB(),
+                            inRound = false,
+                            usedWords = usedWords,
+                            skippedWords = mutableSetOf()
                         )
-                    } else {
-                        _uiState.postValue(
-                            _uiState.value!!.copy(
-                                curTeam = nextTeam,
-                                curPlayer = getNextPlayerByTeam(nextTeam),
-                                inRound = false,
-                                usedWords = usedWords,
-                                teamBScore = (_uiState.value!!.teamBScore + _uiState.value!!.score)
-                            )
-                        )
-                    }
-
+                    )
                 } else {
                     endGame()
                 }
             }
         }.start()
     }
-
-
-    fun wordsLeft() = _uiState.value!!.usedWords.size + 1 < _uiState.value!!.allPitkiot.size
 
     init {
         viewModelScope.launch(defaultDispatcher) {
@@ -91,48 +77,47 @@ class RoundViewModel(
     }
 
     private suspend fun initGame() =
-         withContext(Dispatchers.IO) {
-             _uiState.postValue(RoundUiState(
-                 curTeam = TEAM_A,
-                 curPlayer = playersTeamA[0],
-                 allPlayers = allPlayers,
-                 playersTeamA = playersTeamA,
-                 playersTeamB = playersTeamB))
-             try {
-                 pitkiotRepository.getWords(gamePin).onSuccess { result ->
-                     allPitkiot = result.words.toSet()
-                     _uiState.postValue(_uiState.value!!.copy(showStartBtn = true))
-                 }.onFailure {
-                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
-                 }
-             } catch (e: IOException) {
-                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
-             }
+        withContext(Dispatchers.IO) {
+            _uiState.postValue(
+                RoundUiState(
+                    curTeam = TEAM_A,
+                    curPlayer = playersTeamA[0],
+                    allPlayers = allPlayers,
+                    playersTeamA = playersTeamA,
+                    playersTeamB = playersTeamB
+                )
+            )
+            try {
+                pitkiotRepository.getWords(gamePin).onSuccess { result ->
+                    allPitkiot = result.words.toSet()
+                    _uiState.postValue(_uiState.value!!.copy(showStartBtn = true))
+                }.onFailure {
+                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                }
+            } catch (e: IOException) {
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+            }
         }
 
-    fun onGameEndedReturnWinner(): Team {
-        if (_uiState.value!!.teamAScore == _uiState.value!!.teamBScore) {
-            return NONE
-        } else if (_uiState.value!!.teamAScore > _uiState.value!!.teamBScore) {
-            return TEAM_A
+    fun onGameEndedReturnWinner(): Team =
+        when {
+            _uiState.value!!.teamAScore == _uiState.value!!.teamBScore -> NONE
+            _uiState.value!!.teamAScore > _uiState.value!!.teamBScore -> TEAM_A
+            else -> TEAM_B
         }
-        return TEAM_B
-    }
-
-    private fun getNextWord(): String {
-        return (_uiState.value!!.allPitkiot - _uiState.value!!.usedWords - _uiState.value!!.curWord).random()
-    }
 
     fun onCorrectGuess(): Boolean {
         if (wordsLeft()) {
             val nextWord = getNextWord()
             val curUsedWords = _uiState.value!!.usedWords
             curUsedWords.add(_uiState.value!!.curWord)
-            _uiState.postValue(_uiState.value!!.copy(
-                score = _uiState.value!!.score + 1,
-                curWord = nextWord,
-                usedWords = curUsedWords
-            ))
+            _uiState.postValue(
+                _uiState.value!!.copy(
+                    score = _uiState.value!!.score + 1,
+                    curWord = nextWord,
+                    usedWords = curUsedWords
+                )
+            )
         } else {
             endGame()
         }
@@ -147,26 +132,6 @@ class RoundViewModel(
         }
     }
 
-    fun getNextPlayerByTeam(team: Team): String {
-        return when (team) {
-            TEAM_A -> {
-                _uiState.postValue(_uiState.value!!.copy(playerIndexTeamA = _uiState.value!!.playerIndexTeamA + 1))
-                _uiState.value!!.playersTeamA[_uiState.value!!.playerIndexTeamA]
-            }
-            TEAM_B -> {
-                _uiState.postValue(_uiState.value!!.copy(playerIndexTeamB = _uiState.value!!.playerIndexTeamB + 1))
-                _uiState.value!!.playersTeamB[_uiState.value!!.playerIndexTeamB]
-            }
-            else -> ""
-        }
-    }
-
-    private fun resetSkippedWords() {
-        val curUsedWords = _uiState.value!!.usedWords
-        curUsedWords.removeAll(_uiState.value!!.skippedWords)
-        _uiState.postValue(_uiState.value!!.copy(skippedWords = mutableSetOf(), usedWords = curUsedWords))
-    }
-
     fun onSkipAttempt(): Boolean {
         if (_uiState.value!!.skipsLeft > 0) {
             val skippedWords = _uiState.value!!.skippedWords
@@ -175,11 +140,13 @@ class RoundViewModel(
             usedWords.add(_uiState.value!!.curWord)
             if (wordsLeft()) {
                 val nextWord = getNextWord()
-                _uiState.postValue(_uiState.value!!.copy(
-                    skipsLeft = _uiState.value!!.skipsLeft - 1,
-                    curWord = nextWord,
-                    skippedWords = skippedWords,
-                    usedWords = usedWords)
+                _uiState.postValue(
+                    _uiState.value!!.copy(
+                        skipsLeft = _uiState.value!!.skipsLeft - 1,
+                        curWord = nextWord,
+                        skippedWords = skippedWords,
+                        usedWords = usedWords
+                    )
                 )
             } else {
                 endGame()
@@ -187,14 +154,6 @@ class RoundViewModel(
             return true
         }
         return false
-    }
-
-    private fun endGame() {
-        if (_uiState.value!!.curTeam == TEAM_A) {
-            _uiState.postValue(_uiState.value!!.copy(gameEnded = true, teamAScore = _uiState.value!!.teamAScore + _uiState.value!!.score + 1))
-        } else {
-            _uiState.postValue(_uiState.value!!.copy(gameEnded = true, teamBScore = _uiState.value!!.teamBScore + _uiState.value!!.score + 1))
-        }
     }
 
     fun startNewRound() {
@@ -209,6 +168,14 @@ class RoundViewModel(
             )
         )
         startRoundTimer()
+    }
+
+    private fun endGame() {
+        if (_uiState.value!!.curTeam == TEAM_A) {
+            _uiState.postValue(_uiState.value!!.copy(gameEnded = true, teamAScore = _uiState.value!!.teamAScore + _uiState.value!!.score + 1))
+        } else {
+            _uiState.postValue(_uiState.value!!.copy(gameEnded = true, teamBScore = _uiState.value!!.teamBScore + _uiState.value!!.score + 1))
+        }
     }
 
     private suspend fun getAndSetPlayers() =
@@ -229,7 +196,53 @@ class RoundViewModel(
             }
         }
 
+    private fun getNextWord(): String {
+        return (_uiState.value!!.allPitkiot - _uiState.value!!.usedWords - _uiState.value!!.curWord).random()
+    }
+
     private fun getNextTeam(): Team = if (_uiState.value!!.curTeam == TEAM_B) TEAM_A else TEAM_B
+
+    private fun getPlayerIndexTeamA(): Int {
+        return if (_uiState.value!!.curTeam == TEAM_A) {
+            (_uiState.value!!.playerIndexTeamA + 1) % _uiState.value!!.playersTeamA.size
+        } else {
+            _uiState.value!!.playerIndexTeamA
+        }
+    }
+
+    private fun getScoreTeamA(): Int {
+        return if (_uiState.value!!.curTeam == TEAM_A) {
+            _uiState.value!!.teamAScore + _uiState.value!!.score
+        } else {
+            _uiState.value!!.teamAScore
+        }
+    }
+
+    private fun getPlayerIndexTeamB(): Int {
+        return if (_uiState.value!!.curTeam == TEAM_B) {
+            (_uiState.value!!.playerIndexTeamB + 1) % _uiState.value!!.playersTeamB.size
+        } else {
+            _uiState.value!!.playerIndexTeamB
+        }
+    }
+
+    private fun getScoreTeamB(): Int {
+        return if (_uiState.value!!.curTeam == TEAM_B) {
+            _uiState.value!!.teamBScore + _uiState.value!!.score
+        } else {
+            _uiState.value!!.teamBScore
+        }
+    }
+
+    private fun getNextPlayer(): String {
+        return if (_uiState.value!!.curTeam == TEAM_A) {
+            _uiState.value!!.playersTeamB[_uiState.value!!.playerIndexTeamB]
+        } else {
+            _uiState.value!!.playersTeamA[_uiState.value!!.playerIndexTeamA]
+        }
+    }
+
+    private fun wordsLeft() = _uiState.value!!.usedWords.size + 1 < _uiState.value!!.allPitkiot.size
 
     class Factory(
         private val pitkiotRepositoryFactory: (PitkiotApi) -> PitkiotRepositoryImpl,

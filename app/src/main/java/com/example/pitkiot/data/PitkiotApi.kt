@@ -1,11 +1,6 @@
 package com.example.pitkiot.data
 
-/* ktlint-disable */
-import android.content.Context
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.pitkiot.data.models.*
-import retrofit2.http.*
-/* ktlint-enable */
+import com.example.pitkiot.data.models.* // ktlint-disable no-wildcard-imports
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -13,7 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import kotlin.coroutines.coroutineContext
+import retrofit2.http.* // ktlint-disable no-wildcard-imports
 
 interface PitkiotApi {
 
@@ -64,27 +59,21 @@ interface PitkiotApi {
         private const val BASE_WORD_ADDER_URL = "https://o2e6gr76txdn4f5w3dtodgvmb40ckyqb.lambda-url.us-west-2.on.aws/"
         private const val BASE_WORDS_GETTER_URL = "https://bn7hrwlgyyveylitohyguntmnu0rcfya.lambda-url.us-west-2.on.aws/"
 
-
         val instance: PitkiotApi by lazy {
             val retrofit: Retrofit = createRetrofit()
             retrofit.create(PitkiotApi::class.java)
         }
 
         private fun createRetrofit(): Retrofit {
-            // Create converter
             val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
-            // Create logger
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
-            // Create client
             val httpClient = OkHttpClient.Builder()
                 .addInterceptor(logging)
-//                .addInterceptor(NetworkConnectionInterceptor(context))
                 .build()
 
-            // Build Retrofit
             return Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .baseUrl(BASE_GAME_CREATOR_URL)

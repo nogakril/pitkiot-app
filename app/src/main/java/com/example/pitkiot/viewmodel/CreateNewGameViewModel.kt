@@ -1,15 +1,11 @@
 package com.example.pitkiot.viewmodel
 
-/* ktlint-disable */
-import android.widget.Toast
-import androidx.lifecycle.*
-import com.example.pitkiot.data.PitkiotRepository
-/* ktlint-enable */
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.models.CreateNewGameUiState
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -43,8 +39,7 @@ class CreateNewGameViewModel(
                     .onFailure {
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }

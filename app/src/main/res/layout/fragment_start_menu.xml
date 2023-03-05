@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.StartMenuFragment"
         android:background="@color/light_blue">
-
     <TextView
             android:id="@+id/game_title"
             style="@style/GameExtraLargeTitleStyle"
@@ -17,7 +17,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             style="@style/GameMenuWindowStyle"
@@ -26,7 +25,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.9">
-
         <TextView
                 android:id="@+id/start_menu_title"
                 style="@style/GameLargeTitleStyle"
@@ -35,7 +33,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         <Button
                 android:id="@+id/create_new_game_btn"
                 style="@style/GameButtonStyle"
@@ -48,7 +45,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/join_game_btn"
                 app:layout_constraintTop_toBottomOf="@+id/start_menu_title" />
-
         <Button
                 android:id="@+id/join_game_btn"
                 style="@style/GameButtonStyle"
@@ -59,7 +55,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/instructions_button"
                 app:layout_constraintTop_toBottomOf="@+id/create_new_game_btn" />
-
         <Button
                 android:id="@+id/instructions_button"
                 style="@style/GameButtonStyle"
@@ -71,8 +66,5 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/join_game_btn" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

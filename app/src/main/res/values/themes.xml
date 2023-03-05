@@ -12,9 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/light_blue</item>
         <item name="android:navigationBarColor">@color/light_blue</item>
-<!--        <item name="stylePrimaryButton">@style/GameButton</item>-->
 
-
-        <!-- Customize your theme here. -->
     </style>
 </resources>

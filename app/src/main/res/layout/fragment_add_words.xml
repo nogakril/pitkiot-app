@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.AddWordsFragment"
         android:background="@color/light_blue">
-
     <androidx.constraintlayout.widget.ConstraintLayout
             style="@style/GameMediumWindowStyle"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -14,7 +14,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
-
         <TextView
                 android:id="@+id/add_words_title"
                 style="@style/GameLargeTitleStyle"
@@ -22,7 +21,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
                 android:id="@+id/add_word_edit_text"
                 style="@style/GameEditTextStyle"
@@ -33,7 +31,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_words_title" />
-
         <Button
                 android:id="@+id/add_words_btn"
                 style="@style/GameButtonStyle"
@@ -44,7 +41,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_word_edit_text" />
-
         <Button
                 android:id="@+id/start_game_btn"
                 style="@style/GameButtonStyle"
@@ -56,8 +52,5 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_words_btn" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

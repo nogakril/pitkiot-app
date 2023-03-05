@@ -1,8 +1,6 @@
 package com.example.pitkiot.viewmodel
 
-/* ktlint-disable */
-import androidx.lifecycle.*
-/* ktlint-enable */
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
@@ -38,8 +36,7 @@ class JoinGameViewModel(
                     .onFailure {
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }

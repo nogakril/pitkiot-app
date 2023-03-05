@@ -1,14 +1,12 @@
 package com.example.pitkiot.viewmodel
 
-/* ktlint-disable */
-import androidx.lifecycle.*
-/* ktlint-enable */
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.pitkiot.data.PitkiotApi
 import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.AddWordsUiState
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import java.io.IOException
 
 class AddWordsViewModel(
@@ -25,7 +23,7 @@ class AddWordsViewModel(
         _uiState.postValue(AddWordsUiState())
     }
 
-    fun addWords(curWord: String) {
+    fun addWord(curWord: String) {
         val word = curWord.trimStart()
         if (word == "") {
             _uiState.postValue(_uiState.value!!.copy(errorMessage = "Game's Pitkit cannot be empty"))
@@ -36,8 +34,7 @@ class AddWordsViewModel(
                 pitkiotRepository.addWord(gamePin, word).onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }
@@ -49,8 +46,7 @@ class AddWordsViewModel(
                 pitkiotRepository.setStatus(gamePin, status).onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }
@@ -67,7 +63,7 @@ class AddWordsViewModel(
         }
     }
 
-    suspend fun getGameStatus(firstCall:Boolean) {
+    private suspend fun getGameStatus(firstCall: Boolean) {
         try {
             pitkiotRepository.getStatus(gamePin).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
@@ -75,9 +71,8 @@ class AddWordsViewModel(
                 .onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
-        }
-        catch (e: IOException) {
-            if (firstCall){
+        } catch (e: IOException) {
+            if (firstCall) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }

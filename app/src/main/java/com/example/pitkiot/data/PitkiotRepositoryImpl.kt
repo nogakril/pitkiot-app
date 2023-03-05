@@ -1,9 +1,7 @@
 package com.example.pitkiot.data
 
-/* ktlint-disable */
-import com.example.pitkiot.data.models.*
-/* ktlint-enable */
 import com.example.pitkiot.data.enums.GameStatus
+import com.example.pitkiot.data.models.* // ktlint-disable no-wildcard-imports
 import org.json.JSONObject
 
 class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotRepository {
@@ -28,14 +26,14 @@ class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotReposit
         val response = pitkiotApi.addPlayer(gameId = gameId, body = body)
         return when {
             response.isSuccessful -> Result.success(Unit)
-        else ->
-            when {
-                response.errorBody() != null -> {
-                    val jsonError: JSONObject = JSONObject(response.errorBody()!!.string())
-                    Result.failure(GameError(jsonError.getString("error")))
+            else ->
+                when {
+                    response.errorBody() != null -> {
+                        val jsonError: JSONObject = JSONObject(response.errorBody()!!.string())
+                        Result.failure(GameError(jsonError.getString("error")))
+                    }
+                    else -> Result.failure(GameError("Error: Could not join game $gameId"))
                 }
-                else -> Result.failure(GameError("Error: Could not join game $gameId"))
-            }
         }
     }
 
@@ -121,7 +119,6 @@ class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotReposit
                     }
                     else -> Result.failure(GameError("Error: Could not set the status of game $gameId to $status"))
                 }
-
         }
     }
 }

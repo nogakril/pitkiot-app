@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources
+        xmlns:tools="http://schemas.android.com/tools">
     // Text
+
     <style name="GameTitleStyle">
         <item name="android:fontFamily">@font/titan_one_regular</item>
         <item name="android:gravity">center</item>
@@ -13,7 +15,6 @@
         <item name="android:shadowRadius">4</item>
         <item name="android:shadowColor">@color/grey</item>
     </style>
-
     <style name="GameSmallTextStyle">
         <item name="android:fontFamily">@font/titan_one_regular</item>
         <item name="android:gravity">center</item>
@@ -22,6 +23,7 @@
     </style>
 
     // Buttons
+
     <style name="GameButtonTextStyle">
         <item name="android:fontFamily">@font/titan_one_regular</item>
         <item name="android:gravity">center</item>
@@ -35,7 +37,6 @@
         <item name="android:shadowRadius">4</item>
         <item name="android:shadowColor">@color/grey</item>
     </style>
-
     <style name="GameButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">70dp</item>
@@ -47,6 +48,7 @@
 
     // Windows
 
+
     <style name="GameMenuWindowStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -56,7 +58,6 @@
         <item name="android:layout_marginBottom">100dp</item>
         <item name="android:background">@drawable/main_window</item>
     </style>
-
     <style name="GameBigWindowStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -66,7 +67,6 @@
         <item name="android:layout_marginBottom">100dp</item>
         <item name="android:background">@drawable/main_window</item>
     </style>
-
     <style name="GameMediumWindowStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -76,7 +76,6 @@
         <item name="android:layout_marginBottom">300dp</item>
         <item name="android:background">@drawable/level_complete_window</item>
     </style>
-
     <style name="GameSmallWindowStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -88,6 +87,7 @@
     </style>
 
     // Titles
+
 
     <style name="GameExtraLargeTitleStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
@@ -101,7 +101,6 @@
         <item name="android:shadowDy">10</item>
         <item name="android:shadowRadius">10</item>
     </style>
-
     <style name="GameLargeTitleStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -111,26 +110,24 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textAppearance">@style/GameTitleStyle</item>
     </style>
-
     <style name="GameMediumTitleStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textAppearance">@style/GameTitleStyle</item>
-
     </style>
-
     <style name="GameSmallTitleStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textAppearance">@style/GameSmallTextStyle</item>
         <item name="android:justificationMode" tools:targetApi="o">inter_word</item>
     </style>
 
     // Other
+
 
     <style name="GameEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:layout_width">250dp</item>
@@ -143,18 +140,14 @@
         <item name="android:maxLength">30</item>
         <item name="android:digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</item>
     </style>
-
     <style name="PlayersListRecyclerViewStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:padding">20dp</item>
     </style>
-
     <style name="TeamListRecyclerViewStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:padding">20dp</item>
     </style>
-
-
 </resources>

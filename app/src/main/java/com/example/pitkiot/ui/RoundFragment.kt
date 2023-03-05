@@ -11,8 +11,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
@@ -22,9 +20,9 @@ import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.Team.TEAM_A
 import com.example.pitkiot.data.enums.Team.TEAM_B
 import com.example.pitkiot.data.models.UiState.Companion.showError
-import com.example.pitkiot.ui.swipe.OnSwipeTouchListener
 import com.example.pitkiot.ui.dialog.TeamsDialog
 import com.example.pitkiot.ui.dialog.buildExitDialog
+import com.example.pitkiot.ui.swipe.OnSwipeTouchListener
 import com.example.pitkiot.viewmodel.RoundViewModel
 
 class RoundFragment : Fragment(R.layout.fragment_round) {
@@ -51,7 +49,7 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
             )
         ).get()
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             buildExitDialog(requireContext(), requireActivity())
         }
     }

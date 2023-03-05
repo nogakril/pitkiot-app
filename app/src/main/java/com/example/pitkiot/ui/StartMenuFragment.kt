@@ -26,7 +26,7 @@ class StartMenuFragment : Fragment(R.layout.fragment_start_menu) {
             findNavController().navigate(action)
         }
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             buildExitDialog(requireContext(), requireActivity())
         }
     }

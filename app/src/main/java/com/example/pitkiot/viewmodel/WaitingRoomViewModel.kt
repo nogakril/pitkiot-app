@@ -1,14 +1,12 @@
 package com.example.pitkiot.viewmodel
 
-/* ktlint-disable */
-import androidx.lifecycle.*
-import com.example.pitkiot.data.PitkiotRepository
-/* ktlint-enable */
+import androidx.lifecycle.* // ktlint-disable no-wildcard-imports
 import com.example.pitkiot.data.PitkiotApi
+import com.example.pitkiot.data.PitkiotRepository
 import com.example.pitkiot.data.PitkiotRepositoryImpl
 import com.example.pitkiot.data.enums.GameStatus
 import com.example.pitkiot.data.models.WaitingRoomUiState
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import java.io.IOException
 
 class WaitingRoomViewModel(
@@ -59,7 +57,6 @@ class WaitingRoomViewModel(
         }
     }
 
-
     fun setGameStatus(status: GameStatus) {
         viewModelScope.launch(defaultDispatcher) {
             try {
@@ -69,8 +66,7 @@ class WaitingRoomViewModel(
                     .onFailure {
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
-            }
-            catch (e: IOException){
+            } catch (e: IOException) {
                 _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
             }
         }
@@ -79,13 +75,13 @@ class WaitingRoomViewModel(
     fun checkGameStatus() {
         checkGameStatusJob = viewModelScope.launch(defaultDispatcher) {
             while (true) {
-                delay(1000)
+                delay(500)
                 getGameStatus()
             }
         }
     }
 
-    suspend fun getGameStatus() {
+    private suspend fun getGameStatus() {
         try {
             pitkiotRepository.getStatus(gamePin).onSuccess { result ->
                 _uiState.postValue(_uiState.value!!.copy(gameStatus = GameStatus.fromString(result.status)))
@@ -93,8 +89,7 @@ class WaitingRoomViewModel(
                 .onFailure {
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
-        }
-        catch (_: IOException) { }
+        } catch (_: IOException) { }
     }
 
     override fun onCleared() {
