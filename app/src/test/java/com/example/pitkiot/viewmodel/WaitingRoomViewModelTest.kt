@@ -35,9 +35,7 @@ class WaitingRoomViewModelTest {
     fun onCheckPlayersValidInput_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.Success), gamePin, UnconfinedTestDispatcher())
         viewModel.checkPlayers()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.players).isEqualTo(listOf("Noga", "Omri", "John", "Mike"))
     }
 
@@ -45,9 +43,7 @@ class WaitingRoomViewModelTest {
     fun onCheckPlayersFailure_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), gamePin, UnconfinedTestDispatcher())
         viewModel.checkPlayers()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("error")
     }
 
@@ -55,9 +51,7 @@ class WaitingRoomViewModelTest {
     fun onCheckPlayersNoInternet_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), gamePin, UnconfinedTestDispatcher())
         viewModel.checkPlayers()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.errorMessage).isNotNull()
     }
 
@@ -65,9 +59,7 @@ class WaitingRoomViewModelTest {
     fun onCheckGameStatusValidInput_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.Success), gamePin, UnconfinedTestDispatcher())
         viewModel.checkGameStatus()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.gameStatus).isEqualTo(GameStatus.ADDING_PLAYERS)
     }
 
@@ -75,19 +67,15 @@ class WaitingRoomViewModelTest {
     fun onCheckGameStatusFailure_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), gamePin, UnconfinedTestDispatcher())
         viewModel.checkGameStatus()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
-        assertThat(viewModel.uiState.value!!.errorMessage).isNotNull()
+        advanceTimeBy(2000)
+        assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("error")
     }
 
     @Test
     fun onCheckGameStatusNoInternet_nothingHappens() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), gamePin, UnconfinedTestDispatcher())
         viewModel.checkGameStatus()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.errorMessage).isNull()
     }
 
@@ -102,13 +90,13 @@ class WaitingRoomViewModelTest {
     fun onSetGameStatusFailure_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), gamePin, UnconfinedTestDispatcher())
         viewModel.setGameStatus(GameStatus.ADDING_WORDS)
-        assertThat(viewModel.uiState.value!!.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("error")
     }
 
     @Test
     fun onSetGameStatusNoInternet_uiStateLiveDataUpdated() = runTest {
         viewModel = WaitingRoomViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), gamePin, UnconfinedTestDispatcher())
         viewModel.setGameStatus(GameStatus.ADDING_WORDS)
-        assertThat(viewModel.uiState.value!!.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("Oops... no internet! Reconnect and try again")
     }
 }

@@ -31,7 +31,7 @@ class GameSummaryViewModel(
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -48,5 +48,9 @@ class GameSummaryViewModel(
                 gamePin = gamePinFactory.invoke()
             ) as T
         }
+    }
+
+    companion object {
+        const val NO_INTERNET_ERROR_MESSAGE = "Oops... no internet! Reconnect and try again"
     }
 }

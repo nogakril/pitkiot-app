@@ -25,7 +25,7 @@ class JoinGameViewModel(
     fun joinGame(gamePin: String, nickname: String) {
         val adminName = nickname.trimStart().trimEnd()
         if (adminName == "") {
-            _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose nickname to create the game"))
+            _uiState.postValue(_uiState.value!!.copy(errorMessage = EMPTY_NICKNAME_ERROR_MESSAGE))
             return
         }
         viewModelScope.launch(defaultDispatcher) {
@@ -37,7 +37,7 @@ class JoinGameViewModel(
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -52,5 +52,10 @@ class JoinGameViewModel(
                 pitkiotRepositoryImpl = pitkiotRepositoryFactory.invoke(pitkiotApi)
             ) as T
         }
+    }
+
+    companion object {
+        const val NO_INTERNET_ERROR_MESSAGE = "Oops... no internet! Reconnect and try again"
+        const val EMPTY_NICKNAME_ERROR_MESSAGE = "You must choose a nickname to join a game"
     }
 }

@@ -41,13 +41,13 @@ class GameSummaryViewModelTest {
     fun onSetGameStatusFailure_uiStateLiveDataUpdated() = runTest {
         viewModel = GameSummaryViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), gamePin, UnconfinedTestDispatcher())
         viewModel.setGameStatus(GameStatus.GAME_ENDED)
-        assertThat(viewModel.uiState.value!!.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("error")
     }
 
     @Test
     fun onSetGameStatusNoInternet_uiStateLiveDataUpdated() = runTest {
         viewModel = GameSummaryViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), gamePin, UnconfinedTestDispatcher())
         viewModel.setGameStatus(GameStatus.GAME_ENDED)
-        assertThat(viewModel.uiState.value!!.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("Oops... no internet! Reconnect and try again")
     }
 }

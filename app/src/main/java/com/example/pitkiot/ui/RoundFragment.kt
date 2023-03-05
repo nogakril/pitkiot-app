@@ -79,12 +79,12 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
                 scoreAndSkipsText.text = getString(R.string.score_and_skips_placeholder, uiState.score, uiState.skipsLeft)
                 wordTextView.text = uiState.curWord
                 startRoundTitle.text = uiState.timeLeftToRound.toString()
-                setRoundUiComponentsVisibility(roundStart = true, showStartBtn = false)
+                setRoundUiComponentsVisibility(roundStart = true)
             } else {
                 nextTeamAndPlayerText.text = getString(R.string.next_team_and_player_placeholder, uiState.curPlayer, uiState.curTeam.customName)
                 scoreSummaryText.text = getString(R.string.score_summary_text, TEAM_A.customName, uiState.teamAScore, TEAM_B.customName, uiState.teamBScore)
                 startRoundTitle.text = getString(R.string.start_round_title)
-                setRoundUiComponentsVisibility(roundStart = false, showStartBtn = uiState.showStartBtn)
+                setRoundUiComponentsVisibility(roundStart = false)
             }
             if (uiState.gameEnded) {
                 val winner = viewModel.onGameEndedReturnWinner()
@@ -119,10 +119,10 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         swipeView.setBackgroundResource(resource)
         Handler(Looper.getMainLooper()).postDelayed({
             swipeView.setBackgroundResource(R.drawable.styled_box)
-        }, 500)
+        }, SWIPE_DELAY)
     }
 
-    private fun setRoundUiComponentsVisibility(roundStart: Boolean, showStartBtn: Boolean) {
+    private fun setRoundUiComponentsVisibility(roundStart: Boolean) {
         // Round
         swipeView.visibility = if (roundStart) VISIBLE else INVISIBLE
         scoreAndSkipsText.visibility = if (roundStart) VISIBLE else INVISIBLE
@@ -131,6 +131,10 @@ class RoundFragment : Fragment(R.layout.fragment_round) {
         // Ready to play?
         nextTeamAndPlayerText.visibility = if (roundStart) INVISIBLE else VISIBLE
         scoreSummaryText.visibility = if (roundStart) INVISIBLE else VISIBLE
-        startRoundBtn.visibility = if (roundStart) INVISIBLE else { if (showStartBtn) VISIBLE else INVISIBLE }
+        startRoundBtn.visibility = if (roundStart) INVISIBLE else VISIBLE
+    }
+
+    companion object {
+        const val SWIPE_DELAY = 500L
     }
 }

@@ -27,7 +27,7 @@ class AddWordsViewModel(
         val word = curWord.trimStart().trimEnd()
 
         if (word == "") {
-            _uiState.postValue(_uiState.value!!.copy(errorMessage = "Game's Pitkit cannot be empty"))
+            _uiState.postValue(_uiState.value!!.copy(errorMessage = EMPTY_WORD_ERROR_MESSAGE))
             return
         }
         viewModelScope.launch(defaultDispatcher) {
@@ -36,7 +36,7 @@ class AddWordsViewModel(
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -48,7 +48,7 @@ class AddWordsViewModel(
                     _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                 }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -57,8 +57,8 @@ class AddWordsViewModel(
         checkGameStatusJob = viewModelScope.launch(defaultDispatcher) {
             var firstCall = true
             while (true) {
-                delay(1000)
                 getGameStatus(firstCall)
+                delay(STATUS_CHECK_DELAY)
                 firstCall = false
             }
         }
@@ -74,7 +74,7 @@ class AddWordsViewModel(
                 }
         } catch (e: IOException) {
             if (firstCall) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -96,5 +96,11 @@ class AddWordsViewModel(
                 gamePin = gamePinFactory.invoke()
             ) as T
         }
+    }
+
+    companion object {
+        const val NO_INTERNET_ERROR_MESSAGE = "Oops... no internet! Reconnect and try again"
+        const val EMPTY_WORD_ERROR_MESSAGE = "Game's Pitkit cannot be empty"
+        const val STATUS_CHECK_DELAY = 500L
     }
 }

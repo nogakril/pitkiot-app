@@ -26,12 +26,12 @@ class WaitingRoomViewModel(
     }
 
     fun checkPlayers() {
-        getPlayersJob = viewModelScope.launch(Dispatchers.IO) {
+        getPlayersJob = viewModelScope.launch(defaultDispatcher) {
             val currentPlayers = mutableListOf<String>()
             var firstCall = true
             while (true) {
-                delay(500)
                 getPlayers(firstCall, currentPlayers)
+                delay(PLAYERS_CHECK_DELAY)
                 if (firstCall) {
                     firstCall = false
                 }
@@ -52,7 +52,7 @@ class WaitingRoomViewModel(
                 }
         } catch (e: java.lang.Exception) {
             if (firstCall) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -67,7 +67,7 @@ class WaitingRoomViewModel(
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -75,8 +75,8 @@ class WaitingRoomViewModel(
     fun checkGameStatus() {
         checkGameStatusJob = viewModelScope.launch(defaultDispatcher) {
             while (true) {
-                delay(500)
                 getGameStatus()
+                delay(STATUS_CHECK_DELAY)
             }
         }
     }
@@ -110,5 +110,11 @@ class WaitingRoomViewModel(
                 gamePin = gamePinFactory.invoke()
             ) as T
         }
+    }
+
+    companion object {
+        const val NO_INTERNET_ERROR_MESSAGE = "Oops... no internet! Reconnect and try again"
+        const val STATUS_CHECK_DELAY = 500L
+        const val PLAYERS_CHECK_DELAY = 500L
     }
 }

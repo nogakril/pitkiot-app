@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pitkiot.R
 import com.example.pitkiot.viewmodel.PlayersListViewAdapter
 
-class TeamsDialog(context: Context, val playersTeamA: List<String>, val playersTeamB: List<String>) : Dialog(context) {
+class TeamsDialog(context: Context, private val playersTeamA: List<String>, private val playersTeamB: List<String>) : Dialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.teams_dialog_layout)

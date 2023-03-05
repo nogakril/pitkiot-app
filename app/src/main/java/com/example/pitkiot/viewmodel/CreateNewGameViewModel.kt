@@ -22,12 +22,12 @@ class CreateNewGameViewModel(
         _uiState.postValue(CreateNewGameUiState())
     }
 
-    private fun generateGamePin(gameId: String) = gameId.takeLast(4)
+    private fun generateGamePin(gameId: String) = gameId.takeLast(GAME_PIN_LENGTH)
 
     fun createGame(nickname: String) {
         val adminName = nickname.trimStart().trimEnd()
         if (adminName == "") {
-            _uiState.postValue(_uiState.value!!.copy(errorMessage = "You must choose a nickname to create a game"))
+            _uiState.postValue(_uiState.value!!.copy(errorMessage = EMPTY_NICKNAME_ERROR_MESSAGE))
             return
         }
 
@@ -40,7 +40,7 @@ class CreateNewGameViewModel(
                         _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
                     }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(_uiState.value!!.copy(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
     }
@@ -55,5 +55,11 @@ class CreateNewGameViewModel(
                 pitkiotRepository = pitkiotRepositoryFactory.invoke(pitkiotApi)
             ) as T
         }
+    }
+
+    companion object {
+        const val NO_INTERNET_ERROR_MESSAGE = "Oops... no internet! Reconnect and try again"
+        const val EMPTY_NICKNAME_ERROR_MESSAGE = "You must choose a nickname to create a game"
+        const val GAME_PIN_LENGTH = 4
     }
 }

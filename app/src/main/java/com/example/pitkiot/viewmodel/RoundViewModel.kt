@@ -19,80 +19,47 @@ class RoundViewModel(
     defaultDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    private lateinit var allPitkiot: Set<String>
     private lateinit var allPlayers: List<String>
     private lateinit var playersTeamA: List<String>
     private lateinit var playersTeamB: List<String>
 
-    private val _uiState = state.getLiveData<RoundUiState>("liveData")
+    private val _uiState = state.getLiveData<RoundUiState>(SAVED_STATE_KEY)
     val uiState: LiveData<RoundUiState> = _uiState
-
-    private fun startRoundTimer(roundTime: Long = ROUND_TIME) {
-        object : CountDownTimer(roundTime, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                _uiState.postValue(_uiState.value!!.copy(timeLeftToRound = millisUntilFinished / 1000))
-            }
-            override fun onFinish() {
-                if (wordsLeft()) {
-                    val usedWords = _uiState.value!!.usedWords
-                    usedWords.remove(_uiState.value!!.curWord)
-                    usedWords.removeAll(_uiState.value!!.skippedWords)
-                    val nextTeam = getNextTeam()
-                    _uiState.postValue(
-                        _uiState.value!!.copy(
-                            curTeam = nextTeam,
-                            curPlayer = getNextPlayer(),
-                            playerIndexTeamA = getPlayerIndexTeamA(),
-                            teamAScore = getScoreTeamA(),
-                            playerIndexTeamB = getPlayerIndexTeamB(),
-                            teamBScore = getScoreTeamB(),
-                            inRound = false,
-                            usedWords = usedWords,
-                            skippedWords = mutableSetOf()
-                        )
-                    )
-                } else {
-                    endGame()
-                }
-            }
-        }.start()
-    }
 
     init {
         viewModelScope.launch(defaultDispatcher) {
-            if (state.contains("liveData")) {
-                _uiState.postValue(state["liveData"])
+            if (state.contains(SAVED_STATE_KEY)) {
+                _uiState.postValue(state[SAVED_STATE_KEY])
                 if (_uiState.value!!.inRound) {
-                    startRoundTimer(_uiState.value!!.timeLeftToRound * 1000)
+                    startRoundTimer(_uiState.value!!.timeLeftToRound * COUNTDOWN_INTERVAL)
                 }
             } else {
                 getAndSetPlayers()
                 initGame()
-                _uiState.postValue(_uiState.value!!.copy(allPitkiot = allPitkiot, showTeamsDivisionDialog = true))
             }
         }
     }
 
     private suspend fun initGame() =
         withContext(Dispatchers.IO) {
-            _uiState.postValue(
-                RoundUiState(
-                    curTeam = TEAM_A,
-                    curPlayer = playersTeamA[0],
-                    allPlayers = allPlayers,
-                    playersTeamA = playersTeamA,
-                    playersTeamB = playersTeamB
-                )
-            )
             try {
                 pitkiotRepository.getWords(gamePin).onSuccess { result ->
-                    allPitkiot = result.words.toSet()
-                    _uiState.postValue(_uiState.value!!.copy(showStartBtn = true))
+                    _uiState.postValue(
+                        RoundUiState(
+                            curTeam = TEAM_A,
+                            curPlayer = playersTeamA[0],
+                            allPlayers = allPlayers,
+                            playersTeamA = playersTeamA,
+                            playersTeamB = playersTeamB,
+                            allPitkiot = result.words.toSet(),
+                            showTeamsDivisionDialog = true
+                        )
+                    )
                 }.onFailure {
-                    _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                    _uiState.postValue(RoundUiState(errorMessage = it.message))
                 }
             } catch (e: IOException) {
-                _uiState.postValue(_uiState.value!!.copy(errorMessage = "Oops... no internet! Reconnect and try again"))
+                _uiState.postValue(RoundUiState(errorMessage = NO_INTERNET_ERROR_MESSAGE))
             }
         }
 
@@ -123,8 +90,8 @@ class RoundViewModel(
 
     fun getPlayersByTeam(team: Team): List<String> {
         return when (team) {
-            TEAM_A -> _uiState.value!!.playersTeamA
-            TEAM_B -> _uiState.value!!.playersTeamB
+            TEAM_A -> playersTeamA
+            TEAM_B -> playersTeamB
             else -> emptyList()
         }
     }
@@ -167,6 +134,37 @@ class RoundViewModel(
         startRoundTimer()
     }
 
+    private fun startRoundTimer(roundTime: Long = ROUND_TIME) {
+        object : CountDownTimer(roundTime, COUNTDOWN_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {
+                _uiState.postValue(_uiState.value!!.copy(timeLeftToRound = millisUntilFinished / COUNTDOWN_INTERVAL))
+            }
+            override fun onFinish() {
+                if (wordsLeft()) {
+                    val usedWords = _uiState.value!!.usedWords
+                    usedWords.remove(_uiState.value!!.curWord)
+                    usedWords.removeAll(_uiState.value!!.skippedWords)
+                    val nextTeam = getNextTeam()
+                    _uiState.postValue(
+                        _uiState.value!!.copy(
+                            curTeam = nextTeam,
+                            curPlayer = getNextPlayer(),
+                            playerIndexTeamA = getPlayerIndexTeamA(),
+                            teamAScore = getScoreTeamA(),
+                            playerIndexTeamB = getPlayerIndexTeamB(),
+                            teamBScore = getScoreTeamB(),
+                            inRound = false,
+                            usedWords = usedWords,
+                            skippedWords = mutableSetOf()
+                        )
+                    )
+                } else {
+                    endGame()
+                }
+            }
+        }.start()
+    }
+
     private fun endGame() {
         if (_uiState.value!!.curTeam == TEAM_A) {
             _uiState.postValue(_uiState.value!!.copy(gameEnded = true, teamAScore = _uiState.value!!.teamAScore + _uiState.value!!.score + 1))
@@ -187,7 +185,7 @@ class RoundViewModel(
                         playersTeamB = shuffledPlayers.subList(shuffledPlayers.size / 2, shuffledPlayers.size).toList()
                         isInitialized = true
                     }.onFailure {
-                        _uiState.postValue(_uiState.value!!.copy(errorMessage = it.message))
+                        _uiState.postValue(RoundUiState(errorMessage = it.message))
                     }
                 } catch (_: IOException) { }
             }
@@ -263,6 +261,9 @@ class RoundViewModel(
 
     companion object {
         const val SKIPS = 2
-        const val ROUND_TIME: Long = 60000
+        const val ROUND_TIME = 60000L
+        const val COUNTDOWN_INTERVAL = 1000L
+        const val SAVED_STATE_KEY = "liveData"
+        const val NO_INTERNET_ERROR_MESSAGE = "Oops... no internet! Reconnect and try again"
     }
 }

@@ -42,7 +42,7 @@ class JoinGameViewModelTest {
         val gamePin = "mf7h"
         viewModel = JoinGameViewModel(FakePitkiotRepository(FakeRepositoryState.Success), UnconfinedTestDispatcher())
         viewModel.joinGame(gamePin, nickName)
-        assertThat(viewModel.uiState.value?.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value?.errorMessage).isEqualTo("You must choose a nickname to join a game")
     }
 
     @Test
@@ -51,7 +51,7 @@ class JoinGameViewModelTest {
         val gamePin = "mf7h"
         viewModel = JoinGameViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), UnconfinedTestDispatcher())
         viewModel.joinGame(gamePin, nickName)
-        assertThat(viewModel.uiState.value?.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value?.errorMessage).isEqualTo("error")
     }
 
     @Test
@@ -60,6 +60,6 @@ class JoinGameViewModelTest {
         val gamePin = "mf7h"
         viewModel = JoinGameViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), UnconfinedTestDispatcher())
         viewModel.joinGame(gamePin, nickName)
-        assertThat(viewModel.uiState.value?.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value?.errorMessage).isEqualTo("Oops... no internet! Reconnect and try again")
     }
 }

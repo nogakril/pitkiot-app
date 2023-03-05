@@ -29,7 +29,7 @@ class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotReposit
             else ->
                 when {
                     response.errorBody() != null -> {
-                        val jsonError: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonError = JSONObject(response.errorBody()!!.string())
                         Result.failure(GameError(jsonError.getString("error")))
                     }
                     else -> Result.failure(GameError("Error: Could not join game $gameId"))
@@ -60,7 +60,7 @@ class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotReposit
             else -> {
                 when {
                     response.errorBody() != null -> {
-                        val jsonError: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonError = JSONObject(response.errorBody()!!.string())
                         Result.failure(GameError(jsonError.getString("error")))
                     }
                     else -> Result.failure(GameError("Error: Could not add the word $word to game $gameId"))
@@ -98,7 +98,7 @@ class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotReposit
             else ->
                 when {
                     response.errorBody() != null -> {
-                        val jsonError: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonError = JSONObject(response.errorBody()!!.string())
                         Result.failure(GameError(jsonError.getString("error")))
                     }
                     else -> Result.failure(GameError("Error: Could not add get the words of game $gameId"))
@@ -114,7 +114,7 @@ class PitkiotRepositoryImpl(private val pitkiotApi: PitkiotApi) : PitkiotReposit
             else ->
                 when {
                     response.errorBody() != null -> {
-                        val jsonError: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonError = JSONObject(response.errorBody()!!.string())
                         Result.failure(GameError(jsonError.getString("error")))
                     }
                     else -> Result.failure(GameError("Error: Could not set the status of game $gameId to $status"))

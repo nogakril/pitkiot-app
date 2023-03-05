@@ -13,19 +13,16 @@ data class RoundUiState(
     var curPlayer: String = "",
     var gameEnded: Boolean = false,
     var showTeamsDivisionDialog: Boolean = false,
-    var showStartBtn: Boolean = false,
     var inRound: Boolean = false,
-    override var errorMessage: String? = null,
     var allPitkiot: Set<String> = emptySet(),
     var allPlayers: List<String> = emptyList(),
     var usedWords: MutableSet<String> = mutableSetOf(),
     var skippedWords: MutableSet<String> = mutableSetOf(),
-
     var teamAScore: Int = 0,
     var playerIndexTeamA: Int = 0,
     var playersTeamA: List<String> = emptyList(),
-
     var teamBScore: Int = 0,
     var playerIndexTeamB: Int = 0,
-    var playersTeamB: List<String> = emptyList()
+    var playersTeamB: List<String> = emptyList(),
+    override var errorMessage: String? = null
 ) : UiState

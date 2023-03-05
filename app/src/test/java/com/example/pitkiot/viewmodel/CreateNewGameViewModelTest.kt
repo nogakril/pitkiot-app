@@ -40,7 +40,7 @@ class CreateNewGameViewModelTest {
         val nickName = ""
         viewModel = CreateNewGameViewModel(FakePitkiotRepository(FakeRepositoryState.Success), UnconfinedTestDispatcher())
         viewModel.createGame(nickName)
-        assertThat(viewModel.uiState.value?.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value?.errorMessage).isEqualTo("You must choose a nickname to create a game")
     }
 
     @Test
@@ -48,7 +48,7 @@ class CreateNewGameViewModelTest {
         val nickName = "admin"
         viewModel = CreateNewGameViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), UnconfinedTestDispatcher())
         viewModel.createGame(nickName)
-        assertThat(viewModel.uiState.value?.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value?.errorMessage).isEqualTo("error")
     }
 
     @Test
@@ -56,6 +56,6 @@ class CreateNewGameViewModelTest {
         val nickName = "admin"
         viewModel = CreateNewGameViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), UnconfinedTestDispatcher())
         viewModel.createGame(nickName)
-        assertThat(viewModel.uiState.value?.errorMessage).isNotNull()
+        assertThat(viewModel.uiState.value?.errorMessage).isEqualTo("Oops... no internet! Reconnect and try again")
     }
 }

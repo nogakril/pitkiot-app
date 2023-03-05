@@ -5,12 +5,10 @@ import com.example.pitkiot.FakePitkiotRepository
 import com.example.pitkiot.FakeRepositoryState
 import com.example.pitkiot.data.enums.GameStatus
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.withContext
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,19 +68,15 @@ class AddWordsViewModelTest {
     fun onCheckGameStatusSuccess_uiStateLiveDataUpdated() = runTest {
         viewModel = AddWordsViewModel(FakePitkiotRepository(FakeRepositoryState.Success), gamePin, UnconfinedTestDispatcher())
         viewModel.checkGameStatus()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
-        assertThat(viewModel.uiState.value!!.gameStatus).isEqualTo(GameStatus.ADDING_WORDS)
+        advanceTimeBy(2000)
+        assertThat(viewModel.uiState.value!!.gameStatus).isEqualTo(GameStatus.ADDING_PLAYERS)
     }
 
     @Test
     fun onCheckGameStatusFailure_uiStateLiveDataUpdated() = runTest {
         viewModel = AddWordsViewModel(FakePitkiotRepository(FakeRepositoryState.Failure), gamePin, UnconfinedTestDispatcher())
         viewModel.checkGameStatus()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("error")
     }
 
@@ -90,9 +84,7 @@ class AddWordsViewModelTest {
     fun onCheckGameStatusNoInternet_uiStateLiveDataUpdated() = runTest {
         viewModel = AddWordsViewModel(FakePitkiotRepository(FakeRepositoryState.NoInternet), gamePin, UnconfinedTestDispatcher())
         viewModel.checkGameStatus()
-        withContext(Dispatchers.Default) {
-            delay(5000)
-        }
+        advanceTimeBy(2000)
         assertThat(viewModel.uiState.value!!.errorMessage).isEqualTo("Oops... no internet! Reconnect and try again")
     }
 
